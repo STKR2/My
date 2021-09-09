@@ -1,0 +1,63 @@
+{
+    "name": "Veez Video Stream Bot",
+    "description": "bot to stream video on telegram video chat, powered by pytgcalls and pyrogram",
+    "logo": "https://telegra.ph/file/103a5208bb1698a8b33de.png",
+    "keywords": [
+        "pytgcalls",
+        "telegram bot",
+        "video stream"
+    ],
+    "website": "https://t.me/levinachannel",
+    "repository": "https://github.com/levina-lab/video-stream",
+    "success_url": "https://t.me/dlwrml",
+    "env": {
+        "API_ID": {
+            "description": "your APP_ID from my.telegram.org",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "your API_HASH from my.telegram.org",
+            "required": true
+        },
+        "BOT_TOKEN": {
+            "description": "your bot token from @botfather",
+            "required": true
+        },
+        "BOT_USERNAME": {
+            "description": "your bot username from @botfather",
+            "required": true
+        },
+        "ASSISTANT_NAME": {
+            "description": "fill with the assistant username account without @",
+            "required": true
+        },
+        "SESSION_NAME": {
+            "description": "fill with the pyrogram String Session",
+            "required": true
+        },
+        "SUDO_USERS": {
+            "description": "list of user ids to be added to sudo member list",
+            "required": true
+        },
+        "DURATION_LIMIT": {
+            "description": "maximum duration limit for downloadable videos (in minutes)",
+            "required": true
+        }
+    },
+    "addons": [],
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        },
+        {
+            "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+        }
+    ],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    },
+    "stack": "heroku-20"
+}
