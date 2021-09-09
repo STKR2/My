@@ -56,19 +56,11 @@ The easy way to host this bot, deploy to Heroku
 - python3 -m bot
 ```
 
-
 # Special Credits 💖
 
 - [Levina](https://github.com/levina-lab) Dev
-- [SammyXD](https://github.com/Sammy-XD) Dev
-- [Safone](https://github.com/AsmSafone) Dev
-- [Zxce3](https://github.com/Zxce3) Dev
-- [Tofik](https://github.com/tofikdn) Dev
-- [Achu](https://github.com/Achu2234) Dev
 - [MarshalX](https://github.com/MarshalX) for [pytgcalls](https://github.com/MarshalX)
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram)
-
-Thanks to all people above for helping this project and many more people who aren't mentioned here, but can be found in [Contributor List](https://github.com/levina-lab/video-stream/graphs/contributors)
 
 ### Support & Updates 🎑
 <a href="https://t.me/VeezSupportGroup"><img src="https://img.shields.io/badge/Join-Group%20Support-blue.svg?style=for-the-badge&logo=Telegram"></a> <a href="https://t.me/levinachannel"><img src="https://img.shields.io/badge/Join-Updates%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
