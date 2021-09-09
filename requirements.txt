@@ -2,7 +2,7 @@ tgcrypto
 asyncio
 ffmpeg-python
 googletrans==4.0.0rc1
-pytgcalls==3.0.0.dev16
+py-tgcalls==0.8.0
 youtube_dl
 pafy==0.5.5
 pytube==11.0.1
