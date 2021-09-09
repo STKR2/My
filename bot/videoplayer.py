@@ -61,8 +61,8 @@ async def startvideo(client, m: Message):
                     InputVideoStream(
                         video_file,
                         VideoParameters(
-                            width=1280,
-                            height=720,
+                            width=854,
+                            height=480,
                             frame_rate=20,
                         ),
                     ),
