@@ -45,6 +45,8 @@ The easy way to host this bot, deploy to Heroku
 - sudo apt update && upgrade -y
 - sudo apt install python3-pip -y virtualenv
 - sudo apt install ffmpeg -y
+- nvm install v16.5.0
+- npm i -g npm
 - git clone https://github.com/levina-lab/video-stream
 - cd video-stream
 - virtualenv venv #Create Virtual Environment.
