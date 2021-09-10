@@ -40,6 +40,9 @@ async def start(_, m: Message):
             reply_markup=InlineKeyboardMarkup(
                 [[
                     InlineKeyboardButton(
+                        "➕ Add me to your Group ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
+                ], [
+                    InlineKeyboardButton(
                         "❔ HOW TO USE THIS BOT", callback_data="cbguide")
                 ], [
                     InlineKeyboardButton(
