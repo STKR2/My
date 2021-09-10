@@ -34,11 +34,11 @@ def raw_converter(dl, song, video):
 
 def youtube(url: str):
     try:
-        params = {"format": "best[height=?720]/best", "noplaylist": True}
+        params = {"format": "best[height=?480]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
         return info['url']
-    except ExtractorError: # do whatever
+    except ExtractorError:
         return 
     except Exception:
         return
@@ -89,8 +89,8 @@ async def startvideo(client, m: Message):
                     InputVideoStream(
                         video_file,
                         VideoParameters(
-                            width=1280,
-                            height=720,
+                            width=854,
+                            height=480,
                             frame_rate=20,
                         ),
                     ),
