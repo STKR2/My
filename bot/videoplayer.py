@@ -34,7 +34,7 @@ def raw_converter(dl, song, video):
 
 def youtube(url: str):
     try:
-        params = {"format": "best[height=?720]/best", "noplaylist": True}
+        params = {"format": "best[height=?480]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
         return info['url']
@@ -71,7 +71,7 @@ async def startvideo(client, m: Message):
             process = raw_converter(livelink, f'audio{chat_id}.raw', f'video{chat_id}.raw')
             FFMPEG_PROCESSES[chat_id] = process
             msg = await m.reply("🔁 **starting video streaming...**")
-            await asyncio.sleep(8)
+            await asyncio.sleep(10)
             try:
                 audio_file = f'audio{chat_id}.raw'
                 video_file = f'video{chat_id}.raw'
