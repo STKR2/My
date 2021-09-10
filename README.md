@@ -15,8 +15,8 @@ telegram bot project for streaming video on telegram video chat, powered by [tgc
 </p>
 
 ## 🛠 Commands:
-- /play (reply to video/give yt url) - to start video streaming
-- /end - to stop video streaming
+- /vplay (reply to video/give yt url) - to start video streaming
+- /vstop - to stop video streaming
 - /song (song name) - to download song
 - /vsong (video name) - to download video
 - /lyric (query) - lyric scrapper
