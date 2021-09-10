@@ -21,11 +21,11 @@ SIGINT: int = 2
 
 app = Client(SESSION_NAME, API_ID, API_HASH)
 call_py = PyTgCalls(app)
-FFMPEG_PROCESSES = {}
+FFMPEG_PROCESS = {}
 
 def raw_converter(dl, song, video):
     return subprocess.Popen(
-        ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=854:480', video, '-y'],
+        ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=1280:720', video, '-y'],
         stdin=None,
         stdout=None,
         stderr=None,
@@ -34,7 +34,7 @@ def raw_converter(dl, song, video):
 
 def youtube(url: str):
     try:
-        params = {"format": "best[height=?480]/best", "noplaylist": True}
+        params = {"format": "best[height=?720]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
         return info['url']
@@ -69,7 +69,7 @@ async def startvideo(client, m: Message):
                 await m.reply("failed to get video data")
                 return
             process = raw_converter(livelink, f'audio{chat_id}.raw', f'video{chat_id}.raw')
-            FFMPEG_PROCESSES[chat_id] = process
+            FFMPEG_PROCESS[chat_id] = process
             msg = await m.reply("🔁 **starting video streaming...**")
             await asyncio.sleep(10)
             try:
@@ -144,7 +144,7 @@ async def startvideo(client, m: Message):
 async def stopvideo(client, m: Message):
     chat_id = m.chat.id
     try:
-        process = FFMPEG_PROCESSES.get(chat_id)
+        process = FFMPEG_PROCESS.get(chat_id)
         if process:
             try:
                 process.send_signal(SIGINT)
