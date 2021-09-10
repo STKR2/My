@@ -34,7 +34,7 @@ def raw_converter(dl, song, video):
 
 def youtube(url: str):
     try:
-        params = {"format": "best[height=?480]/best", "noplaylist": True}
+        params = {"format": "best[height=?720]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
         return info['url']
