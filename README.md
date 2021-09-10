@@ -28,7 +28,7 @@ telegram bot project for streaming video on telegram video chat, powered by [tgc
 - /uptime - check the bot uptime status
 - /sysinfo - show the bot system information
 
-🧙🏻‍♂️ Sudo Only:
+## 🧙🏻‍♂️ Sudo Only:
 - /rmd - clear all downloaded files
 - /rmw - clear all downloaded raw files
 - /leaveall - order the assistant to leave from all group
