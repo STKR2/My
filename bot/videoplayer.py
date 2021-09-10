@@ -25,7 +25,7 @@ FFMPEG_PROCESS = {}
 
 def raw_converter(dl, song, video):
     return subprocess.Popen(
-        ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=1280:720', video, '-y'],
+        ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=854:480', video, '-y'],
         stdin=None,
         stdout=None,
         stderr=None,
@@ -34,7 +34,7 @@ def raw_converter(dl, song, video):
 
 def youtube(url: str):
     try:
-        params = {"format": "best[height=?720]/best", "noplaylist": True}
+        params = {"format": "best[height=?480]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
         return info['url']
@@ -89,9 +89,9 @@ async def startvideo(client, m: Message):
                     InputVideoStream(
                         video_file,
                         VideoParameters(
-                            width=1280,
-                            height=720,
-                            frame_rate=25,
+                            width=854,
+                            height=480,
+                            frame_rate=20,
                         ),
                     ),
                     stream_type=StreamType().local_stream,
