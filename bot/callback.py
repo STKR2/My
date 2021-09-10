@@ -71,7 +71,6 @@ Client Library and Framework in Pure Python for Users and Bots.__
 
 👩🏻‍✈️ » [Levina Shavila](https://github.com/levina-lab)
 🤵🏻 » [Sammy-XD](https://github.com/Sammy-XD)
-👩🏻‍✈️ » [Achu Biju](https://github.com/Achu2234)
 
 __This bot licensed under GNU-GPL 3.0 License__""",
         reply_markup=InlineKeyboardMarkup(
