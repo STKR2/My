@@ -94,6 +94,8 @@ async def cblist(_, query: CallbackQuery):
 » /song (song name) - download song from YT
 » /vsong (video name) - download video from YT
 » /lyric (song name) - lyric scrapper
+» /vjoin - invite assistant join to your group
+» /vleave - order assistant leave from your group
 
 🎊 FUN CMD:
 
@@ -110,6 +112,12 @@ async def cblist(_, query: CallbackQuery):
 » /ping - check bot ping status
 » /uptime - check bot uptime status
 » /sysinfo - check bot system information
+
+💡 SUDO ONLY:
+
+» /rmd - remove all downloaded files
+» /rmw - remove all downloaded raw files
+» /leaveall - order assistant leave from all group
 
 ⚡ __Maintained by Veez Project Team__""",
         reply_markup=InlineKeyboardMarkup(
