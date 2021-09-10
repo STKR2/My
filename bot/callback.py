@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-from config import ASSISTANT_NAME as bn
+from config import BOT_USERNAME, ASSISTANT_NAME as bn
 
 
 @Client.on_callback_query(filters.regex("cbguide"))
