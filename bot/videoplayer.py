@@ -44,7 +44,7 @@ def youtube(url: str):
         return
 
 
-@Client.on_message(command(["play", f"play@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vplay", f"vplay@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def startvideo(client, m: Message):
     replied = m.reply_to_message
@@ -139,7 +139,7 @@ async def startvideo(client, m: Message):
         await m.reply("💭 please reply to video or video file to stream")
 
 
-@Client.on_message(command(["end", f"end@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vstop", f"vstop@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def stopvideo(client, m: Message):
     chat_id = m.chat.id
