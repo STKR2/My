@@ -13,7 +13,7 @@ async def cbguide(_, query: CallbackQuery):
 2.) then promote me as admin and give all permissions except anonymous admin.
 3.) add @{bn} to your group.
 4.) turn on the voice chat first before start to stream video.
-5.) type /vstream (reply to video) to start streaming.
+5.) type /vplay (reply to video) to start streaming.
 6.) type /vstop to end the video streaming.
 
 📝 **note: stream & stop command can only be executed by group admin only!**
@@ -86,8 +86,8 @@ async def cblist(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""📚 All Command List:
 
-» /play (reply to video or yt/live url) - to stream video
-» /end - stop the video streaming
+» /vplay (reply to video or yt/live url) - to stream video
+» /vstop - stop the video streaming
 » /song (song name) - download song from YT
 » /vsong (video name) - download video from YT
 » /lyric (song name) - lyric scrapper
