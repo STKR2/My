@@ -86,8 +86,8 @@ async def cblist(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""📚 All Command List:
 
-» /vstream (reply to video or yt/live url) - to stream video
-» /vstop - stop the video streaming
+» /play (reply to video or yt/live url) - to stream video
+» /end - stop the video streaming
 » /song (song name) - download song from YT
 » /vsong (video name) - download video from YT
 » /lyric (song name) - lyric scrapper
