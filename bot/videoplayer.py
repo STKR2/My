@@ -152,6 +152,6 @@ async def stopvideo(client, m: Message):
             except Exception as e:
                 print(e)
         await call_py.leave_group_call(chat_id)
-        await m.reply("✅ **disconnected from vc !**")
+        await m.reply("✅ **successfully left vc !**")
     except Exception as e:
         await m.reply(f"🚫 **error** | `{e}`")
