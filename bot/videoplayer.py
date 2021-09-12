@@ -113,8 +113,8 @@ async def startvideo(client, m: Message):
                 )
                 await msg.edit(
                     "💡 **video streaming started!**\n"
-                    f"\n🏷 **Name:** {title}"
-                    f"⏱ **Duration:** {duration}\n"
+                    f"\n🏷 **Name:** {title}\n"
+                    f"⏱ **Duration:** `{duration} minutes`\n"
                     f"\n» **join to video chat on the top to watch the video.**")
                 await idle()
             except Exception as e:
