@@ -11,7 +11,8 @@ from pytgcalls.types.input_stream import VideoParameters
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from config import API_ID, API_HASH, SESSION_NAME, BOT_USERNAME
+# from config import Veez.API_ID, Veez.API_HASH, Veez.SESSION_NAME, Veez.BOT_USERNAME
+from config import Veez
 from helpers.decorators import authorized_users_only
 from helpers.filters import command
 from youtube_dl import YoutubeDL
@@ -19,7 +20,7 @@ from youtube_dl.utils import ExtractorError
 
 SIGINT: int = 2
 
-app = Client(SESSION_NAME, API_ID, API_HASH)
+app = Client(Veez.SESSION_NAME, Veez.API_ID, Veez.API_HASH)
 call_py = PyTgCalls(app)
 FFMPEG_PROCESS = {}
 
@@ -44,7 +45,7 @@ def youtube(url: str):
         return
 
 
-@Client.on_message(command(["vplay", f"vplay@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vplay", f"vplay@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def startvideo(client, m: Message):
     replied = m.reply_to_message
@@ -139,7 +140,7 @@ async def startvideo(client, m: Message):
         await m.reply("💭 please reply to video or video file to stream")
 
 
-@Client.on_message(command(["vstop", f"vstop@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vstop", f"vstop@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def stopvideo(client, m: Message):
     chat_id = m.chat.id
