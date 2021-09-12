@@ -6,10 +6,11 @@ from pyrogram.errors import UserAlreadyParticipant
 from helpers.filters import command
 from helpers.decorators import authorized_users_only, errors
 from bot.videoplayer import app as USER
-from config import BOT_USERNAME, SUDO_USERS
+# from config import Veez.BOT_USERNAME, Veez.SUDO_USERS
+from config import Veez
 
 
-@Client.on_message(command(["vjoin", f"vjoin@{BOT_USERNAME}"]) & ~filters.private & ~filters.bot)
+@Client.on_message(command(["vjoin", f"vjoin@{Veez.BOT_USERNAME}"]) & ~filters.private & ~filters.bot)
 @authorized_users_only
 @errors
 async def entergroup(client, message):
@@ -45,7 +46,7 @@ async def entergroup(client, message):
     )
 
 
-@Client.on_message(command(["vleave", f"vleave@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vleave", f"vleave@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def leavegroup(client, message):
     try:
@@ -58,9 +59,9 @@ async def leavegroup(client, message):
         return
 
 
-@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]))
+@Client.on_message(command(["leaveall", f"leaveall@{Veez.BOT_USERNAME}"]))
 async def outall(client, message):
-    if message.from_user.id not in SUDO_USERS:
+    if message.from_user.id not in Veez.SUDO_USERS:
         return
 
     left=0
