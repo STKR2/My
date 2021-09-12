@@ -1,7 +1,8 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-from config import BOT_USERNAME, ASSISTANT_NAME as bn
+# from config import Veez.BOT_USERNAME, Veez.ASSISTANT_NAME as bn
+from config import Veez
 
 
 @Client.on_callback_query(filters.regex("cbguide"))
@@ -11,7 +12,7 @@ async def cbguide(_, query: CallbackQuery):
 
 1.) first, add me to your group.
 2.) then promote me as admin and give all permissions except anonymous admin.
-3.) add @{bn} to your group.
+3.) add @{Veez.ASSISTANT_NAME } to your group.
 4.) turn on the voice chat first before start to stream video.
 5.) type /vplay (reply to video) to start streaming.
 6.) type /vstop to end the video streaming.
@@ -35,7 +36,7 @@ async def cbstart(_, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(
             [[
                 InlineKeyboardButton(
-                    "➕ Add me to your Group ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
+                    "➕ Add me to your Group ➕", url=f"https://t.me/{Veez.BOT_USERNAME}?startgroup=true")
             ], [
                 InlineKeyboardButton(
                     "❔ HOW TO USE THIS BOT", callback_data="cbguide")
