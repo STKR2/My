@@ -52,11 +52,11 @@ def youtube(url: str):
         params = {"format": "best[height=?480]/best", "noplaylist": True}
         yt = YoutubeDL(params)
         info = yt.extract_info(url, download=False)
-        return info['url'], return info['title'], return info['duration']
+        return info['url'], info['title'], info['duration']
     except ExtractorError:
-        return 
+        return None, None
     except Exception:
-        return
+        return None, None
 
 
 @Client.on_message(command(["vplay", f"vplay@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
