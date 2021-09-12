@@ -16,12 +16,13 @@ from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from youtube_search import YoutubeSearch
 
-from config import BOT_USERNAME
+# from config import Veez.BOT_USERNAME
+from config import Veez
 from helpers.filters import command
 from helpers.decorators import humanbytes
 
 
-@Client.on_message(command(["song", f"song@{BOT_USERNAME}"]) & ~filters.channel)
+@Client.on_message(command(["song", f"song@{Veez.BOT_USERNAME}"]) & ~filters.channel)
 def song(_, message):
     query = ""
     for i in message.command[1:]:
@@ -49,7 +50,7 @@ def song(_, message):
             info_dict = ydl.extract_info(link, download=False)
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
-        rep = f"**🎧 By @{BOT_USERNAME}**"
+        rep = f"**🎧 By @{Veez.BOT_USERNAME}**"
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
@@ -224,7 +225,7 @@ def time_to_seconds(times):
     return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
 
 
-@Client.on_message(command(["vsong", f"vsong@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["vsong", f"vsong@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 async def vsong(_, message: Message):
     query = ''
     for i in message.command[1:]:
