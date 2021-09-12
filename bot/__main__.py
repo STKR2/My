@@ -4,7 +4,6 @@
 
 import asyncio
 from pyrogram import Client, idle
-# from config import Veez.API_ID, Veez.API_HASH, Veez.BOT_TOKEN
 from config import Veez 
 from bot.videoplayer import app
 from bot.videoplayer import call_py

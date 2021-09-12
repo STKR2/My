@@ -3,7 +3,6 @@ from typing import Callable
 from pyrogram import Client
 from pyrogram.types import Message
 
-# from config import Veez.SUDO_USERS
 from config import Veez
 from helpers.admins import get_administrators
 

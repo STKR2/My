@@ -6,7 +6,6 @@ from pyrogram.errors import UserAlreadyParticipant
 from helpers.filters import command
 from helpers.decorators import authorized_users_only, errors
 from bot.videoplayer import app as USER
-# from config import Veez.BOT_USERNAME, Veez.SUDO_USERS
 from config import Veez
 
 

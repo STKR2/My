@@ -16,7 +16,6 @@ from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from youtube_search import YoutubeSearch
 
-# from config import Veez.BOT_USERNAME
 from config import Veez
 from helpers.filters import command
 from helpers.decorators import humanbytes

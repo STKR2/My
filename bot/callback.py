@@ -1,7 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
-# from config import Veez.BOT_USERNAME, Veez.ASSISTANT_NAME as bn
 from config import Veez
 
 

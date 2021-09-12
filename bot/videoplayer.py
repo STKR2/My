@@ -11,7 +11,6 @@ from pytgcalls.types.input_stream import VideoParameters
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
-# from config import Veez.API_ID, Veez.API_HASH, Veez.SESSION_NAME, Veez.BOT_USERNAME
 from config import Veez
 from helpers.decorators import authorized_users_only
 from helpers.filters import command

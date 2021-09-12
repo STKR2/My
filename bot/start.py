@@ -4,7 +4,6 @@ from time import time
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
-# from config import Veez.BOT_USERNAME
 from config import Veez
 from helpers.decorators import sudo_users_only
 from helpers.filters import command

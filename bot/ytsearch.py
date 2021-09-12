@@ -3,8 +3,6 @@ import logging
 from pyrogram import Client as app
 from pyrogram.types import Message
 from youtube_search import YoutubeSearch
-
-# from config import Veez.BOT_USERNAME
 from config import Veez
 from helpers.filters import command
 

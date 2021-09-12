@@ -4,7 +4,6 @@
 import requests
 from pyrogram import Client
 
-# from config import Veez.BOT_USERNAME
 from config import Veez
 from helpers.filters import command
 

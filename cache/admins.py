@@ -1,5 +1,4 @@
 from typing import Dict, List
-# from config import admins
 from config import Veez
 
 

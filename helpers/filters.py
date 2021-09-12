@@ -2,7 +2,6 @@ from typing import Union, List
 
 from pyrogram import filters
 
-# from config import Veez.COMMAND_PREFIXES
 from config import Veez
 
 other_filters = filters.group & ~filters.edited & ~filters.via_bot & ~filters.forwarded
