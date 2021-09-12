@@ -176,7 +176,7 @@ async def stopvideo(client, m: Message):
     except Exception as e:
         await m.reply(f"🚫 **error** | `{e}`")
 
-@call_py.on_stream_end()
+@call_py.on_stream_end
 async def handler(client: PyTgCalls, update: Update):
     chat_id = update.chat.id
     await leave_call(chat_id)
