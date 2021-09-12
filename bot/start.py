@@ -4,7 +4,8 @@ from time import time
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import BOT_USERNAME
+# from config import Veez.BOT_USERNAME
+from config import Veez
 from helpers.decorators import sudo_users_only
 from helpers.filters import command
 
@@ -31,7 +32,7 @@ async def _human_time_duration(seconds):
     return ', '.join(parts)
 
 
-@Client.on_message(command(["start", f"start@{BOT_USERNAME}"]))
+@Client.on_message(command(["start", f"start@{Veez.BOT_USERNAME}"]))
 async def start(_, m: Message):
     if m.chat.type == "private":
         await m.reply_text(
@@ -40,7 +41,7 @@ async def start(_, m: Message):
             reply_markup=InlineKeyboardMarkup(
                 [[
                     InlineKeyboardButton(
-                        "➕ Add me to your Group ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
+                        "➕ Add me to your Group ➕", url=f"https://t.me/{Veez.BOT_USERNAME}?startgroup=true")
                 ], [
                     InlineKeyboardButton(
                         "❔ HOW TO USE THIS BOT", callback_data="cbguide")
@@ -77,7 +78,7 @@ async def start(_, m: Message):
                            )
 
 
-@Client.on_message(command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["alive", f"alive@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 async def alive(_, m: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
@@ -99,7 +100,7 @@ async def alive(_, m: Message):
     )
 
 
-@Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
+@Client.on_message(command(["ping", f"ping@{Veez.BOT_USERNAME}"]) & ~filters.edited)
 async def ping_pong(_, m: Message):
     sturt = time()
     m_reply = await m.reply_text("pinging...")
@@ -110,7 +111,7 @@ async def ping_pong(_, m: Message):
     )
 
 
-@Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
+@Client.on_message(command(["uptime", f"uptime@{Veez.BOT_USERNAME}"]) & ~filters.edited)
 @sudo_users_only
 async def get_uptime(_, m: Message):
     current_time = datetime.utcnow()
