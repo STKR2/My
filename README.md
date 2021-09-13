@@ -142,6 +142,7 @@ jobs:
 
 - [Levina](https://github.com/levina-lab) Dev
 - [Sammy-XD](https://github.com/Sammy-XD) Dev
+- [Zxce3](https://github.com/Zxce3) Dev
 - [Laky's](https://github.com/Laky-64) for [pytgcalls](https://github.com/MarshalX)
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram)
 
