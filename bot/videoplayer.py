@@ -10,6 +10,7 @@ from pytgcalls.types.input_stream import InputAudioStream
 from pytgcalls.types.input_stream import InputVideoStream
 from pytgcalls.types.input_stream import VideoParameters
 
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from config import Veez
@@ -62,6 +63,20 @@ def youtube(url: str):
 @Client.on_message(command(["vplay", f"vplay@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def startvideo(client, m: Message):
+    
+    keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="✨ ɢʀᴏᴜᴘ",
+                        url="https://t.me/VeezSupportGroup"),
+                    InlineKeyboardButton(
+                        text="🌻 ᴄʜᴀɴɴᴇʟ",
+                        url="https://t.me/levinachannel")
+                ]
+            ]
+        )
+    
     replied = m.reply_to_message
     if not replied:
         if len(m.command) < 2:
@@ -111,11 +126,10 @@ async def startvideo(client, m: Message):
                     ),
                     stream_type=StreamType().local_stream,
                 )
-                await msg.edit(
-                    "💡 **video streaming started!**\n"
-                    f"\n🏷 **Name:** {title}\n"
-                    f"⏱ **Duration:** `{duration} minutes`\n"
-                    f"\n» **join to video chat on the top to watch the video.**")
+                await msg.reply_photo(
+                    photo="https://telegra.ph/file/422650a849a8d6831bde8.png",
+                    reply_markup=keyboard,
+                    caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration} minutes`\n\n» **join to video chat on the top to watch the video.**")
                 await idle()
             except Exception as e:
                 await msg.edit(f"🚫 **error** | `{e}`")
@@ -150,9 +164,12 @@ async def startvideo(client, m: Message):
                 ),
                 stream_type=StreamType().local_stream,
             )
-            await msg.edit("💡 **video streaming started!**\n\n» **join to video chat on the top to watch the video.**")
+            await msg.reply_photoo streaming started!**\n\n» **join to video chat on the top to watch the video.**")
         except Exception as e:
-            await msg.edit(f"🚫 **error** | `{e}`")
+            await msg.reply_photo(
+                photo="https://telegra.ph/file/dc90e91cc77e68568e7b4.png",
+                reply_markup=keyboard,
+                caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration} minutes`\n\n» **join to video chat on the top to watch the video.**")
             await idle()
     else:
         await m.reply("💭 please reply to video or video file to stream")
