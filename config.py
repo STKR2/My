@@ -17,7 +17,3 @@ class Veez(object):
         ASSISTANT_NAME = getenv("ASSISTANT_NAME", "tg_video_stream")
         BOT_USERNAME = getenv("BOT_USERNAME", "veezvidstreambot")
         COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ ! .").split())
-        FPS = int(getenv('FPS', 20))
-        WIDTH = int(getenv('WIDTH', 1280))
-        HEIGHT = int(getenv('HEIGHT', 720))
-        BITRATE = int(getenv('BITRATE', 48000))
