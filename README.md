@@ -57,6 +57,12 @@ The easy way to host this bot, deploy to Heroku
 - Then create new file with structure `.github/workflows/run.yml`
 - Now in `run.yml` file, fill with this code below, just copy it and paste in `run.yml` file
 
+
+<details>
+  <summary>
+    <b>View code</b>
+  </summary>  
+
 ```sh
 name: Run on workflows
 on:
@@ -118,6 +124,9 @@ jobs:
            python3 -m bot
            echo "Bot Died"
 ```
+</details>
+
+
 - After adding all, Go to the Actions tab and start/run the workflows
 
 ## VPS Deployment
