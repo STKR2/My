@@ -149,11 +149,13 @@ jobs:
 
 # Special Credits 💖
 
-- [Levina](https://github.com/levina-lab) Dev
-- [Sammy-XD](https://github.com/Sammy-XD) Dev
-- [Zxce3](https://github.com/Zxce3) Dev
-- [Laky's](https://github.com/Laky-64) for [pytgcalls](https://github.com/MarshalX)
-- [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram)
+- [Levina](https://github.com/levina-lab) ``Dev``
+- [Sammy-XD](https://github.com/Sammy-XD) ``Dev``
+- [Zxce3](https://github.com/Zxce3) ``Dev``
+- [DoellBarr](https://github.com/DoellBarr) ``Dev``
+- [tofikdn](https://github.com/tofikdn) ``Dev``
+- [Laky's](https://github.com/Laky-64) for [``pytgcalls``](https://github.com/MarshalX)
+- [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
 
 ### Support & Updates 🎑
 <a href="https://t.me/VeezSupportGroup"><img src="https://img.shields.io/badge/Join-Group%20Support-blue.svg?style=for-the-badge&logo=Telegram"></a> <a href="https://t.me/levinachannel"><img src="https://img.shields.io/badge/Join-Updates%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
