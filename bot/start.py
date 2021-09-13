@@ -1,3 +1,5 @@
+# Copyright (C) 2021 By VeezMusicProject
+
 from datetime import datetime
 from time import time
 

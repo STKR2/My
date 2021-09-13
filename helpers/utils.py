@@ -1,3 +1,5 @@
+# Copyright (C) 2021 By VeezMusicProject
+
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
 
