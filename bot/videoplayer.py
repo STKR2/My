@@ -126,10 +126,11 @@ async def startvideo(client, m: Message):
                     ),
                     stream_type=StreamType().local_stream,
                 )
-                await msg.reply_photo(
+                await m.reply_photo(
                     photo="https://telegra.ph/file/422650a849a8d6831bde8.png",
                     reply_markup=keyboard,
                     caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration} minutes`\n\n» **join to video chat on the top to watch the video.**")
+                return await msg.delete()
                 await idle()
             except Exception as e:
                 await msg.edit(f"🚫 **error** | `{e}`")
@@ -138,7 +139,7 @@ async def startvideo(client, m: Message):
         msg = await m.reply("📥 downloading video...")
         video = await client.download_media(m.reply_to_message)
         chat_id = m.chat.id
-        await msg.edit("🔁 **preparing...**")
+        await msg.edit("🔁 **preparing video...**")
         os.system(f"ffmpeg -i '{video}' -f s16le -ac 1 -ar 48000 'audio{chat_id}.raw' -y -f rawvideo -r 20 -pix_fmt yuv420p -vf scale=640:360 'video{chat_id}.raw' -y")
         try:
             audio_file = f'audio{chat_id}.raw'
@@ -164,12 +165,13 @@ async def startvideo(client, m: Message):
                 ),
                 stream_type=StreamType().local_stream,
             )
-            await msg.reply_photo(
+            await m.reply_photo(
                 photo="https://telegra.ph/file/dc90e91cc77e68568e7b4.png",
                 reply_markup=keyboard,
-                caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration} minutes`\n\n» **join to video chat on the top to watch the video.**")
+                caption=f"💡 **video streaming started !**\n\n» **join to video chat on the top to watch the video.**")
+            return await msg.delete()
         except Exception as e:
-            await msg.edit(f"🚫 **Error** | `{e}`")
+            await msg.edit(f"🚫 **error** | `{e}`")
             await idle()
     else:
         await m.reply("💭 please reply to video or video file to stream")
@@ -196,4 +198,4 @@ async def stopvideo(client, m: Message):
 @call_py.on_stream_end()
 async def handler(client: PyTgCalls, update: Update):
     chat_id = update.chat.id
-    await leave_call(chat_id)
+    await call_py.leave_group_call(chat_id)
