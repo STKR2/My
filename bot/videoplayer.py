@@ -164,12 +164,12 @@ async def startvideo(client, m: Message):
                 ),
                 stream_type=StreamType().local_stream,
             )
-            await msg.reply_photoo streaming started!**\n\n» **join to video chat on the top to watch the video.**")
-        except Exception as e:
             await msg.reply_photo(
                 photo="https://telegra.ph/file/dc90e91cc77e68568e7b4.png",
                 reply_markup=keyboard,
                 caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration} minutes`\n\n» **join to video chat on the top to watch the video.**")
+        except Exception as e:
+            await msg.edit(f"🚫 **Error** | `{e}`")
             await idle()
     else:
         await m.reply("💭 please reply to video or video file to stream")
