@@ -26,6 +26,15 @@ app = Client(Veez.SESSION_NAME, Veez.API_ID, Veez.API_HASH)
 call_py = PyTgCalls(app)
 FFMPEG_PROCESS = {}
 
+
+def convert_seconds(seconds: int) -> str:
+    seconds = seconds % (24 * 3600)
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+    return "%02d:%02d" % (minutes, seconds)
+
+
 def raw_converter(dl, song, video):
     return subprocess.Popen(
         ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=854:480', video, '-y'],
@@ -130,7 +139,7 @@ async def startvideo(client, m: Message):
                 await m.reply_photo(
                     photo="https://telegra.ph/file/422650a849a8d6831bde8.png",
                     reply_markup=keyboard,
-                    caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{duration}`\n\n» **join to video chat on the top to watch the video.**")
+                    caption=f"💡 **video streaming started!**\n\n🏷 **Name:** {title}\n⏱ **Duration:** `{convert_seconds(duration)}`\n\n» **join to video chat on the top to watch the video.**")
                 return await msg.delete()
                 await idle()
             except Exception as e:
