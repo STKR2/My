@@ -15,23 +15,23 @@ telegram bot project for streaming video on telegram video chat, powered by [py-
 </p>
 
 ## 🛠 Commands:
-- /vplay (reply to video/give yt url) - to start video streaming
-- /vstop - to stop video streaming
-- /song (song name) - to download song
-- /vsong (video name) - to download video
-- /vjoin - invite the assistant join to your group
-- /vleave - order the assistant to leave from your group
-- /lyric (query) - lyric scrapper
-- /tts (reply to text) - text to speech
-- /alive - check the bot alive status
-- /ping - check the bot ping status
-- /uptime - check the bot uptime status
-- /sysinfo - show the bot system information
+- ``/vplay`` (reply to video/give yt url) - to start video streaming
+- ``/vstop`` - to stop video streaming
+- ``/song`` (song name) - to download song
+- ``/vsong`` (video name) - to download video
+- ``/vjoin`` - invite the assistant join to your group
+- ``/vleave`` - order the assistant to leave from your group
+- ``/lyric`` (query) - lyric scrapper
+- ``/tts`` (reply to text) - text to speech
+- ``/alive`` - check the bot alive status
+- ``/ping`` - check the bot ping status
+- ``/uptime`` - check the bot uptime status
+- ``/sysinfo`` - show the bot system information
 
 ## 🧙🏻‍♂️ Sudo Only:
-- /rmd - clear all downloaded files
-- /rmw - clear all downloaded raw files
-- /leaveall - order the assistant to leave from all group
+- ``/rmd`` - clear all downloaded files
+- ``/rmw`` - clear all downloaded raw files
+- ``/leaveall`` - order the assistant to leave from all group
 
 📝 Note: From now, /vstream & /vstop command can only be used by group admins.
 
