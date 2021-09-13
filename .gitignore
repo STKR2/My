@@ -11,3 +11,4 @@ local.env
 *.jpg
 *png
 *.raw
+*.log
