@@ -1,3 +1,5 @@
+# Copyright (C) 2021 By VeezMusicProject
+
 from typing import Callable
 
 from pyrogram import Client

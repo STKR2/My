@@ -1,3 +1,5 @@
+# Copyright (C) 2021 By VeezMusicProject
+
 import os
 import asyncio
 import subprocess
