@@ -211,7 +211,7 @@ async def chstream(client, m: Message):
             await m.reply("💡 **reply to video or provide youtube/live video url to start video streaming**")
         else:
             livelink = m.text.split(None, 1)[1]
-            chat_id = CHANNEL
+            chat_id = Veez.CHANNEL
             try:
                 livelink = await asyncio.wait_for(
                     app.loop.run_in_executor(
@@ -262,7 +262,7 @@ async def chstream(client, m: Message):
     elif replied.video or replied.document:
         msg = await m.reply("📥 **downloading video...**")
         video = await client.download_media(m.reply_to_message)
-        chat_id = CHANNEL
+        chat_id = Veez.CHANNEL
         await msg.edit("🔁 **preparing video...**")
         os.system(f"ffmpeg -i '{video}' -f s16le -ac 1 -ar 48000 'audio{chat_id}.raw' -y -f rawvideo -r 20 -pix_fmt yuv420p -vf scale=640:360 'video{chat_id}.raw' -y")
         try:
@@ -300,7 +300,7 @@ async def chstream(client, m: Message):
 @Client.on_message(command(["cstop", f"cstop@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def chstopvideo(client, m: Message):
-    chat_id = CHANNEL
+    chat_id = Veez.CHANNEL
     try:
         process = FFMPEG_PROCESS.get(chat_id)
         if process:
