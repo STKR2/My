@@ -5,7 +5,7 @@ from helpers.filters import command
 from helpers.decorators import sudo_users_only, errors
 
 downloads = os.path.realpath("bot/downloads")
-raw = os.path.realpath("raw_files")
+raw = os.path.realpath(".")
 
 @Client.on_message(command(["rmd", "cleardl"]) & ~filters.edited)
 @errors
@@ -26,7 +26,8 @@ async def clear_raw(_, message: Message):
     ls_dir = os.listdir(raw)
     if ls_dir:
         for file in os.listdir(raw):
-            os.remove(os.path.join(raw, file))
+            if file.endswith('.raw'):
+                os.remove(os.path.join(raw, file))
         await message.reply_text("✅ **deleted all raw files**")
     else:
         await message.reply_text("❌ **no raw files**")
