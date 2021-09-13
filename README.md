@@ -1,6 +1,6 @@
 <h2 align="centre">VIDEO STREAM BOT</h2>
 
-telegram bot project for streaming video on telegram video chat, powered by [tgcalls](https://github.com/MarshalX/tgcalls) and [pyrogram](https://github.com/pyrogram/pyrogram)
+telegram bot project for streaming video on telegram video chat, powered by [py-tgcalls](https://github.com/pytgcalls/pytgcalls) and [pyrogram](https://github.com/pyrogram/pyrogram)
 
 <p align="center"><a href="https://t.me/veezvidstreambot"><img src="https://telegra.ph/file/4e8717d59d74412cf0e50.jpg" width="300"></a></p>
 <p align="center">
@@ -142,7 +142,7 @@ jobs:
 
 - [Levina](https://github.com/levina-lab) Dev
 - [Sammy-XD](https://github.com/Sammy-XD) Dev
-- [MarshalX](https://github.com/MarshalX) for [pytgcalls](https://github.com/MarshalX)
+- [Laky's](https://github.com/Laky-64) for [pytgcalls](https://github.com/MarshalX)
 - [Dan](https://github.com/delivrance) for [Pyrogram](https://github.com/pyrogram)
 
 ### Support & Updates 🎑
