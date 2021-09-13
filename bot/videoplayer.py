@@ -2,14 +2,9 @@ import os
 import asyncio
 import subprocess
 from pytgcalls import idle
-from pytgcalls import PyTgCalls
+from pytgcalls.pytgcalls import PyTgCalls
 from pytgcalls import StreamType
 from pytgcalls.types import Update
-from pytgcalls.types.input_stream import AudioParameters
-from pytgcalls.types.input_stream import InputAudioStream
-from pytgcalls.types.input_stream import InputVideoStream
-from pytgcalls.types.input_stream import VideoParameters
-
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -18,6 +13,12 @@ from helpers.decorators import authorized_users_only
 from helpers.filters import command
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
+from pytgcalls.types.input_stream import (
+    VideoParameters,
+    AudioParameters,
+    InputAudioStream,
+    InputVideoStream
+)
 
 SIGINT: int = 2
 
@@ -197,7 +198,7 @@ async def stopvideo(client, m: Message):
 
 @call_py.on_stream_end()
 async def handler(client: PyTgCalls, update: Update):
-    chat_id = update.chat.id
+    chat_id = update.chat_id
     await call_py.leave_group_call(chat_id)
 
 
