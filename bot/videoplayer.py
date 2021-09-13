@@ -11,6 +11,7 @@ from pyrogram.types import Message
 from config import Veez
 from helpers.decorators import authorized_users_only
 from helpers.filters import command
+from helpers.loggings import LOG
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
 from pytgcalls.types.input_stream import (
@@ -207,6 +208,7 @@ async def stopvideo(client, m: Message):
 
 @call_py.on_stream_end()
 async def handler(client: PyTgCalls, update: Update):
+    LOG.info(f"called ended stream")
     chat_id = update.chat_id
     await call_py.leave_group_call(chat_id) 
 
