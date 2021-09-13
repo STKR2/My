@@ -235,8 +235,8 @@ async def vsong(client, message):
         'geo_bypass':True,
         'outtmpl':'%(title)s.%(ext)s',
         'quite':True
-}
-query = message.command[1]
+    }
+    query = message.command[1]
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
