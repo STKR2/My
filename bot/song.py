@@ -15,7 +15,7 @@ import youtube_dl
 from yt_dlp import YoutubeDL
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, MessageNotModified
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import Message
 from youtube_search import YoutubeSearch
 
 from config import Veez
