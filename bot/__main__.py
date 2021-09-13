@@ -41,7 +41,7 @@ def load_plugins(plugin_name):
 
 async def start():
     print('\n')
-    print('------------------- Initalizing VC BOT ---------------------')
+    print('------------------- Initalizing VEEZ ---------------------')
     if bot:
         await bot.start()
     await app.start()
@@ -53,7 +53,7 @@ async def start():
             path_ = Path(a.name)
             plugin_name = path_.stem
             load_plugins(plugin_name.replace(".py", ""))
-    print('----------------------- INITIATED VC BOT ------------------------')
+    print('----------------------- INITIATED VEEZ ------------------------')
     print('             Logged in as User =>> {}'.format((await app.get_me()).first_name))
     if bot:
         print('             and Bot =>> {}'.format((await bot.get_me()).first_name))
