@@ -1,5 +1,3 @@
-// Copyright (C) 2021 By VeezMusicProject
-
 {
     "name": "Veez Video Stream Bot",
     "description": "bot to stream video on telegram video chat, powered by pytgcalls and pyrogram",

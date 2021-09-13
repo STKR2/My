@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 import cache.admins
 from typing import List
 

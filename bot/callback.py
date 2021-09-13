@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 

@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 import logging
 import time
 

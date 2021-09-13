@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 from __future__ import unicode_literals
 
 import asyncio

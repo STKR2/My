@@ -1,5 +1,3 @@
-# Copyright (C) 2021 By VeezMusicProject
-
 from typing import Dict, List
 from config import Veez
 
