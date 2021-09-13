@@ -5,6 +5,7 @@ import logging
 import time
 import sys
 import asyncio
+import uvloop
 import glob
 import importlib
 from pathlib import Path
@@ -30,6 +31,7 @@ loop = asyncio.get_event_loop()
 _path = f"bot/*.py"
 files = glob.glob(_path)
 
+
 def load_plugins(plugin_name):
     path = Path(f"bot/{plugin_name}.py")
     name = "bot.{}".format(plugin_name)
@@ -38,6 +40,7 @@ def load_plugins(plugin_name):
     spec.loader.exec_module(load)
     sys.modules[f"bot." + plugin_name] = load
     print("Imported => " + plugin_name)
+
 
 async def start():
     print('\n')
@@ -59,16 +62,10 @@ async def start():
         print('             and Bot =>> {}'.format((await bot.get_me()).first_name))
     print('-----------------------------------------------------')
     await idle()
-if __name__ == '__main__':
+    print('[INFO]: STOPPING BOT')
+
+
+if __name__ == "__main__":
+    uvloop.install()
     is_bot = bool(Veez.BOT_TOKEN)
     loop.run_until_complete(start())
-
-
-# bot.start()
-# print("[STATUS]:✅ »» BOT CLIENT STARTED ««")
-# app.start()
-# print("[STATUS]:✅ »» USERBOT CLIENT STARTED ««")
-# call_py.start()
-# print("[STATUS]:✅ »» PYTGCALLS CLIENT STARTED ««")
-# idle()
-# print("[STATUS]:❌ »» BOT STOPPED ««")
