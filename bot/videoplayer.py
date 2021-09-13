@@ -199,7 +199,7 @@ async def stopvideo(client, m: Message):
 @call_py.on_stream_end()
 async def handler(client: PyTgCalls, update: Update):
     chat_id = update.chat_id
-    await call_py.leave_group_call(chat_id)
+    await call_py.leave_group_call(chat_id) 
 
 
 @Client.on_message(command(["cplay", f"cplay@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
