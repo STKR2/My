@@ -1,12 +1,16 @@
 # ===========
 # running bot
 # ===========
-
+import logging
+import time
 import asyncio
 from pyrogram import Client, idle
 from config import Veez 
 from bot.videoplayer import app
 from bot.videoplayer import call_py
+from helpers.loggings import LOG
+StartTime = time.time()
+
 
 bot = Client(
     ":memory:",
