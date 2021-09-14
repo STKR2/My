@@ -18,7 +18,7 @@ def raw_converter(dl, song, video):
     )
 
 async def leave_call(chat_id: int):
-    process = FFMPEG_PROCESSES.get(chat_id)
+    process = FFMPEG_PROCESS.get(chat_id)
     if process:
         try:
             process.send_signal(SIGINT)
