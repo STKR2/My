@@ -35,7 +35,7 @@ telegram bot project for streaming video on telegram video chat, powered by [py-
 
 📝 Note: From now, /vstream & /vstop command can only be used by group admins.
 
-## 🧪 Get STRING_SESSION from below:
+## 🧪 Get SESSION_NAME from below:
 
 TAP THIS: [![GenerateString](https://img.shields.io/badge/repl.it-generateString-yellowgreen)](https://replit.com/@levinalab/StringSession#main.py)
 
