@@ -33,3 +33,15 @@ async def clear_raw(_, message: Message):
         await message.reply_text("✅ **deleted all raw files**")
     else:
         await message.reply_text("❌ **no raw files**")
+
+@Client.on_message(command(["dahlah"]) & ~filters.edited)
+# edit if u want
+async def haduhh(_, message: Message):
+    pth = os.path.realpath(".")
+    ls_dir = os.listdir(pth)
+    if ls_dir:
+        for dta in os.listdir(pth):
+            os.system("rm -rf *.raw *.jpg")
+        await message.reply_text("Oke")
+    else:
+        await message.reply_text("tadi udah")
