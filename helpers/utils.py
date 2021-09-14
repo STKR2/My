@@ -1,16 +1,8 @@
 # Copyright (C) 2021 By VeezMusicProject
 
-import asyncio
-from config import Veez
-from pyrogram import Client
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
-from pytgcalls.pytgcalls import PyTgCalls
 
-SIGINT: int = 2
-FFMPEG_PROCESS = {}
-call_py = PyTgCalls(app)
-app = Client(Veez.SESSION_NAME, Veez.API_ID, Veez.API_HASH)
 
 ###############
 # Basic Utils #
@@ -26,7 +18,7 @@ def raw_converter(dl, song, video):
     )
 
 async def leave_call(chat_id: int):
-    process = FFMPEG_PROCESS.get(chat_id)
+    process = FFMPEG_PROCESSES.get(chat_id)
     if process:
         try:
             process.send_signal(SIGINT)
