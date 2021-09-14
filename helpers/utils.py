@@ -1,6 +1,7 @@
 # Copyright (C) 2021 By VeezMusicProject
 
 import asyncio
+from pyrogram import Client
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
 from pytgcalls.pytgcalls import PyTgCalls
