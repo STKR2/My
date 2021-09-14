@@ -209,11 +209,10 @@ async def stopvideo(client, m: Message):
         await m.reply(f"🚫 **error** | `{e}`")
 
 @call_py.on_stream_end()
-async def handler(client: PyTgCalls, update: Update, m: Message):
+async def handler(client: PyTgCalls, update: Update):
     LOG.info(f"called ended stream")
     chat_id = update.chat_id
     await call_py.leave_group_call(chat_id)
-    await m.reply("✅ **successfully left vc !**")
 
 
 @Client.on_message(command(["cplay", f"cplay@{Veez.BOT_USERNAME}"]) & filters.group & ~filters.edited)
