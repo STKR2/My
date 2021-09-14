@@ -27,10 +27,7 @@ from helpers.decorators import humanbytes
 
 @Client.on_message(command(["song", f"song@{Veez.BOT_USERNAME}"]) & ~filters.channel)
 def song(_, message):
-    query = ""
-    for i in message.command[1:]:
-        query += " " + str(i)
-    print(query)
+    query = " ".join(message.command[1:])
     m = message.reply("🔎 finding song...")
     ydl_ops = {"format": "bestaudio[ext=m4a]"}
     try:
@@ -238,7 +235,7 @@ async def vsong(client, message):
         'outtmpl':'%(title)s.%(ext)s',
         'quite':True
     }
-    query = message.command[1]
+    query = " ".join(message.command[1:])
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
