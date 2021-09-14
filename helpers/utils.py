@@ -1,8 +1,12 @@
 # Copyright (C) 2021 By VeezMusicProject
 
+import asyncio
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import ExtractorError
 
+SIGINT: int = 2
+FFMPEG_PROCESS = {}
+call_py = PyTgCalls(app)
 
 ###############
 # Basic Utils #
@@ -18,7 +22,7 @@ def raw_converter(dl, song, video):
     )
 
 async def leave_call(chat_id: int):
-    process = FFMPEG_PROCESSES.get(chat_id)
+    process = FFMPEG_PROCESS.get(chat_id)
     if process:
         try:
             process.send_signal(SIGINT)
@@ -41,4 +45,3 @@ def youtube(url: str):
         return None, None
     except Exception:
         return None, None
-
