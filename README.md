@@ -14,6 +14,20 @@ telegram bot project for streaming video on telegram video chat, powered by [py-
     <a href="https://github.com/levina-lab/video-stream/network/members"> <img src="https://img.shields.io/github/stars/levina-lab/video-stream?color=red&logo=github&logoColor=blue&style=flat-square" /></a>  
 </p>
 
+## ✨ Features
+- Stable video streaming
+- Clear video & audio quality
+- Support youtube live streaming
+- Support youtube video streaming
+- Support streaming video from mp4 video/file video
+- Join & Leave command for assistant
+- Support inline search video
+- Support youtube search video link
+- Support PornHub direct link streaming 🔞
+- Video downloader feature
+- Song downloader feature
+- Have many other interesting features
+
 ## 🛠 Commands:
 - ``/vplay`` (reply to video/give yt url) - to start video streaming
 - ``/vstop`` - to stop video streaming
