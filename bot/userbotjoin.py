@@ -3,6 +3,8 @@
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
+from pyrogram.raw.types import InputGroupCall
+from pyrogram.raw.functions.phone import CreateGroupCall, DiscardGroupCall
 from helpers.filters import command
 from helpers.decorators import authorized_users_only, errors
 from bot.videoplayer import app as USER
@@ -76,3 +78,24 @@ async def outall(client, message):
             await lol.edit(f"🔁 assistant leaving...\n⏳ Left: {left} chats.\n\n❌ Failed: {failed} chats.")
         await asyncio.sleep(0.7)
     await client.send_message(message.chat.id, f"✅ Left {left} chats.\n\n❌ Failed {failed} chats.")
+
+
+@Client.on_message(command(["startvc", f"startvc@{Veez.BOT_USERNAME}"]))
+async def start_vc(client, message):
+    chat_id = message.chat.id
+    try:
+        await USER.send(CreateGroupCall(
+              peer=(await USER.resolve_peer(chat_id)),
+                   random_id=randint(10000, 999999999)
+              )
+        )
+        await message.reply("✅ **voice chat started !**")
+    except Exception:
+        await message.reply(
+           "💡 **I need to be an administrator with the permission:\n\n» ❌ __Can manage voice chat__"
+        )
+
+
+@Client.on_message(command(["stopvc", f"stopvc@{Veez.BOT_USERNAME}"]))
+async def stop_vc(client, message):
+    chat_id = message.chat.id
