@@ -90,7 +90,3 @@ async def start_vc(client, message):
               )
         )
         await message.reply("✅ **video chat started !**")
-    except Exception:
-        await message.reply(
-           "💡 **I need to be an administrator with the permission:\n\n» ❌ __Can manage voice chat__"
-        )
