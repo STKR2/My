@@ -78,15 +78,3 @@ async def outall(client, message):
             await lol.edit(f"🔁 assistant leaving...\n⏳ Left: {left} chats.\n\n❌ Failed: {failed} chats.")
         await asyncio.sleep(0.7)
     await client.send_message(message.chat.id, f"✅ Left {left} chats.\n\n❌ Failed {failed} chats.")
-
-
-@Client.on_message(command(["startvc", f"startvc@{Veez.BOT_USERNAME}"]))
-async def start_vc(client, message):
-    chat_id = message.chat.id
-    try:
-        await USER.send(CreateGroupCall(
-              peer=(await USER.resolve_peer(chat_id)),
-                   random_id=randint(10000, 999999999)
-              )
-        )
-        await message.reply("✅ **video chat started !**")
