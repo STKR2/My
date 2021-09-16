@@ -21,3 +21,6 @@ class Veez(object):
         ASSISTANT_NAME = getenv("ASSISTANT_NAME", "tg_video_stream")
         BOT_USERNAME = getenv("BOT_USERNAME", "veezvidstreambot")
         COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ ! .").split())
+        CHANNEL_NAME = getenv("CHANNEL_NAME", "levinachannel")
+        GROUP_NAME = getenv("GROUP_NAME", "VeezSupportGroup")
+        OWNER_NAME = getenv("OWNER_NAME", "dlwrml")
