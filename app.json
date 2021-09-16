@@ -42,6 +42,18 @@
         "DURATION_LIMIT": {
             "description": "maximum duration limit for downloadable videos (in minutes)",
             "required": true
+        },
+        "GROUP_NAME": {
+            "description": "fill with your group username without @",
+            "required": true
+        },
+        "CHANNEL_NAME": {
+            "description": "fill with your channel username without @",
+            "required": true
+        },
+        "OWNER_NAME": {
+            "description": "fill with your telegram account username without @",
+            "required": true
         }
     },
     "addons": [],
