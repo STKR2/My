@@ -4,7 +4,7 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
 from pyrogram.raw.types import InputGroupCall
-from pyrogram.raw.functions.phone import CreateGroupCall, DiscardGroupCall
+from pyrogram.raw.functions.phone import CreateGroupCall, DiscardGroupCall, GetGroupCall
 from helpers.filters import command
 from helpers.decorators import authorized_users_only, errors
 from bot.videoplayer import app as USER
@@ -89,13 +89,8 @@ async def start_vc(client, message):
                    random_id=randint(10000, 999999999)
               )
         )
-        await message.reply("✅ **voice chat started !**")
+        await message.reply("✅ **video chat started !**")
     except Exception:
         await message.reply(
            "💡 **I need to be an administrator with the permission:\n\n» ❌ __Can manage voice chat__"
         )
-
-
-@Client.on_message(command(["stopvc", f"stopvc@{Veez.BOT_USERNAME}"]))
-async def stop_vc(client, message):
-    chat_id = message.chat.id
