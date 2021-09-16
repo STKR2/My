@@ -100,7 +100,6 @@ async def cblist(_, query: CallbackQuery):
 » /lyric (song name) - lyric scrapper
 » /vjoin - invite assistant join to your group
 » /vleave - order assistant leave from your group
-» /startvc - start video chat in your group
 
 🎊 FUN CMD:
 
