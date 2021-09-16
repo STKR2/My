@@ -48,7 +48,7 @@ async def cbstart(_, query: CallbackQuery):
                 InlineKeyboardButton(
                     "💬 Group", url=f"https://t.me/{Veez.GROUP_NAME}"),
                 InlineKeyboardButton(
-                    "📣 Channel", url=f"https://t.me/{Veez.CHANNEL_NAME]")
+                    "📣 Channel", url=f"https://t.me/{Veez.CHANNEL_NAME}")
             ], [
                 InlineKeyboardButton(
                     "🧙🏻‍♂️ Owner", url=f"https://t.me/{Veez.OWNER_NAME}")
