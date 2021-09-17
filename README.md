@@ -58,9 +58,6 @@ The easy way to host this bot, deploy to Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/levina-lab/video-stream)
 
-## 🚄 Deploy To Railway
-[![Deploy+on+Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/levina-lab/video-stream&envs=API_ID,API_HASH,BOT_TOKEN,BOT_USERNAME,ASSISTANT_NAME,SESSION_NAME,SUDO_USERS,DURATION_LIMIT)
-
 ## 🌀 Run On Workflows
 
 - fork this repository
@@ -95,6 +92,9 @@ env:
   DURATION_LIMIT: "${{ secrets.DURATION_LIMIT }}"
   BOT_TOKEN: "${{ secrets.BOT_TOKEN }}"
   SUDO_USERS: "${{ secrets.SUDO_USERS }}"
+  CHANNEL_NAME: "${{ secrets.ASSISTANT_NAME }}"
+  GROUP_NAME: "${{ secrets.ASSISTANT_NAME }}"
+  OWNER_NAME: "${{ secrets.ASSISTANT_NAME }}"
 
 jobs:
   build:
@@ -129,7 +129,10 @@ jobs:
           #  echo "SESSION_NAME=${{ secrets.SESSION_NAME }} | tee -a .env
           #  echo "DURATION_LIMIT=${{ secrets.DURATION_LIMIT }} | tee -a .env
           #  echo "SUDO_USERS=${{ secrets.SUDO_USERS }} | tee -a .env
-          #  echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }} | tee -a .env || echo "Proceeding with bot"
+          #  echo "CHANNEL_NAME=${{ secrets.ASSISTANT_NAME }} | tee -a .env
+          #  echo "GROUP_NAME=${{ secrets.ASSISTANT_NAME }} | tee -a .env
+          #  echo "OWNER_NAME=${{ secrets.ASSISTANT_NAME }} | tee -a .env
+          #  echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }} | tee -a .env || echo "processing with bot"
           #  cat .env
        - name: Running
          timeout-minutes: 350
