@@ -8,6 +8,19 @@ VGA = Client(
     Config.SESSION,
     Config.API_ID,
     Config.API_HASH,
-    plugins=dict(root="program")
+    plugins=dict(root="system")
     )
+
 call_py = PyTgCalls(VGA, cache_duration=180)
+
+############
+#   inti   #
+############
+
+bot = Client(
+    ":memory:",
+    Config.API_ID,
+    Config.API_HASH,
+    bot_token=Config.BOT_TOKEN,
+    plugins=dict(root="program")
+)
