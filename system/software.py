@@ -10,4 +10,4 @@ VGA = Client(
     Config.API_HASH,
     plugins=dict(root="program")
     )
-group_call = PyTgCalls(VGA, cache_duration=180)
+call_py = PyTgCalls(VGA, cache_duration=180)
