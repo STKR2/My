@@ -1,3 +1,5 @@
+# Copyright (C) 2021 By Veez Music-Project
+
 from __future__ import unicode_literals
 
 import asyncio
@@ -9,6 +11,7 @@ from urllib.parse import urlparse
 
 import aiofiles
 import aiohttp
+import requests
 import wget
 import yt_dlp
 from pyrogram import Client, filters
@@ -18,17 +21,17 @@ from youtube_search import YoutubeSearch
 from yt_dlp import YoutubeDL
 
 from config import BOT_USERNAME as bn
-from helpers.decorators import humanbytes
-from helpers.filters import command
+from driver.decorators import humanbytes
+from driver.filters import command
 
 
 ydl_opts = {
-        'format':'best',
-        'keepvideo':True,
-        'prefer_ffmpeg':False,
-        'geo_bypass':True,
-        'outtmpl':'%(title)s.%(ext)s',
-        'quite':True
+    'format': 'best',
+    'keepvideo': True,
+    'prefer_ffmpeg': False,
+    'geo_bypass': True,
+    'outtmpl': '%(title)s.%(ext)s',
+    'quite': True
 }
 
 
@@ -42,7 +45,7 @@ def song(_, message):
         link = f"https://youtube.com{results[0]['url_suffix']}"
         title = results[0]["title"][:40]
         thumbnail = results[0]["thumbnails"][0]
-        thumb_name = f"thumb{title}.jpg"
+        thumb_name = f"{title}.jpg"
         thumb = requests.get(thumbnail, allow_redirects=True)
         open(thumb_name, "wb").write(thumb.content)
         duration = results[0]["duration"]
@@ -51,7 +54,7 @@ def song(_, message):
         m.edit("❌ song not found.\n\nplease give a valid song name.")
         print(str(e))
         return
-    m.edit("📥 downloading...")
+    m.edit("📥 downloading file...")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -62,6 +65,7 @@ def song(_, message):
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
+        m.edit("📤 uploading file...")
         message.reply_audio(
             audio_file,
             caption=rep,
@@ -113,8 +117,7 @@ async def progress(current, total, message, start, type_of_ps, file_name=None):
         )
 
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
-            humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
-        )
+            humanbytes(current), humanbytes(total), time_formatter(estimated_total_time))
         if file_name:
             try:
                 await message.edit(
@@ -157,7 +160,9 @@ def get_readable_time(seconds: int) -> str:
 
     while count < 4:
         count += 1
-        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
+        remainder, result = divmod(
+            seconds, 60) if count < 3 else divmod(
+            seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
@@ -206,12 +211,13 @@ async def download_song(url):
     return song_name
 
 
-is_downloading = False
-
-
 def time_to_seconds(times):
     stringt = str(times)
-    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
+    return sum(
+        int(x) * 60 ** i for i,
+        x in enumerate(
+            reversed(
+                stringt.split(":"))))
 
 
 @Client.on_message(
@@ -261,3 +267,20 @@ async def vsong(client, message):
         await msg.delete()
     except Exception as e:
         print(e)
+
+
+@Client.on_message(command(["lyric", f"lyric@{bn}"]))
+async def lyrics(_, message):
+    try:
+        if len(message.command) < 2:
+            await message.reply_text("» **give a lyric name too.**")
+            return
+        query = message.text.split(None, 1)[1]
+        rep = await message.reply_text("🔎 **searching lyrics...**")
+        resp = requests.get(
+            f"https://api-tede.herokuapp.com/api/lirik?l={query}"
+        ).json()
+        result = f"{resp['data']}"
+        await rep.edit(result)
+    except Exception:
+        await rep.edit("❌ **lyrics not found.**\n\n» **please give a valid song name.**")
