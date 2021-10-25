@@ -57,13 +57,9 @@ async def inline(client: Client, query: InlineQuery):
                 switch_pm_parameter="",
             )
 
-
-# ==================
-# Tested
-
 menus = [
-    InlineQueryResultArticle(title="Start", description="Start a bot",
+    InlineQueryResultArticle(title="Start", description="start this bot",
                              input_message_content=InputTextMessageContent("/start")),
-    InlineQueryResultArticle(title="Info Bot", description="Info about this bot",
+    InlineQueryResultArticle(title="Info Bot", description="info about this bot",
                              input_message_content=InputTextMessageContent("/info")),
 ]
