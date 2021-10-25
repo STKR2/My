@@ -3,13 +3,13 @@
 import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from helpers.filters import command
-from helpers.decorators import sudo_users_only, errors
+from driver.filters import command
+from driver.decorators import sudo_users_only, errors
 
-downloads = os.path.realpath("bot/downloads")
+downloads = os.path.realpath("program/downloads")
 raw = os.path.realpath(".")
 
-@Client.on_message(command(["rmd", "cleardl"]) & ~filters.edited)
+@Client.on_message(command(["rmd", "clear"]) & ~filters.edited)
 @errors
 @sudo_users_only
 async def clear_downloads(_, message: Message):
@@ -20,8 +20,9 @@ async def clear_downloads(_, message: Message):
         await message.reply_text("✅ **deleted all downloaded files**")
     else:
         await message.reply_text("❌ **no files downloaded**")
+
         
-@Client.on_message(command(["clean", "wipe", "rmw"]) & ~filters.edited)
+@Client.on_message(command(["rmw", "clean"]) & ~filters.edited)
 @errors
 @sudo_users_only
 async def clear_raw(_, message: Message):
@@ -34,14 +35,16 @@ async def clear_raw(_, message: Message):
     else:
         await message.reply_text("❌ **no raw files**")
 
-@Client.on_message(command(["dahlah"]) & ~filters.edited)
-# edit if u want
-async def haduhh(_, message: Message):
+
+@Client.on_message(command(["cleanup"]) & ~filters.edited)
+@errors
+@sudo_users_only
+async def cleanup(_, message: Message):
     pth = os.path.realpath(".")
     ls_dir = os.listdir(pth)
     if ls_dir:
         for dta in os.listdir(pth):
             os.system("rm -rf *.raw *.jpg")
-        await message.reply_text("Oke")
+        await message.reply_text("✅ **cleaned**")
     else:
-        await message.reply_text("tadi udah")
+        await message.reply_text("✅ **already cleaned**")
