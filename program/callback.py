@@ -84,12 +84,17 @@ async def cbhelps(_, query: CallbackQuery):
 » /vplay - play video on video chat
 » /vstream - for m3u8/live link
 » /vplaylist - show you the playlist
-» /queue - show you the queue list
-» /vpause - pause the stream
-» /vresume - resume the stream
-» /vskip - switch to next stream
-» /vstop - stop the streaming
-» /restart - restart the bot (sudo user only)
+» /queue - show you the queue list (admin only)
+» /vpause - pause the stream (admin only)
+» /vresume - resume the stream (admin only)
+» /vskip - switch to next stream (admin only)
+» /vstop - stop the streaming (admin only)
+» /userbotjoin - invite the userbot to join chat (admin only)
+» /userbotleave - order userbot to leave from group (admin only)
+» /restart - restart the bot (sudo only)
+» /rmw - clean raw files (sudo only)
+» /rmd - clean downloaded files (sudo only)
+» /leaveall - order userbot leave from all group (sudo only)
 
 ⚡ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
