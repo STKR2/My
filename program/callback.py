@@ -84,6 +84,9 @@ async def cbhelps(_, query: CallbackQuery):
 » /vplay - play video on video chat
 » /vstream - for m3u8/live link
 » /vplaylist - show you the playlist
+» /video (query) - download video from youtube
+» /song (query) - download song from youtube
+» /lyric (query) - scrap the song lyric
 » /queue - show you the queue list (admin only)
 » /vpause - pause the stream (admin only)
 » /vresume - resume the stream (admin only)
