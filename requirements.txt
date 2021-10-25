@@ -1,12 +1,9 @@
-pathlib
 tgcrypto
 asyncio
 ffmpeg-python
-googletrans==4.0.0rc1
-py-tgcalls==0.8.0
-youtube_dl
+py-tgcalls==0.8.1rc1
 git+https://github.com/pyrogram/pyrogram@master
-youtube_search_python==1.4.6
+youtube_search_python
 youtube_search
 httpx==0.13.3
 python-dotenv
@@ -15,6 +12,4 @@ aiohttp
 requests
 psutil
 future
-gTTS
 wget
-yt_dlp
