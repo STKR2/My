@@ -87,6 +87,7 @@ async def cbhelps(_, query: CallbackQuery):
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
 » /lyric (query) - scrap the song lyric
+» /search (query) - search a youtube video link
 » /queue - show you the queue list (admin only)
 » /vpause - pause the stream (admin only)
 » /vresume - resume the stream (admin only)
