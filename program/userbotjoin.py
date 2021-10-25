@@ -2,7 +2,7 @@ import asyncio
 from config import BOT_USERNAME, SUDO_USERS
 from driver.decorators import authorized_users_only, sudo_users_only, errors
 from driver.filters import command
-from driver.veez import call_py as USER
+from driver.veez import bot as USER
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
 
