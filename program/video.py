@@ -222,6 +222,6 @@ async def vstream(client, m: Message):
                   stream_type=StreamType().pulse_stream,
                )
                add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
-               await loser.edit(f"💡 **video [live stream]({link}) started.**\n💬 chat: `{chat_id}`", disable_web_page_preview=True)
+               await loser.edit(f"💡 **[Live Stream]({link}) video started.**\n💬 Chat: `{chat_id}`", disable_web_page_preview=True)
             except Exception as ep:
                await loser.edit(f"❌ issues: `{ep}`")
