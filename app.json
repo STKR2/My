@@ -1,6 +1,6 @@
 {
     "name": "Veez Video Stream Bot",
-    "description": "telegram bot for streaming video trought the telegram group video chat, powered by pytgcalls and pyrogram",
+    "description": "telegram bot for streaming video & music trought the telegram group video chat, powered by pytgcalls and pyrogram",
     "logo": "https://telegra.ph/file/103a5208bb1698a8b33de.png",
     "keywords": [
         "pytgcalls",
@@ -43,16 +43,20 @@
             "description": "maximum duration limit for downloadable videos (in minutes)",
             "required": true
         },
-        "GROUP_NAME": {
+        "GROUP_SUPPORT": {
             "description": "fill with your group username without @",
             "required": true
         },
-        "CHANNEL_NAME": {
+        "UPDATES_CHANNEL": {
             "description": "fill with your channel username without @",
             "required": true
         },
         "OWNER_NAME": {
             "description": "fill with your telegram account username without @",
+            "required": true
+        },
+        "ALIVE_NAME": {
+            "description": "fill with your telegram account nickname",
             "required": true
         }
     },
