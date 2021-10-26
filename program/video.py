@@ -91,7 +91,7 @@ async def vplay(client, m: Message):
                stream_type=StreamType().pulse_stream,
             )
             add_to_queue(chat_id, songname, dl, link, "Video", Q)
-            await loser.edit(f"💡 **video streaming is started.**\n\n🏷 **Name:** [{songname}]({link})\n💬 **Chat:** `{chat_id}`", disable_web_page_preview=True)
+            await loser.edit(f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💬 **Chat:** `{chat_id}`", disable_web_page_preview=True)
       else:
          if len(m.command) < 2:
             await m.reply("» reply to an **audio file** or **give something to search.**")
@@ -125,7 +125,7 @@ async def vplay(client, m: Message):
                            stream_type=StreamType().pulse_stream,
                         )
                         add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
-                        await loser.edit(f"💡 **video streaming is started.**\n\n🏷 **Name:** [{songname}]({link})\n💬 **Chat:** `{chat_id}`", disable_web_page_preview=True)
+                        await loser.edit(f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💬 **Chat:** `{chat_id}`", disable_web_page_preview=True)
                      except Exception as ep:
                         await loser.edit(f"❌ issues: `{ep}`")
             
@@ -222,6 +222,6 @@ async def vstream(client, m: Message):
                   stream_type=StreamType().pulse_stream,
                )
                add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
-               await loser.edit(f"💡 **video [live stream]({link}) is started.**\n💬 chat: `{chat_id}`", disable_web_page_preview=True)
+               await loser.edit(f"💡 **video [live stream]({link}) started.**\n💬 chat: `{chat_id}`", disable_web_page_preview=True)
             except Exception as ep:
                await loser.edit(f"❌ issues: `{ep}`")
