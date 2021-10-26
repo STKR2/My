@@ -1,12 +1,13 @@
 from pyrogram import Client
 from pytgcalls import PyTgCalls
-from config import SESSION_NAME, API_ID, API_HASH
+from config import SESSION_NAME, API_ID, API_HASH, BOT_TOKEN
 
 bot = Client(
-  SESSION_NAME,
+  ":memory:",
   API_ID,
   API_HASH,
+  bot_token=BOT_TOKEN,
   plugins=dict(root="program")
 )
-
-call_py = PyTgCalls(bot)
+user = Client(SESSION_NAME, API_ID, API_HASH)
+call_py = PyTgCalls(user)
