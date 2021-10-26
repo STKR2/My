@@ -32,7 +32,7 @@ def ytsearch(query):
 
 async def ytdl(link):
    proc = await asyncio.create_subprocess_exec(
-       'youtube-dl',
+       'yt-dlp',
        '-g',
        '-f',
        'best[height<=?720][width<=?1280]',
