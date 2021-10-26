@@ -1,12 +1,12 @@
 import os
 import re
 import asyncio
+from driver.veez import call_py
 from config import BOT_USERNAME
 from pytgcalls import StreamType
 from driver.filters import command
 from pyrogram.types import Message
 from pyrogram import Client, filters
-from driver.veez import call_py, bot
 from youtubesearchpython import VideosSearch
 from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioPiped
