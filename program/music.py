@@ -8,7 +8,7 @@ from pyrogram.types import Message
 from pyrogram import Client, filters
 from driver.veez import call_py, bot
 from youtubesearchpython import VideosSearch
-from program.queues import QUEUE, add_to_queue
+from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioPiped
 
 
