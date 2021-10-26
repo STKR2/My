@@ -3,12 +3,12 @@ import re
 import asyncio
 from pyrogram import Client
 from pyrogram import filters
+from config import BOT_USERNAME
 from pytgcalls import StreamType
 from pyrogram.types import Message
 from driver.filters import command
 from youtubesearchpython import VideosSearch
 from program.queues import QUEUE, add_to_queue
-from config import contact_filter, BOT_USERNAME
 from pytgcalls.types.input_stream import AudioVideoPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQualityAudio
 from pytgcalls.types.input_stream.quality import HighQualityVideo, MediumQualityVideo, LowQualityVideo
