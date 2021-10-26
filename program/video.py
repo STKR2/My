@@ -8,7 +8,7 @@ from pytgcalls import StreamType
 from pyrogram.types import Message
 from driver.filters import command
 from youtubesearchpython import VideosSearch
-from program.queues import QUEUE, add_to_queue
+from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioVideoPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQualityAudio
 from pytgcalls.types.input_stream.quality import HighQualityVideo, MediumQualityVideo, LowQualityVideo
