@@ -78,24 +78,23 @@ async def cbhelps(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""📚 Here is the Commands list:
 
-» /mplay - play music on voice chat
-» /vstream - enter the radio link
-» /gplay - play from other source
+» /play - play music on voice chat
+» /stream - enter the radio link
 » /vplay - play video on video chat
 » /vstream - for m3u8/live link
-» /vplaylist - show you the playlist
+» /playlist - show you the playlist
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
 » /lyric (query) - scrap the song lyric
 » /search (query) - search a youtube video link
 » /queue - show you the queue list (admin only)
-» /vpause - pause the stream (admin only)
-» /vresume - resume the stream (admin only)
-» /vskip - switch to next stream (admin only)
-» /vstop - stop the streaming (admin only)
+» /pause - pause the stream (admin only)
+» /resume - resume the stream (admin only)
+» /skip - switch to next stream (admin only)
+» /stop - stop the streaming (admin only)
 » /userbotjoin - invite the userbot to join chat (admin only)
 » /userbotleave - order userbot to leave from group (admin only)
-» /restart - restart the bot (sudo only)
+» /reload - update the admin list (admin only)
 » /rmw - clean raw files (sudo only)
 » /rmd - clean downloaded files (sudo only)
 » /leaveall - order userbot leave from all group (sudo only)
