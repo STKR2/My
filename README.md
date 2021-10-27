@@ -1,9 +1,7 @@
-⚠ REPO CLOSED ⚠
-
-<h2 align="centre">VIDEO STREAM BOT</h2>
-
-closed project, powered by [py-tgcalls](https://github.com/pytgcalls/pytgcalls) and [pyrogram](https://github.com/pyrogram/pyrogram)
-
+<p align="center"><a href="https://t.me/VeezVideoBot"><img src="https://github.com/levina-lab/video-stream/raw/main/driver/veezlogo.png"></a></p>
+<p align="center">
+    <br><b>Video Stream is a telegram bot project that's allow you to play video on telegram group video chat</b><br>
+</p>
 <p align="center"><a href="https://t.me/veezvidstreambot"><img src="https://telegra.ph/file/4e8717d59d74412cf0e50.jpg" width="300"></a></p>
 <p align="center">
     <a href="https://www.python.org/" alt="made-with-python"> <img src="https://img.shields.io/badge/Made%20with-Python-black.svg?style=flat-square&logo=python&logoColor=blue&color=red" /></a>
@@ -17,10 +15,51 @@ closed project, powered by [py-tgcalls](https://github.com/pytgcalls/pytgcalls) 
 </p>
 
 ## ✨ Features
-- not available (repo closed)
+- Music & Video stream support
+- Playlist & Queue support
+- Skip, Pause, Resume, Stop feature
+- Music & Video downloader feature
+- Inline Search support
+- YouTube direct search support
+- YouTube/Local/m3u8/Live stream support
 
 ## 🛠 Commands:
-- not available (repo closed)
+- `/play` - play music from youtube
+- `/stream` - stream a live streaming content
+- `/vplay` - play video from youtube
+- `/vstream` - play video live streaming content
+- `/pause` - pause the streaming (admin only)
+- `/resume` - resume the streaming (admin only)
+- `/skip` - switch to next stream (admin only)
+- `/stop` - end the streaming (admin only)
+- `/playlist` - show you all the current stream list
+- `/song (query)` - download music from youtube
+- `/video (query)` - download video from youtube
+- `/userbotjoin` - invite the userbot to join group (admin only)
+- `/userbotleave` - instruct userbot to leave the group (admin only)
+- `/leaveall` - order the userbot to leave from all group (sudo only)
+
+## Heroku Deployment 💜
+The easy way to host this bot, deploy to Heroku, Change the app country to Europe (it will help to make the bot stable).
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/levina-lab/video-stream)
+
+## VPS Deployment 📡
+
+```sh
+sudo apt update && apt upgrade -y
+sudo apt install git curl python3-pip ffmpeg -y
+pip3 install -U pip
+curl -sL https://deb.nodesource.com/setup_16.x | bash -
+sudo apt-get install -y nodejs
+npm i -g npm
+git clone https://github.com/levina-lab/video-stream # clone the repo.
+cd video-stream
+pip3 install -U -r requirements.txt
+cp example.env .env # use vim to edit ENVs
+vim .env # fill up the ENVs (Steps: press i to enter in insert mode then edit the file. Press Esc to exit the editing mode then type :wq! and press Enter key to save the file).
+python3 main.py # run the bot.
+```
 
 # Credits 💖
 
