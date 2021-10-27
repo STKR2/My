@@ -2,7 +2,6 @@
 <p align="center">
     <br><b>Video Stream is a telegram bot project that's allow you to play video on telegram group video chat</b><br>
 </p>
-<p align="center"><a href="https://t.me/veezvidstreambot"><img src="https://telegra.ph/file/4e8717d59d74412cf0e50.jpg" width="300"></a></p>
 <p align="center">
     <a href="https://www.python.org/" alt="made-with-python"> <img src="https://img.shields.io/badge/Made%20with-Python-black.svg?style=flat-square&logo=python&logoColor=blue&color=red" /></a>
     <a href="https://github.com/levina-lab/video-stream/graphs/commit-activity" alt="Maintenance"> <img src="https://img.shields.io/badge/Maintained%3F-yes-red.svg?style=flat-square" /></a>
