@@ -91,7 +91,7 @@ async def vplay(client, m: Message):
             await loser.delete()
             await m.reply_photo(
                photo=f"{IMG_1}",
-               caption=f"💡 **Track added to queue**\n🔢 At position » `{pos}`",
+               caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                reply_markup=keyboard,
             )
          else:
@@ -114,7 +114,7 @@ async def vplay(client, m: Message):
             await loser.delete()
             await m.reply_photo(
                photo=f"{IMG_2}",
-               caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💬 **Chat:** `{chat_id}`",
+               caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                disable_web_page_preview=True,
                reply_markup=keyboard,
             )
@@ -141,7 +141,7 @@ async def vplay(client, m: Message):
                      await loser.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to queue**\n🔢 At position » `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -159,7 +159,7 @@ async def vplay(client, m: Message):
                         await loser.delete()
                         await m.reply_photo(
                            photo=f"{IMG_2}",
-                           caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💬 **Chat:** `{chat_id}`",
+                           caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                            disable_web_page_preview=True,
                            reply_markup=keyboard,
                         )
@@ -189,7 +189,7 @@ async def vplay(client, m: Message):
                      await loser.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to queue**\n🔢 At position » `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -207,7 +207,7 @@ async def vplay(client, m: Message):
                         await loser.delete()
                         await m.reply_photo(
                            photo=f"{IMG_2}",
-                           caption=f"💡 **video streaming is started.**\n\n🏷 **Name:** [{songname}]({url})\n💬 **Chat:** `{chat_id}`",
+                           caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                            disable_web_page_preview=True,
                            reply_markup=keyboard,
                         )
@@ -268,7 +268,7 @@ async def vstream(client, m: Message):
             await loser.delete()
             await m.reply_photo(
                photo=f"{IMG_1}",
-               caption=f"💡 **Track added to queue**\n🔢 At position » `{pos}`",
+               caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                reply_markup=keyboard,
             )
          else:
@@ -292,7 +292,7 @@ async def vstream(client, m: Message):
                await loser.delete()
                await m.reply_photo(
                   photo=f"{IMG_2}",
-                  caption=f"💡 **[Live Stream]({link}) video started.**\n💬 Chat: `{chat_id}`",
+                  caption=f"💡 **[Live Streaming]({link}) started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                   disable_web_page_preview=True,
                   reply_markup=keyboard,
                )
