@@ -114,7 +114,6 @@ async def vplay(client, m: Message):
             await m.reply_photo(
                photo=f"{IMG_2}",
                caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
-               disable_web_page_preview=True,
                reply_markup=keyboard,
             )
       else:
@@ -159,7 +158,6 @@ async def vplay(client, m: Message):
                         await m.reply_photo(
                            photo=f"{IMG_2}",
                            caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
-                           disable_web_page_preview=True,
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
@@ -207,7 +205,6 @@ async def vplay(client, m: Message):
                         await m.reply_photo(
                            photo=f"{IMG_2}",
                            caption=f"💡 **video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
-                           disable_web_page_preview=True,
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
@@ -292,7 +289,6 @@ async def vstream(client, m: Message):
                await m.reply_photo(
                   photo=f"{IMG_2}",
                   caption=f"💡 **[Live Streaming]({link}) started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
-                  disable_web_page_preview=True,
                   reply_markup=keyboard,
                )
             except Exception as ep:
