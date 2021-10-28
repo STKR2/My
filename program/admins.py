@@ -1,12 +1,12 @@
-from config import BOT_USERNAME
 from cache.admins import admins
-from pyrogram.types import Message
 from driver.filters import command, other_filters
 from pyrogram import Client, filters
 from driver.veez import call_py, bot
 from driver.queues import QUEUE, clear_queue
 from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
+from config import BOT_USERNAME, IMG_3, GROUP_SUPPORT, UPDATES_CHANNEL
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
 @Client.on_message(command(["reload", f"reload@{BOT_USERNAME}"]) & other_filters)
@@ -26,6 +26,20 @@ async def update_admin(client, message):
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
 @authorized_users_only
 async def skip(client, m: Message):
+   
+   keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="✨ ɢʀᴏᴜᴘ",
+                        url=f"https://t.me/{GROUP_SUPPORT}"),
+                    InlineKeyboardButton(
+                        text="🌻 ᴄʜᴀɴɴᴇʟ",
+                        url=f"https://t.me/{UPDATES_CHANNEL}")
+                ]
+            ]
+        )
+   
    chat_id = m.chat.id
    if len(m.command) < 2:
       op = await skip_current_song(chat_id)
@@ -34,7 +48,11 @@ async def skip(client, m: Message):
       elif op==1:
          await m.reply("✅ __Queues__ is empty.\n\n• userbot leaving voice chat")
       else:
-         await m.reply(f"⏭ **Skipped streaming.**\n\n💡 **now playing:** [{op[0]}]({op[1]}) | `{op[2]}`", disable_web_page_preview=True)
+         await m.reply_photo(
+             photo=f"{IMG_3}",
+             caption=f"⏭ **Skipped to the next track.**\n\n🏷 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}",
+             reply_markup=keyboard,
+         )
    else:
       skip = m.text.split(None, 1)[1]
       OP = "🗑 **removed song from queue:**"
@@ -63,7 +81,7 @@ async def stop(client, m: Message):
          clear_queue(chat_id)
          await m.reply("✅ **streaming has ended.**")
       except Exception as e:
-         await m.reply(f"**ERROR:** \n`{e}`")
+         await m.reply(f"🚫 **error:**\n\n`{e}`")
    else:
       await m.reply("❌ **nothing in streaming**")
 
@@ -75,9 +93,9 @@ async def pause(client, m: Message):
    if chat_id in QUEUE:
       try:
          await call_py.pause_stream(chat_id)
-         await m.reply("⏸️ **streaming has paused**")
+         await m.reply("⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command.")
       except Exception as e:
-         await m.reply(f"**ERROR:** \n`{e}`")
+         await m.reply(f"🚫 **error:**\n\n`{e}`")
    else:
       await m.reply("❌ **nothing in streaming**")
 
@@ -89,8 +107,8 @@ async def resume(client, m: Message):
    if chat_id in QUEUE:
       try:
          await call_py.resume_stream(chat_id)
-         await m.reply("▶ **streaming has resumed.**")
+         await m.reply("▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command.")
       except Exception as e:
-         await m.reply(f"**ERROR:** \n`{e}`")
+         await m.reply(f"🚫 **error:**\n\n`{e}`")
    else:
       await m.reply("❌ **nothing in streaming**")
