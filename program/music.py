@@ -4,12 +4,12 @@ import asyncio
 from driver.veez import call_py
 from pytgcalls import StreamType
 from driver.filters import command, other_filters
-from pyrogram.types import Message
 from pyrogram import Client, filters
 from youtubesearchpython import VideosSearch
 from config import BOT_USERNAME, IMG_1, IMG_2
 from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioPiped
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
 def ytsearch(query):
