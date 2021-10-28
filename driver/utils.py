@@ -72,10 +72,4 @@ async def on_end_handler(client: PyTgCalls, update: Update):
    if isinstance(update, StreamAudioEnded) or isinstance(update, StreamVideoEnded):
       chat_id = update.chat_id
       print(chat_id)
-      op = await skip_current_song(chat_id)
-      if op==1:
-         await bot.send_message(chat_id, "❌ no more music in __Queues__\n\n» userbot leaving voice chat")
-      else:
-         await bot.send_message(chat_id, f"**💡 now playing:**\n\n[{op[0]}]({op[1]}) | `{op[2]}`", disable_web_page_preview=True)
-   else:
-      pass
+      await skip_current_song(chat_id)
