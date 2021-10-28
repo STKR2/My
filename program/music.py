@@ -140,7 +140,7 @@ async def play(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await suhu.edit(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"❌ issues: `{ep}`")
             
    else:
          if len(m.command) < 2:
@@ -184,7 +184,7 @@ async def play(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await suhu.edit(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"❌ issues: `{ep}`")
 
 
 @Client.on_message(command(["stream", f"stream@{BOT_USERNAME}"]) & other_filters)
@@ -247,4 +247,4 @@ async def stream(client, m: Message):
                   reply_markup=keyboard,
                )
             except Exception as ep:
-               await suhu.edit(f"❌ issues: `{ep}`")
+               await m.reply_text(f"❌ issues: `{ep}`")
