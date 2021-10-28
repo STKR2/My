@@ -22,18 +22,19 @@
 
 ## ✨ Features
 - Music & Video stream support
+- MultiChat support
 - Playlist & Queue support
 - Skip, Pause, Resume, Stop feature
 - Music & Video downloader feature
 - Inline Search support
 - YouTube direct search support
-- YouTube/Local/m3u8/Live stream support
+- YouTube/Local/m3u8/Radio/Live stream support
 
 ## 🛠 Commands:
-- `/play` - play music from youtube
-- `/stream` - stream a live streaming content
-- `/vplay` - play video from youtube
-- `/vstream` - play video live streaming content
+- `/play (query)` - play music from youtube
+- `/stream (radio link)` - stream a live streaming content
+- `/vplay (query)` - play video from youtube
+- `/vstream (live link)` - play video live streaming content
 - `/pause` - pause the streaming (admin only)
 - `/resume` - resume the streaming (admin only)
 - `/skip` - switch to next stream (admin only)
@@ -44,6 +45,8 @@
 - `/userbotjoin` - invite the userbot to join group (admin only)
 - `/userbotleave` - instruct userbot to leave the group (admin only)
 - `/leaveall` - order the userbot to leave from all group (sudo only)
+- `/clean` - clean all raw files
+- `/rmd` - clean all downloaded files
 
 ## Heroku Deployment 💜
 The easy way to host this bot, deploy to Heroku, Change the app country to Europe (it will help to make the bot stable).
