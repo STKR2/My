@@ -1,6 +1,7 @@
 from pyrogram import Client
 from driver.veez import call_py
 from pytgcalls import StreamType
+from pyrogram.types import Message
 from pyrogram.raw.base import Update
 from pytgcalls.types.stream import StreamAudioEnded
 from pytgcalls.types.input_stream.quality import HighQualityAudio
@@ -64,14 +65,14 @@ async def skip_item(chat_id, h):
       
 
 @call_py.on_stream_end()
-async def on_end_handler(client, update: Update):
+async def on_end_handler(client, m: Message, update: Update):
    if isinstance(update, StreamAudioEnded):
       chat_id = update.chat_id
       print(chat_id)
       op = await skip_current_song(chat_id)
       if op==1:
-         await client.send_message(chat_id, "❌ no more music in __Queues__\n\n» userbot leaving voice chat")
+         await bot.send_message(chat_id, "❌ no more music in __Queues__\n\n» userbot leaving voice chat")
       else:
-         await client.send_message(chat_id, f"**💡 now playing:**\n\n[{op[0]}]({op[1]}) | `{op[2]}`", disable_web_page_preview=True)
+         await bot.send_message(chat_id, f"**💡 now playing:**\n\n[{op[0]}]({op[1]}) | `{op[2]}`", disable_web_page_preview=True)
    else:
       pass
