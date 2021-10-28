@@ -163,7 +163,7 @@ async def vplay(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await loser.edit(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"❌ issues: `{ep}`")
             
    else:
          if len(m.command) < 2:
@@ -211,7 +211,7 @@ async def vplay(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await loser.edit(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"❌ issues: `{ep}`")
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
@@ -296,4 +296,4 @@ async def vstream(client, m: Message):
                   reply_markup=keyboard,
                )
             except Exception as ep:
-               await loser.edit(f"❌ issues: `{ep}`")
+               await m.reply_text(f"❌ issues: `{ep}`")
