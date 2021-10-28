@@ -1,13 +1,16 @@
 from pyrogram import Client
 from driver.veez import call_py
+from pytgcalls import PyTgCalls
 from pytgcalls import StreamType
 from pyrogram.types import Message
+from pytgcalls.types import Update
 from pyrogram.raw.base import Update
-from pytgcalls.types.stream import StreamAudioEnded
 from pytgcalls.types.input_stream.quality import HighQualityAudio
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from driver.queues import QUEUE, get_queue, pop_an_item, clear_queue
+from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
 from pytgcalls.types.input_stream.quality import HighQualityVideo, MediumQualityVideo, LowQualityVideo
+
 
 async def skip_current_song(chat_id):
    if chat_id in QUEUE:
@@ -65,8 +68,8 @@ async def skip_item(chat_id, h):
       
 
 @call_py.on_stream_end()
-async def on_end_handler(client, m: Message, update: Update):
-   if isinstance(update, StreamAudioEnded):
+async def on_end_handler(client: PyTgCalls, update: Update):
+   if isinstance(update, StreamAudioEnded) or isinstance(update, StreamVideoEnded):
       chat_id = update.chat_id
       print(chat_id)
       op = await skip_current_song(chat_id)
