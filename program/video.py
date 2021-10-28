@@ -11,6 +11,7 @@ from config import BOT_USERNAME, IMG_1, IMG_2
 from youtubesearchpython import VideosSearch
 from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioVideoPiped
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQualityAudio
 from pytgcalls.types.input_stream.quality import HighQualityVideo, MediumQualityVideo, LowQualityVideo
 
