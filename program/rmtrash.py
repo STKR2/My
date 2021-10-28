@@ -3,7 +3,7 @@
 import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from driver.filters import command
+from driver.filters import command, other_filters
 from driver.decorators import sudo_users_only, errors
 
 downloads = os.path.realpath("program/downloads")
