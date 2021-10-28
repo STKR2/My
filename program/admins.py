@@ -23,7 +23,7 @@ async def update_admin(client, message):
     )
 
 
-@Client.on_message(command(["skip", f"skip@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
 @authorized_users_only
 async def skip(client, m: Message):
    chat_id = m.chat.id
@@ -53,7 +53,7 @@ async def skip(client, m: Message):
          await m.reply(OP)
 
 
-@Client.on_message(command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "vstop"]) & other_filters)
 @authorized_users_only
 async def stop(client, m: Message):
    chat_id = m.chat.id
@@ -68,7 +68,7 @@ async def stop(client, m: Message):
       await m.reply("❌ **nothing in streaming**")
 
 
-@Client.on_message(command(["pause", f"pause@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters)
 @authorized_users_only
 async def pause(client, m: Message):
    chat_id = m.chat.id
@@ -82,7 +82,7 @@ async def pause(client, m: Message):
       await m.reply("❌ **nothing in streaming**")
 
 
-@Client.on_message(command(["resume", f"resume@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters)
 @authorized_users_only
 async def resume(client, m: Message):
    chat_id = m.chat.id
