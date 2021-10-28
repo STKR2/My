@@ -24,3 +24,4 @@ ALIVE_IMG = getenv("ALIVE_IMG", "https://telegra.ph/file/c83b000f004f01897fe18.p
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
 IMG_1 = getenv("IMG_1", "https://telegra.ph/file/92674c567ef7eb72521d2.png")
 IMG_2 = getenv("IMG_2", "https://telegra.ph/file/9aa0eb8e4703e6a1d94d7.png")
+IMG_2 = getenv("IMG_3", "https://telegra.ph/file/84568c753c738d7cfed46.png")
