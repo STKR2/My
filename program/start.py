@@ -13,7 +13,7 @@ from config import (
 )
 from program import __version__
 from driver.decorators import sudo_users_only
-from driver.filters import command
+from driver.filters import command, other_filters
 from pyrogram import Client, filters
 from pyrogram import __version__ as pyrover
 from pytgcalls import (__version__ as pytover)
