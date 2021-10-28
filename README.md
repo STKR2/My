@@ -13,6 +13,9 @@
     <a href="https://github.com/levina-lab/video-stream/network/members"> <img src="https://img.shields.io/github/stars/levina-lab/video-stream?color=red&logo=github&logoColor=blue&style=flat-square" /></a>  
 </p>
 
+## 📊 Stats
+[![CodeFactor](https://www.codefactor.io/repository/github/levina-lab/video-stream/badge)](https://www.codefactor.io/repository/github/levina-lab/video-stream)
+
 ## ✨ Features
 - Music & Video stream support
 - Playlist & Queue support
