@@ -5,10 +5,10 @@ from driver.veez import call_py
 from pytgcalls import StreamType
 from pyrogram import Client, filters
 from driver.filters import command, other_filters
-from config import BOT_USERNAME, IMG_1, IMG_2
 from youtubesearchpython import VideosSearch
 from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioVideoPiped
+from config import BOT_USERNAME, IMG_1, IMG_2, GROUP_SUPPORT, UPDATES_CHANNEL
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQualityAudio
 from pytgcalls.types.input_stream.quality import HighQualityVideo, MediumQualityVideo, LowQualityVideo
