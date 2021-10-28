@@ -22,7 +22,7 @@ from yt_dlp import YoutubeDL
 
 from config import BOT_USERNAME as bn
 from driver.decorators import humanbytes
-from driver.filters import command
+from driver.filters import command, other_filters
 
 
 ydl_opts = {
