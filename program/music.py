@@ -6,9 +6,9 @@ from pytgcalls import StreamType
 from driver.filters import command, other_filters
 from pyrogram import Client, filters
 from youtubesearchpython import VideosSearch
-from config import BOT_USERNAME, IMG_1, IMG_2
 from driver.queues import QUEUE, add_to_queue
 from pytgcalls.types.input_stream import AudioPiped
+from config import BOT_USERNAME, IMG_1, IMG_2, GROUP_SUPPORT, UPDATES_CHANNEL
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
