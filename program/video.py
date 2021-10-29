@@ -24,7 +24,7 @@ def ytsearch(query):
       for r in search.result()["result"]:
          ytid = r['id']
          if len(r['title']) > 34:
-            songname = r['title'][:50] + "..."
+            songname = r['title'][:60] + "..."
          else:
             songname = r['title']
          url = f"https://www.youtube.com/watch?v={ytid}"
@@ -85,16 +85,16 @@ async def vplay(client, m: Message):
                await loser.edit("» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**")
          
          if replied.video:
-            songname = replied.video.file_name[:50] + "..."
+            songname = replied.video.file_name[:60] + "..."
          elif replied.document:
-            songname = replied.document.file_name[:50] + "..."       
+            songname = replied.document.file_name[:60] + "..."       
   
          if chat_id in QUEUE:
             pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
             await loser.delete()
             await m.reply_photo(
                photo=f"{IMG_1}",
-               caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+               caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                reply_markup=keyboard,
             )
          else:
@@ -122,7 +122,7 @@ async def vplay(client, m: Message):
             )
       else:
          if len(m.command) < 2:
-            await m.reply("» reply to an **audio file** or **give something to search.**")
+            await m.reply("» reply to an **video file** or **give something to search.**")
          else:
             loser = await m.reply("🔎 **searching...**")
             query = m.text.split(None, 1)[1]
@@ -136,14 +136,14 @@ async def vplay(client, m: Message):
                url = search[1]
                veez, ytlink = await ytdl(url)
                if veez==0:
-                  await loser.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+                  await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                else:
                   if chat_id in QUEUE:
                      pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                      await loser.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -165,11 +165,11 @@ async def vplay(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await m.reply_text(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"🚫 error: `{ep}`")
             
    else:
          if len(m.command) < 2:
-            await m.reply("» reply to an **audio file** or **give something to search.**")
+            await m.reply("» reply to an **video file** or **give something to search.**")
          else:
             loser = await m.reply("🔎 **searching...**")
             query = m.text.split(None, 1)[1]
@@ -183,14 +183,14 @@ async def vplay(client, m: Message):
                url = search[1]
                veez, ytlink = await ytdl(url)
                if veez==0:
-                  await loser.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+                  await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                else:
                   if chat_id in QUEUE:
                      pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                      await loser.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -212,7 +212,7 @@ async def vplay(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await m.reply_text(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"🚫 error: `{ep}`")
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
@@ -261,7 +261,7 @@ async def vstream(client, m: Message):
          veez = 1
 
       if veez==0:
-         await loser.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+         await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
       else:
          if chat_id in QUEUE:
             pos = add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
@@ -292,8 +292,8 @@ async def vstream(client, m: Message):
                await loser.delete()
                await m.reply_photo(
                   photo=f"{IMG_2}",
-                  caption=f"💡 **[Live Streaming]({link}) started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
+                  caption=f"💡 **[Live stream video]({link}) started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                   reply_markup=keyboard,
                )
             except Exception as ep:
-               await m.reply_text(f"❌ issues: `{ep}`")
+               await m.reply_text(f"🚫 error: `{ep}`")

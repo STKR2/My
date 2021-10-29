@@ -22,7 +22,7 @@ def ytsearch(query):
       for r in search.result()["result"]:
          ytid = r['id']
          if len(r['title']) > 34:
-            songname = r['title'][:50] + "..."
+            songname = r['title'][:60] + "..."
          else:
             songname = r['title']
          url = f"https://www.youtube.com/watch?v={ytid}"
@@ -74,9 +74,9 @@ async def play(client, m: Message):
          link = replied.link
          if replied.audio:
             if replied.audio.title:
-               songname = replied.audio.title[:50] + "..."
+               songname = replied.audio.title[:60] + "..."
             else:
-               songname = replied.audio.file_name[:50] + "..."
+               songname = replied.audio.file_name[:60] + "..."
          elif replied.voice:
             songname = "Voice Note"
          if chat_id in QUEUE:
@@ -84,7 +84,7 @@ async def play(client, m: Message):
             await suhu.delete()
             await m.reply_photo(
                photo=f"{IMG_1}",
-               caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+               caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                reply_markup=keyboard,
             )
          else:
@@ -115,14 +115,14 @@ async def play(client, m: Message):
                url = search[1]
                veez, ytlink = await ytdl(url)
                if veez==0:
-                  await suhu.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+                  await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                else:
                   if chat_id in QUEUE:
                      pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                      await suhu.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -142,7 +142,7 @@ async def play(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await m.reply_text(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"🚫 error: `{ep}`")
             
    else:
          if len(m.command) < 2:
@@ -165,7 +165,7 @@ async def play(client, m: Message):
                      await suhu.delete()
                      await m.reply_photo(
                         photo=f"{IMG_1}",
-                        caption=f"💡 **Track added to the queue**\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
+                        caption=f"💡 **Track added to the queue**\n\n🏷 **Name:** [{songname}]({url})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}\n🔢 **At position »** `{pos}`",
                         reply_markup=keyboard,
                      )
                   else:
@@ -185,8 +185,9 @@ async def play(client, m: Message):
                            reply_markup=keyboard,
                         )
                      except Exception as ep:
-                        await m.reply_text(f"❌ issues: `{ep}`")
+                        await m.reply_text(f"🚫 error: `{ep}`")
 
+# stream is used for live streaming only
 
 @Client.on_message(command(["stream", f"stream@{BOT_USERNAME}"]) & other_filters)
 async def stream(client, m: Message):
@@ -220,7 +221,7 @@ async def stream(client, m: Message):
          veez = 1
       
       if veez==0:
-         await suhu.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+         await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
       else:
          if chat_id in QUEUE:
             pos = add_to_queue(chat_id, "Radio", livelink, link, "Audio", 0)
@@ -243,8 +244,8 @@ async def stream(client, m: Message):
                await suhu.delete()
                await m.reply_photo(
                   photo=f"{IMG_2}",
-                  caption=f"💡 **[Radio Live]({link}) stream started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
+                  caption=f"💡 **[Radio live]({link}) stream started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
                   reply_markup=keyboard,
                )
             except Exception as ep:
-               await m.reply_text(f"❌ issues: `{ep}`")
+               await m.reply_text(f"🚫 error: `{ep}`")
