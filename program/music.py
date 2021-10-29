@@ -50,7 +50,7 @@ async def ytdl(link):
 
 
 @Client.on_message(command(["play", f"play@{BOT_USERNAME}"]) & other_filters)
-async def play(client, m: Message):
+async def play(_, m: Message):
 
     keyboard = InlineKeyboardMarkup(
         [
@@ -96,6 +96,7 @@ async def play(client, m: Message):
                     stream_type=StreamType().pulse_stream,
                 )
                 add_to_queue(chat_id, songname, dl, link, "Audio", 0)
+                await suhu.delete()
                 await m.reply_photo(
                     photo=f"{IMG_2}",
                     caption=f"💡 **music streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {m.from_user.mention()}",
@@ -196,9 +197,8 @@ async def play(client, m: Message):
 
 # stream is used for live streaming only
 
-
 @Client.on_message(command(["stream", f"stream@{BOT_USERNAME}"]) & other_filters)
-async def stream(client, m: Message):
+async def stream(_, m: Message):
 
     keyboard = InlineKeyboardMarkup(
         [
