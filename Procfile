@@ -1,1 +1,1 @@
-worker: python3 -m program
+worker: python3 main.py
