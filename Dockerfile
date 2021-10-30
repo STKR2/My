@@ -5,4 +5,4 @@ COPY . /py
 WORKDIR /py
 RUN pip3 install -U pip
 RUN pip3 install -U -r requirements.txt
-CMD ["python3", "-m", "program"]
+CMD ["python3", "main.py"]
