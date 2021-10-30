@@ -28,13 +28,13 @@
 - Music & Video downloader feature
 - Inline Search support
 - YouTube direct search support
-- YouTube/Local/m3u8/Radio/Live stream support
+- YouTube/Local/Radio/Live stream support
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
-- `/stream (radio link)` - stream a live streaming content
+- `/stream (radio link)` - stream a live streaming music
 - `/vplay (query)` - play video from youtube
-- `/vstream (live link)` - play video live streaming content
+- `/vstream (live link)` - play video live streaming video
 - `/pause` - pause the streaming (admin only)
 - `/resume` - resume the streaming (admin only)
 - `/skip` - switch to next stream (admin only)
