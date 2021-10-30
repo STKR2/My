@@ -20,7 +20,7 @@ async def cbstart(_, query: CallbackQuery):
 
 💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
-❔ **To know how to use this bot, please click on the » ❓ Basic Guide button!**""",
+🔖 **To know how to use this bot, please click on the » ❓ Basic Guide button!**""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -58,11 +58,14 @@ async def cbguides(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""❓ **Basic Guide for using this bot:**
 
-1.) **first, add me to your group.**
-2.) **then promote me as admin and give all permissions except anonymous admin.**
-3.) **add @{ASSISTANT_NAME} to your group or type /userbotjoin to invite her.**
-4.) **turn on the video chat first before start to play video.**
-5.) **all the command list you can see on » 📚 Commands button, find it on start home, tap the » Go Back button below.**
+1.) **First, add me to your group.**
+2.) **Then, promote me as administrator and give all permissions except Anonymous Admin.**
+3.) **After promoting me, type /reload in group to refresh the admin data.**
+3.) **Add @{ASSISTANT_NAME} to your group or type /userbotjoin to invite her.**
+4.) **Turn on the video chat first before start to play video/music.**
+5.) **Sometimes, reloading the bot by using /reload command can help you to fix some problem.**
+
+📌 **If the userbot not joined to video chat, make sure if the video chat already turned on, or type /userbotleave then type /userbotjoin again.**
 
 💡 **If you have a follow-up questions about this bot, you can tell it on my support chat here: @{GROUP_SUPPORT}**
 
@@ -74,34 +77,85 @@ async def cbguides(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("cbcmds"))
-async def cbhelps(_, query: CallbackQuery):
+async def cbcmds(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""📚 Here is the Commands list:
+        f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
 
-» /play - play music on voice chat
-» /stream - enter the radio link
-» /vplay - play video on video chat
-» /vstream - for m3u8/live link
+» **press the button below to read the explanation and see the list of available commands !**
+
+⚡ __Powered by {BOT_NAME} A.I__""",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("👷🏻 Admin Cmd", callback_data="cbadmin"),
+                    InlineKeyboardButton("🧙🏻 Sudo Cmd", callback_data="cbsudo"),
+                ],[
+                    InlineKeyboardButton("📚 Basic Cmd", callback_data="cbbasic")
+                ],[
+                    InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")
+                ],
+            ]
+        ),
+    )
+
+
+@Client.on_callback_query(filters.regex("cbbasic"))
+async def cbbasic(_, query: CallbackQuery):
+    await query.edit_message_text(
+        f"""🏮 here is the basic commands:
+
+» /play (song name/link) - play music on video chat
+» /stream (query/link) - stream the yt live/radio/m3u8 live music
+» /vplay (video name/link) - play video on video chat
+» /vstream - play live video from yt live/m3u8
 » /playlist - show you the playlist
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
 » /lyric (query) - scrap the song lyric
 » /search (query) - search a youtube video link
-» /queue - show you the queue list (admin only)
-» /pause - pause the stream (admin only)
-» /resume - resume the stream (admin only)
-» /skip - switch to next stream (admin only)
-» /stop - stop the streaming (admin only)
-» /userbotjoin - invite the userbot to join chat (admin only)
-» /userbotleave - order userbot to leave from group (admin only)
-» /reload - update the admin list (admin only)
-» /rmw - clean raw files (sudo only)
-» /rmd - clean downloaded files (sudo only)
-» /leaveall - order userbot leave from all group (sudo only)
+
+» /ping - show the bot ping status
+» /uptime - show the bot uptime status
+» /alive - show the bot alive info (in group)
+
+⚡️ __Powered by {BOT_NAME} AI__""",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+        ),
+    )
+
+
+@Client.on_callback_query(filters.regex("cbadmin"))
+async def cbadmin(_, query: CallbackQuery):
+    await query.edit_message_text(
+        f"""🏮 here is the admin commands:
+
+» /pause - pause the stream
+» /resume - resume the stream
+» /skip - switch to next stream
+» /stop - stop the streaming
+» /reload - reload bot and refresh the admin data
+» /userbotjoin - invite the userbot to join group
+» /userbotleave - order userbot to leave from group
+
+⚡️ __Powered by {BOT_NAME} AI__""",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+        ),
+    )
+
+@Client.on_callback_query(filters.regex("cbsudo"))
+async def cbsudo(_, query: CallbackQuery):
+    await query.edit_message_text(
+        f"""🏮 here is the sudo commands:
+
+» /rmw - clean all raw files
+» /rmd - clean all downloaded files
+» /leaveall - order userbot to leave from all group
 
 ⚡ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
         ),
     )
 
