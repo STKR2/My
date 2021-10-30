@@ -1,6 +1,6 @@
 FROM nikolaik/python-nodejs:python3.9-nodejs17
 RUN apt update && apt upgrade -y
-RUN apt install -y ffmpeg python3-pip
+RUN apt install -y ffmpeg
 COPY . /py
 WORKDIR /py
 RUN pip3 install -U pip
