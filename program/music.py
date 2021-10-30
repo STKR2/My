@@ -22,7 +22,7 @@ def ytsearch(query):
         for r in search.result()["result"]:
             ytid = r["id"]
             if len(r["title"]) > 34:
-                songname = r["title"][:60] + "..."
+                songname = r["title"][:70]
             else:
                 songname = r["title"]
             url = f"https://www.youtube.com/watch?v={ytid}"
@@ -74,9 +74,9 @@ async def play(_, m: Message):
             link = replied.link
             if replied.audio:
                 if replied.audio.title:
-                    songname = replied.audio.title[:60] + "..."
+                    songname = replied.audio.title[:70]
                 else:
-                    songname = replied.audio.file_name[:60] + "..."
+                    songname = replied.audio.file_name[:70]
             elif replied.voice:
                 songname = "Voice Note"
             if chat_id in QUEUE:
