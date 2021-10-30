@@ -165,7 +165,7 @@ async def play(_, m: Message):
                 url = search[1]
                 veez, ytlink = await ytdl(url)
                 if veez == 0:
-                    await suhu.edit(f"❌ youtube-dl issues detected\n\n» `{ytlink}`")
+                    await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
