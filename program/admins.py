@@ -1,11 +1,11 @@
 from cache.admins import admins
-from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
+from driver.veez import call_py
+from pyrogram import Client, filters
 from driver.decorators import authorized_users_only
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, clear_queue
 from driver.utils import skip_current_song, skip_item
-from driver.veez import call_py
-from pyrogram import Client
+from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 
@@ -118,6 +118,42 @@ async def resume(client, m: Message):
             await call_py.resume_stream(chat_id)
             await m.reply(
                 "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
+            )
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing in streaming**")
+
+
+@Client.on_message(
+    command(["mute", f"mute@{BOT_USERNAME}", "vmute"]) & other_filters
+)
+@authorized_users_only
+async def mute(client, m: Message):
+    chat_id = m.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.mute_stream(chat_id)
+            await m.reply(
+                "🔇 **Userbot muted.**\n\n• **To unmute the userbot, use the**\n» /unmute command."
+            )
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing in streaming**")
+
+
+@Client.on_message(
+    command(["unmute", f"unmute@{BOT_USERNAME}", "vunmute"]) & other_filters
+)
+@authorized_users_only
+async def unmute(client, m: Message):
+    chat_id = m.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.unmute_stream(chat_id)
+            await m.reply(
+                "🔊 **Userbot unmuted.**\n\n• **To mute the userbot, use the**\n» /mute command."
             )
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
