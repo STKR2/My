@@ -28,7 +28,7 @@
 - Music & Video downloader feature
 - Inline Search support
 - YouTube direct search support
-- YouTube/Local/Radio/Live stream support
+- YouTube/Local/Live stream support
 - Inline Search support
 
 ## 🛠 Commands:
