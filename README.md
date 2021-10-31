@@ -29,6 +29,7 @@
 - Inline Search support
 - YouTube direct search support
 - YouTube/Local/Radio/Live stream support
+- Inline Search support
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
