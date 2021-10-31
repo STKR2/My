@@ -134,6 +134,8 @@ async def cbadmin(_, query: CallbackQuery):
 » /resume - resume the stream
 » /skip - switch to next stream
 » /stop - stop the streaming
+» /vmute - mute the userbot on voice chat
+» /vunmute - unmute the userbot on voice chat
 » /reload - reload bot and refresh the admin data
 » /userbotjoin - invite the userbot to join group
 » /userbotleave - order userbot to leave from group
