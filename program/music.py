@@ -76,7 +76,10 @@ async def play(_, m: Message):
                 if replied.audio.title:
                     songname = replied.audio.title[:70]
                 else:
-                    songname = replied.audio.file_name[:70]
+                    if replied.audio.file_name:
+                        songname = replied.audio.file_name[:70]
+                    else:
+                        songname = "Audio"
             elif replied.voice:
                 songname = "Voice Note"
             if chat_id in QUEUE:

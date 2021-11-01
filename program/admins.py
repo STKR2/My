@@ -168,8 +168,13 @@ async def unmute(client, m: Message):
 async def change_volume(client, m: Message):
     range = m.command[1]
     chat_id = m.chat.id
-    try:
-        await call_py.change_volume_call(chat_id, volume=int(range))
-        await m.reply(f"✅ **volume set to** `{range}`%")
-    except Exception as e:
-        await m.reply(f"🚫 **error:**\n\n{e}")
+    if chat_id in QUEUE:
+        try:
+            await call_py.change_volume_call(chat_id, volume=int(range))
+            await m.reply(
+                f"✅ **volume set to** `{range}`%"
+            )
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing in streaming**")
