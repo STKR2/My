@@ -1,6 +1,7 @@
 # Copyright (C) 2021 By VeezMusicProject
 
 from pyrogram import Client, filters
+from program.admins import admin_only
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from config import (
     ASSISTANT_NAME,
@@ -162,6 +163,29 @@ async def cbsudo(_, query: CallbackQuery):
     )
 
 
+@Client.on_callback_query(filters.regex("cbmenu"))
+@admin_only
+async def cbmenu(_, query: CallbackQuery):
+    await query.edit_message_text(
+        "⚙️ **opened control menu panel**",
+        reply_markup=InlineKeyboardMarkup(
+            [[
+                InlineKeyboardButton("⏸ pause", callback_data="cbpause"),
+                InlineKeyboardButton("▶️ resume", callback_data="cbresume"),
+            ],[
+                InlineKeyboardButton("🔇 mute", callback_data="cbmute"),
+                InlineKeyboardButton("🔊 unmute", callback_data="cbunmute"),
+            ],[
+                InlineKeyboardButton("⏹ stop stream", callback_data="cbstop"),
+            ],[
+                InlineKeyboardButton("🗑 Close", callback_data="cls")],
+            ]
+        ),
+    )
+
+
+
 @Client.on_callback_query(filters.regex("cls"))
+@admin_only
 async def close(_, query: CallbackQuery):
     await query.message.delete()
