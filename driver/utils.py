@@ -1,6 +1,7 @@
-from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
+from config import IMG_4
 from driver.veez import call_py
 from pytgcalls.types import Update
+from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.types.input_stream.quality import (
     HighQualityAudio,
@@ -64,7 +65,17 @@ async def skip_item(chat_id, h):
 
 @call_py.on_stream_end()
 async def on_end_handler(_, u: Update):
-    if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
-        chat_id = u.chat_id
-        print(chat_id)
-        await skip_current_song(chat_id)
+   if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
+      chat_id = u.chat_id
+      print(chat_id)
+      op = await skip_current_song(chat_id)
+      if op==1:
+         await _.send_message(chat_id, "❌ __Queues__ **is empty.**\n\n**• userbot leaving voice chat**")
+      else:
+         await _.send_photo(
+             chat_id,
+             photo=f"{IMG_4}",
+             caption=f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`",
+         )
+   else:
+      pass
