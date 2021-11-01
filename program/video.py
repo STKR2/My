@@ -94,7 +94,7 @@ async def vplay(client, m: Message):
                     songname = replied.video.file_name[:70]
                 elif replied.document:
                     songname = replied.document.file_name[:70]
-            except:
+            except BaseException:
                 songname = "Video"
             
             if chat_id in QUEUE:
