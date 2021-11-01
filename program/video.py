@@ -114,7 +114,11 @@ async def vplay(client, m: Message):
                     amaze = LowQualityVideo()
                 await call_py.join_group_call(
                     chat_id,
-                    AudioVideoPiped(dl, HighQualityAudio(), amaze),
+                    AudioVideoPiped(
+                        dl, 
+                        HighQualityAudio(), 
+                        amaze,
+                    ),
                     stream_type=StreamType().pulse_stream,
                 )
                 add_to_queue(chat_id, songname, dl, link, "Video", Q)
@@ -158,7 +162,11 @@ async def vplay(client, m: Message):
                             try:
                                 await call_py.join_group_call(
                                     chat_id,
-                                    AudioVideoPiped(ytlink, HighQualityAudio(), amaze),
+                                    AudioVideoPiped(
+                                        ytlink, 
+                                        HighQualityAudio(), 
+                                        amaze,
+                                    ),
                                     stream_type=StreamType().pulse_stream,
                                 )
                                 add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
@@ -203,7 +211,11 @@ async def vplay(client, m: Message):
                         try:
                             await call_py.join_group_call(
                                 chat_id,
-                                AudioVideoPiped(ytlink, HighQualityAudio(), amaze),
+                                AudioVideoPiped(
+                                    ytlink, 
+                                    HighQualityAudio(), 
+                                    amaze
+                                ),
                                 stream_type=StreamType().pulse_stream,
                             )
                             add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
@@ -285,7 +297,11 @@ async def vstream(client, m: Message):
                 try:
                     await call_py.join_group_call(
                         chat_id,
-                        AudioVideoPiped(livelink, HighQualityAudio(), amaze),
+                        AudioVideoPiped(
+                            livelink, 
+                            HighQualityAudio(), 
+                            amaze
+                        ),
                         stream_type=StreamType().pulse_stream,
                     )
                     add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
