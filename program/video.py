@@ -89,12 +89,14 @@ async def vplay(client, m: Message):
                     await loser.edit(
                         "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
                     )
-
-            if replied.video:
-                songname = replied.video.file_name[:70]
-            elif replied.document:
-                songname = replied.document.file_name[:70]
-
+            try:
+                if replied.video:
+                    songname = replied.video.file_name[:70]
+                elif replied.document:
+                    songname = replied.document.file_name[:70]
+            except:
+                songname = "Video"
+            
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
