@@ -1,4 +1,3 @@
-from typing import Callable
 from cache.admins import admins
 from driver.veez import call_py
 from pyrogram import Client, filters
@@ -13,18 +12,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     Message,
 )
-
-
-def admin_only(func: Callable) -> Callable:
-    async def decorator(client, cb):
-        author = admins.get(cb.message.chat.id)
-        if cb.from_user.id in author:
-            return await func(client, cb)
-        else:
-            await cb.answer("💡 only admin can tap this button !", show_alert=True)
-            return
-
-    return decorator
 
 
 bttn = InlineKeyboardMarkup(
@@ -190,8 +177,10 @@ async def unmute(client, m: Message):
 
 
 @Client.on_callback_query(filters.regex("cbpause"))
-@admin_only
 async def cbpause(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -206,8 +195,10 @@ async def cbpause(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("cbresume"))
-@admin_only
 async def cbresume(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -222,8 +213,10 @@ async def cbresume(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("cbstop"))
-@admin_only
 async def cbstop(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -237,8 +230,10 @@ async def cbstop(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("cbmute"))
-@admin_only
 async def cbmute(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -253,8 +248,10 @@ async def cbmute(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("cbunmute"))
-@admin_only
 async def cbunmute(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
