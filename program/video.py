@@ -214,7 +214,7 @@ async def vplay(client, m: Message):
                                 AudioVideoPiped(
                                     ytlink, 
                                     HighQualityAudio(), 
-                                    amaze
+                                    amaze,
                                 ),
                                 stream_type=StreamType().pulse_stream,
                             )
@@ -300,7 +300,7 @@ async def vstream(client, m: Message):
                         AudioVideoPiped(
                             livelink, 
                             HighQualityAudio(), 
-                            amaze
+                            amaze,
                         ),
                         stream_type=StreamType().pulse_stream,
                     )
