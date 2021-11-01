@@ -166,7 +166,7 @@ async def cbsudo(_, query: CallbackQuery):
 async def cbmenu(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     await query.edit_message_text(
         "⚙️ **opened control menu panel**",
         reply_markup=InlineKeyboardMarkup(
@@ -189,5 +189,5 @@ async def cbmenu(_, query: CallbackQuery):
 async def close(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     await query.message.delete()
