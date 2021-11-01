@@ -65,17 +65,7 @@ async def skip_item(chat_id, h):
 
 @call_py.on_stream_end()
 async def on_end_handler(_, u: Update):
-   if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
-      chat_id = u.chat_id
-      print(chat_id)
-      op = await skip_current_song(chat_id)
-      if op==1:
-         await _.send_message(chat_id, "❌ __Queues__ **is empty.**\n\n**• userbot leaving voice chat**")
-      else:
-         await _.send_photo(
-             chat_id,
-             photo=f"{IMG_4}",
-             caption=f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`",
-         )
-   else:
-      pass
+    if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
+        chat_id = u.chat_id
+        print(chat_id)
+        await skip_current_song(chat_id)
