@@ -28,8 +28,9 @@
 - Music & Video downloader feature
 - Inline Search support
 - YouTube direct search support
-- YouTube/Local/Live stream support
+- YouTube/Local/Live/m3u8 stream support
 - Inline Search support
+- Control With Button support
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
