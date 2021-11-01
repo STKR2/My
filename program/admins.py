@@ -180,13 +180,13 @@ async def unmute(client, m: Message):
 async def cbpause(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.pause_stream(chat_id)
             await query.edit_message_text(
-                "⏸ streaming is paused", reply_markup=bttn
+                "⏸ streaming has paused", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
@@ -198,13 +198,13 @@ async def cbpause(_, query: CallbackQuery):
 async def cbresume(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.resume_stream(chat_id)
             await query.edit_message_text(
-                "▶️ streaming is resumed", reply_markup=bttn
+                "▶️ streaming has resumed", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
@@ -216,7 +216,7 @@ async def cbresume(_, query: CallbackQuery):
 async def cbstop(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -233,7 +233,7 @@ async def cbstop(_, query: CallbackQuery):
 async def cbmute(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
@@ -251,7 +251,7 @@ async def cbmute(_, query: CallbackQuery):
 async def cbunmute(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin can tap this button !")
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !")
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
