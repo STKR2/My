@@ -28,7 +28,7 @@ def admin_only(func: Callable) -> Callable:
 
 
 bttn = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🔙 Go Back", callback_data="cbback")]]
+    [[InlineKeyboardButton("🔙 Go Back", callback_data="cbmenu")]]
 )
 
 
@@ -59,10 +59,10 @@ async def skip(client, m: Message):
         [
             [
                 InlineKeyboardButton(
-                    text="✨ ɢʀᴏᴜᴘ", url=f"https://t.me/{GROUP_SUPPORT}"
+                    text="• Mᴇɴᴜ", callback_data="cbmenu"
                 ),
                 InlineKeyboardButton(
-                    text="🌻 ᴄʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    text="• Cʟᴏsᴇ", callback_data="cls"
                 ),
             ]
         ]
