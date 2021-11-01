@@ -162,6 +162,31 @@ async def cbsudo(_, query: CallbackQuery):
     )
 
 
+@Client.on_callback_query(filters.regex("cbmenu"))
+async def cbmenu(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+    await query.edit_message_text(
+        f"⚙️ **settings of** {query.message.chat.title}\n\n⏸ : pause stream\n▶️ : resume stream\n🔇 : mute userbot\n🔊 : unmute userbot\n⏹ : stop stream",
+        reply_markup=InlineKeyboardMarkup(
+            [[
+                InlineKeyboardButton("⏹", callback_data="cbstop"),
+                InlineKeyboardButton("⏸", callback_data="cbpause"),
+                InlineKeyboardButton("▶️", callback_data="cbresume"),
+            ],[
+                InlineKeyboardButton("🔇", callback_data="cbmute"),
+                InlineKeyboardButton("🔊", callback_data="cbunmute"),
+            ],[
+                InlineKeyboardButton("🗑 Close", callback_data="cls")],
+            ]
+        ),
+    )
+
+
 @Client.on_callback_query(filters.regex("cls"))
 async def close(_, query: CallbackQuery):
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
     await query.message.delete()
