@@ -1,3 +1,4 @@
+from typing import Callable
 from cache.admins import admins
 from driver.veez import call_py
 from pyrogram import Client, filters
@@ -6,7 +7,34 @@ from driver.filters import command, other_filters
 from driver.queues import QUEUE, clear_queue
 from driver.utils import skip_current_song, skip_item
 from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
+
+
+def admin_only(func: Callable) -> Callable:
+    async def decorator(client, cb):
+        author = admins.get(cb.message.chat.id)
+        if cb.from_user.id in author:
+            return await func(client, cb)
+        else:
+            await cb.answer("💡 only admin can tap this button !", show_alert=True)
+            return
+
+    return decorator
+
+
+bttn = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("🔙 Go Back", callback_data="cbback")]]
+)
+
+
+bcl = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("🗑 Close", callback_data="cls")]]
+)
 
 
 @Client.on_message(command(["reload", f"reload@{BOT_USERNAME}"]) & other_filters)
@@ -159,6 +187,85 @@ async def unmute(client, m: Message):
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing in streaming**")
+
+
+@Client.on_callback_query(filters.regex("cbpause"))
+@admin_only
+async def cbpause(_, query: CallbackQuery):
+    chat_id = query.message.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.pause_stream(chat_id)
+            await query.edit_message_text(
+                "⏸ streaming is paused", reply_markup=bttn
+            )
+        except Exception as e:
+            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
+    else:
+        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+
+
+@Client.on_callback_query(filters.regex("cbresume"))
+@admin_only
+async def cbresume(_, query: CallbackQuery):
+    chat_id = query.message.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.resume_stream(chat_id)
+            await query.edit_message_text(
+                "▶️ streaming is resumed", reply_markup=bttn
+            )
+        except Exception as e:
+            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
+    else:
+        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+
+
+@Client.on_callback_query(filters.regex("cbstop"))
+@admin_only
+async def cbstop(_, query: CallbackQuery):
+    chat_id = query.message.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.leave_group_call(chat_id)
+            clear_queue(chat_id)
+            await query.edit_message_text("✅ **streaming has ended**", reply_markup=bcl)
+        except Exception as e:
+            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
+    else:
+        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+
+
+@Client.on_callback_query(filters.regex("cbmute"))
+@admin_only
+async def cbmute(_, query: CallbackQuery):
+    chat_id = query.message.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.mute_stream(chat_id)
+            await query.edit_message_text(
+                "🔇 userbot succesfully muted", reply_markup=bttn
+            )
+        except Exception as e:
+            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
+    else:
+        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+
+
+@Client.on_callback_query(filters.regex("cbunmute"))
+@admin_only
+async def cbunmute(_, query: CallbackQuery):
+    chat_id = query.message.chat.id
+    if chat_id in QUEUE:
+        try:
+            await call_py.unmute_stream(chat_id)
+            await query.edit_message_text(
+                "🔊 userbot succesfully unmuted", reply_markup=bttn
+            )
+        except Exception as e:
+            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
+    else:
+        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
 
 
 @Client.on_message(
