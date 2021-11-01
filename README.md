@@ -28,8 +28,9 @@
 - Music & Video downloader feature
 - Inline Search support
 - YouTube direct search support
-- YouTube/Local/Radio/Live stream support
+- YouTube/Local/Live/m3u8 stream support
 - Inline Search support
+- Control With Button support
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
@@ -77,6 +78,7 @@ python3 main.py # run the bot.
 - [Zxce3](https://github.com/Zxce3) ``Dev``
 - [DoellBarr](https://github.com/DoellBarr) ``Dev``
 - [tofikdn](https://github.com/tofikdn) ``Dev``
+- [Hunter-XDD](https://github.com/Hunter-XDD) ``Dev``
 - [Laky's](https://github.com/Laky-64) for [``py-tgcalls``](https://github.com/pytgcalls/pytgcalls)
 - [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
 

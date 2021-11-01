@@ -107,7 +107,7 @@ async def cbbasic(_, query: CallbackQuery):
 » /play (song name/link) - play music on video chat
 » /stream (query/link) - stream the yt live/radio live music
 » /vplay (video name/link) - play video on video chat
-» /vstream - play live video from yt live
+» /vstream - play live video from yt live/m3u8
 » /playlist - show you the playlist
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
