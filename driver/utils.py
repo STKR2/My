@@ -1,4 +1,3 @@
-from config import IMG_4
 from driver.veez import call_py
 from pytgcalls.types import Update
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
