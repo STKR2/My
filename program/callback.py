@@ -168,7 +168,7 @@ async def cbmenu(_, query: CallbackQuery):
     if not a.can_manage_voice_chats:
         return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
     await query.edit_message_text(
-        f"⚙️ **settings of** {query.message.chat.title}\n\n**⏸ pause || ▶️ resume**\n**🔇 mute || 🔊 unmute**\n**⏹ stop stream**",
+        f"⚙️ **settings of** {query.message.chat.title}\n\n⏸ : pause stream\n▶️ : resume stream\n🔇 : mute userbot\n🔊 : unmute userbot\n⏹ : stop stream",
         reply_markup=InlineKeyboardMarkup(
             [[
                 InlineKeyboardButton("⏹", callback_data="cbstop"),
