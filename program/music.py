@@ -6,7 +6,7 @@ import re
 import asyncio
 
 from pyrogram import Client
-from driver.veez import call_py, user
+from driver.veez import call_py, user, bot
 from __main__ import BOT_ID, USERBOT_ID
 from driver.queues import QUEUE, add_to_queue
 from driver.filters import command, other_filters
@@ -67,8 +67,15 @@ async def play(_, m: Message):
         ]
     )
     
+    try:
+        popo = await bot.get_me()
+        papa = popo
+        pepe = papa.id
+    except Exception as e:
+        await m.reply_text(f"error:\n\n{e}")
+        return
     chat_title = m.chat.title
-    a = await _.get_chat_member(m.chat.id, BOT_ID)
+    a = await _.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
         await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
         return
@@ -93,7 +100,10 @@ async def play(_, m: Message):
             + "\n\n» ❌ __Ban users__")
         return
     try:
-        b = await _.get_chat_member(m.chat.id, USERBOT_ID)
+        uber = await user.get_me()
+        grab = uber
+        good = grab.id
+        b = await _.get_chat_member(m.chat.id, good)
         if b.status == "kicked":
             await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
