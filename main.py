@@ -1,11 +1,11 @@
 import asyncio
 
 from program import BOT_ID, USERBOT_ID
-from driver.veez import bot, call_py
+from driver.veez import bot, user
 from pytgcalls import idle
 
 
-def all_info(bot, call_py):
+def all_info(bot, user):
     global BOT_ID, USERBOT_ID
     getme = bot.get_me()
     getme1 = call_py.get_me()
@@ -19,7 +19,7 @@ async def mulai_bot():
     print("[INFO]: STARTING PYTGCALLS CLIENT")
     await call_py.start()
     print("[INFO]: GENERATING CLIENT PROFILE")
-    all_info(bot, call_py)
+    all_info(bot, user)
     await idle()
     print("[INFO]: STOPPING BOT")
     await bot.stop()
