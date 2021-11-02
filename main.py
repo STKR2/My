@@ -3,7 +3,12 @@ from pytgcalls import idle
 from driver.veez import call_py, bot, user
 
 BOT_ID = 0
+BOT_NAME = ""
+BOT_USERNAME = ""
 USERBOT_ID = 0
+USERBOT_NAME = ""
+USERBOT_USERNAME = ""
+USERBOT_MENTION = ""
 
 async def all_info(bot, user):
     global BOT_ID, BOT_NAME, BOT_USERNAME
