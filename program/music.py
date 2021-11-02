@@ -70,8 +70,6 @@ async def play(_, m: Message):
         popo = await bot.get_me()
         papa = popo
         pepe = papa.id
-    except Exception as e:
-        return await m.reply_text(f"error:\n\n{e}")
     chat_title = m.chat.title
     a = await bot.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
@@ -276,8 +274,6 @@ async def stream(_, m: Message):
         popo = await bot.get_me()
         papa = popo
         pepe = papa.id
-    except Exception as e:
-        return await m.reply_text(f"error:\n\n{e}")
     chat_title = m.chat.title
     a = await bot.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
