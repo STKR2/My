@@ -42,6 +42,8 @@
 - `/resume` - resume the streaming (admin only)
 - `/skip` - switch to next stream (admin only)
 - `/stop` - end the streaming (admin only)
+- `/vmute` - for mute the userbot on voice chat
+- `/vunmute` - for unmute the userbot on voice chat
 - `/playlist` - show you all the current stream list
 - `/song (query)` - download music from youtube
 - `/video (query)` - download video from youtube
