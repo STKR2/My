@@ -103,22 +103,22 @@ async def vplay(_, m: Message):
         if b.status == "kicked":
             await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
-        except UserNotParticipant:
-            if m.chat.username:
+    except UserNotParticipant:
+        if m.chat.username:
+            try:
+                await call_py.join_chat(f"{m.chat.username}")
+            except Exception as e:
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                return
+            else:
                 try:
-                    await call_py.join_chat(f"{m.chat.username}")
+                    pope = await _.export_chat_invite_link(m.chat.id)
+                    pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
+                    await call_py.join_chat(pepo.invite_link)
+                except UserAlreadyParticipant:
+                    pass
                 except Exception as e:
-                    await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
-                    return
-                else:
-                    try:
-                        pope = await _.export_chat_invite_link(m.chat.id)
-                        pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
-                        await call_py.join_chat(pepo.invite_link)
-                    except UserAlreadyParticipant:
-                        pass
-                    except Exception as e:
-                        return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                    return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
     replied = m.reply_to_message
     chat_id = m.chat.id
     if replied:
