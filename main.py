@@ -5,7 +5,7 @@ from driver.veez import call_py, bot, user
 from pytgcalls import idle
 
 
-def all_info(bot, user):
+async def all_info(bot, user):
     global BOT_ID, USERBOT_ID
     getme = await bot.get_me()
     getme1 = await user.get_me()
