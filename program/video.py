@@ -77,8 +77,7 @@ async def vplay(_, m: Message):
         papa = popo
         pepe = papa.id
     except Exception as e:
-        await m.reply_text(f"error:\n\n{e}")
-        return
+        return await m.reply_text(f"error:\n\n{e}")
     chat_title = m.chat.title
     a = await _.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
@@ -313,8 +312,7 @@ async def vstream(_, m: Message):
         papa = popo
         pepe = papa.id
     except Exception as e:
-        await m.reply_text(f"error:\n\n{e}")
-        return
+        return await m.reply_text(f"error:\n\n{e}")
     chat_title = m.chat.title
     a = await _.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
