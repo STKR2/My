@@ -3,6 +3,7 @@ asyncio
 ffmpeg-python
 py-tgcalls==0.8.1rc1
 git+https://github.com/pyrogram/pyrogram@master
+git+https://github.com/yt-dlp/yt-dlp@master
 youtube-search-python
 youtube-search
 httpx==0.13.3
@@ -13,4 +14,3 @@ requests
 psutil
 future
 wget
-yt-dlp

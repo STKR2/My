@@ -31,6 +31,7 @@
 - YouTube/Local/Live/m3u8 stream support
 - Inline Search support
 - Control With Button support
+- Userbot Auto Join
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
