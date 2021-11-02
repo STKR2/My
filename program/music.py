@@ -7,7 +7,7 @@ import asyncio
 
 from pyrogram import Client
 from driver.veez import call_py, user
-from program import BOT_ID, USERBOT_ID
+from __main__ import BOT_ID, USERBOT_ID
 from driver.queues import QUEUE, add_to_queue
 from driver.filters import command, other_filters
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
