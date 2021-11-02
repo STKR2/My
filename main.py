@@ -1,16 +1,29 @@
 import asyncio
-
-from program import BOT_ID, USERBOT_ID
-from driver.veez import call_py, bot, user
 from pytgcalls import idle
+from driver.veez import call_py, bot, user
 
+BOT_ID = 0
+USERBOT_ID = 0
 
 async def all_info(bot, user):
-    global BOT_ID, USERBOT_ID
+    global BOT_ID, BOT_NAME, BOT_USERNAME
+    global USERBOT_ID, USERBOT_NAME, USERBOT_MENTION, USERBOT_USERNAME
     getme = await bot.get_me()
     getme1 = await user.get_me()
     BOT_ID = getme.id
     USERBOT_ID = getme1.id
+    if getme.last_name:
+        BOT_NAME = getme.first_name + " " + getme.last_name
+    else:
+        BOT_NAME = getme.first_name
+    BOT_USERNAME = getme.username
+    USERBOT_NAME = (
+        f"{getme1.first_name} {getme1.last_name}"
+        if getme1.last_name
+        else getme1.first_name
+    )
+    USERBOT_USERNAME = getme1.username
+    USERBOT_MENTION = getme1.mention
 
 
 async def mulai_bot():
