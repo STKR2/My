@@ -6,7 +6,7 @@ import re
 import asyncio
 
 from pyrogram import Client
-from driver.veez import call_py
+from driver.veez import call_py, user
 from program import BOT_ID, USERBOT_ID
 from driver.queues import QUEUE, add_to_queue
 from driver.filters import command, other_filters
@@ -100,7 +100,7 @@ async def play(_, m: Message):
     except UserNotParticipant:
         if m.chat.username:
             try:
-                await call_py.join_chat(f"{m.chat.username}")
+                await user.join_chat(f"{m.chat.username}")
             except Exception as e:
                 await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
@@ -108,7 +108,7 @@ async def play(_, m: Message):
                 try:
                     pope = await _.export_chat_invite_link(m.chat.id)
                     pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
-                    await call_py.join_chat(pepo.invite_link)
+                    await user.join_chat(pepo.invite_link)
                 except UserAlreadyParticipant:
                     pass
                 except Exception as e:
@@ -297,7 +297,7 @@ async def stream(_, m: Message):
     except UserNotParticipant:
         if m.chat.username:
             try:
-                await call_py.join_chat(f"{m.chat.username}")
+                await user.join_chat(f"{m.chat.username}")
             except Exception as e:
                 await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
@@ -305,7 +305,7 @@ async def stream(_, m: Message):
                 try:
                     pope = await _.export_chat_invite_link(m.chat.id)
                     pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
-                    await call_py.join_chat(pepo.invite_link)
+                    await user.join_chat(pepo.invite_link)
                 except UserAlreadyParticipant:
                     pass
                 except Exception as e:
