@@ -8,7 +8,7 @@ from pytgcalls import idle
 def all_info(bot, user):
     global BOT_ID, USERBOT_ID
     getme = bot.get_me()
-    getme1 = call_py.get_me()
+    getme1 = user.get_me()
     BOT_ID = getme.id
     USERBOT_ID = getme1.id
 
@@ -19,7 +19,7 @@ async def mulai_bot():
     print("[INFO]: STARTING PYTGCALLS CLIENT")
     await call_py.start()
     print("[INFO]: GENERATING CLIENT PROFILE")
-    all_info(bot, user)
+    await all_info(bot, user)
     await idle()
     print("[INFO]: STOPPING BOT")
     await bot.stop()
