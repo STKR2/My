@@ -19,7 +19,7 @@ async def mulai_bot():
     print("[INFO]: STARTING PYTGCALLS CLIENT")
     await call_py.start()
     print("[INFO]: GENERATING CLIENT PROFILE")
-    all_info(bot, user)
+    await all_info(bot, user)
     await idle()
     print("[INFO]: STOPPING BOT")
     await bot.stop()
