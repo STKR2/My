@@ -74,7 +74,7 @@ async def play(_, m: Message):
         await m.reply_text(f"error:\n\n{e}")
         return
     chat_title = m.chat.title
-    a = await _.get_chat_member(m.chat.id, pepe)
+    a = await bot.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
         await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
         return
@@ -102,7 +102,7 @@ async def play(_, m: Message):
         uber = await user.get_me()
         grab = uber
         good = grab.id
-        b = await _.get_chat_member(m.chat.id, good)
+        b = await bot.get_chat_member(m.chat.id, good)
         if b.status == "kicked":
             await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
@@ -115,8 +115,8 @@ async def play(_, m: Message):
                 return
             else:
                 try:
-                    pope = await _.export_chat_invite_link(m.chat.id)
-                    pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
+                    pope = await bot.export_chat_invite_link(m.chat.id)
+                    pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
                     await user.join_chat(pepo.invite_link)
                 except UserAlreadyParticipant:
                     pass
@@ -281,7 +281,7 @@ async def stream(_, m: Message):
         await m.reply_text(f"error:\n\n{e}")
         return
     chat_title = m.chat.title
-    a = await _.get_chat_member(m.chat.id, pepe)
+    a = await bot.get_chat_member(m.chat.id, pepe)
     if a.status != "administrator":
         await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
         return
@@ -309,7 +309,7 @@ async def stream(_, m: Message):
         uber = await user.get_me()
         grab = uber
         good = grab.id
-        b = await _.get_chat_member(m.chat.id, good)
+        b = await bot.get_chat_member(m.chat.id, good)
         if b.status == "kicked":
             await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
@@ -322,8 +322,8 @@ async def stream(_, m: Message):
                 return
             else:
                 try:
-                    pope = await _.export_chat_invite_link(m.chat.id)
-                    pepo = await _.revoke_chat_invite_link(m.chat.id, pope)
+                    pope = await bot.export_chat_invite_link(m.chat.id)
+                    pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
                     await user.join_chat(pepo.invite_link)
                 except UserAlreadyParticipant:
                     pass
