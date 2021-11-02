@@ -70,55 +70,57 @@ async def play(_, m: Message):
         popo = await bot.get_me()
         papa = popo
         pepe = papa.id
-        chat_title = m.chat.title
-        a = await bot.get_chat_member(m.chat.id, pepe)
-        if a.status != "administrator":
-            await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
+    except Exception as e:
+        return await m.reply_text(f"error:\n\n{e}")
+    chat_title = m.chat.title
+    a = await bot.get_chat_member(m.chat.id, pepe)
+    if a.status != "administrator":
+        await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
+        return
+    if not a.can_manage_voice_chats:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Manage voice chat__")
+        return
+    if not a.can_delete_messages:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Delete messages__")
+        return
+    if not a.can_invite_users:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Add users__")
+        return
+    if not a.can_restrict_members:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Ban users__")
+        return
+    try:
+        uber = await user.get_me()
+        grab = uber
+        good = grab.id
+        b = await bot.get_chat_member(m.chat.id, good)
+        if b.status == "kicked":
+            await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
-        if not a.can_manage_voice_chats:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Manage voice chat__")
-            return
-        if not a.can_delete_messages:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Delete messages__")
-            return
-        if not a.can_invite_users:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Add users__")
-            return
-        if not a.can_restrict_members:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Ban users__")
-            return
-        try:
-            uber = await user.get_me()
-            grab = uber
-            good = grab.id
-            b = await bot.get_chat_member(m.chat.id, good)
-            if b.status == "kicked":
-                await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
+    except UserNotParticipant:
+        if m.chat.username:
+            try:
+                await user.join_chat(f"{m.chat.username}")
+            except Exception as e:
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
-        except UserNotParticipant:
-            if m.chat.username:
+            else:
                 try:
-                    await user.join_chat(f"{m.chat.username}")
+                    pope = await bot.export_chat_invite_link(m.chat.id)
+                    pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
+                    await user.join_chat(pepo.invite_link)
+                except UserAlreadyParticipant:
+                    pass
                 except Exception as e:
-                    await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
-                    return
-                else:
-                    try:
-                        pope = await bot.export_chat_invite_link(m.chat.id)
-                        pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
-                        await user.join_chat(pepo.invite_link)
-                    except UserAlreadyParticipant:
-                        pass
-                    except Exception as e:
-                        return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                    return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
     replied = m.reply_to_message
     chat_id = m.chat.id
     if replied:
@@ -274,55 +276,57 @@ async def stream(_, m: Message):
         popo = await bot.get_me()
         papa = popo
         pepe = papa.id
-        chat_title = m.chat.title
-        a = await bot.get_chat_member(m.chat.id, pepe)
-        if a.status != "administrator":
-            await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
+    except Exception as e:
+        return await m.reply_text(f"error:\n\n{e}")
+    chat_title = m.chat.title
+    a = await bot.get_chat_member(m.chat.id, pepe)
+    if a.status != "administrator":
+        await m.reply_text(f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**")
+        return
+    if not a.can_manage_voice_chats:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Manage voice chat__")
+        return
+    if not a.can_delete_messages:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Delete messages__")
+        return
+    if not a.can_invite_users:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Add users__")
+        return
+    if not a.can_restrict_members:
+        await m.reply_text(
+            "missing required permission:"
+            + "\n\n» ❌ __Ban users__")
+        return
+    try:
+        uber = await user.get_me()
+        grab = uber
+        good = grab.id
+        b = await bot.get_chat_member(m.chat.id, good)
+        if b.status == "kicked":
+            await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
             return
-        if not a.can_manage_voice_chats:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Manage voice chat__")
-            return
-        if not a.can_delete_messages:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Delete messages__")
-            return
-        if not a.can_invite_users:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Add users__")
-            return
-        if not a.can_restrict_members:
-            await m.reply_text(
-                "missing required permission:"
-                + "\n\n» ❌ __Ban users__")
-            return
-        try:
-            uber = await user.get_me()
-            grab = uber
-            good = grab.id
-            b = await bot.get_chat_member(m.chat.id, good)
-            if b.status == "kicked":
-                await m.reply_text(f"@{ASSISTANT_NAME} **is banned in group** {chat_title}\n\n» **unban the userbot first if you want to use this bot.**")
+    except UserNotParticipant:
+        if m.chat.username:
+            try:
+                await user.join_chat(f"{m.chat.username}")
+            except Exception as e:
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
-        except UserNotParticipant:
-            if m.chat.username:
+            else:
                 try:
-                    await user.join_chat(f"{m.chat.username}")
+                    pope = await bot.export_chat_invite_link(m.chat.id)
+                    pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
+                    await user.join_chat(pepo.invite_link)
+                except UserAlreadyParticipant:
+                    pass
                 except Exception as e:
-                    await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
-                    return
-                else:
-                    try:
-                        pope = await bot.export_chat_invite_link(m.chat.id)
-                        pepo = await bot.revoke_chat_invite_link(m.chat.id, pope)
-                        await user.join_chat(pepo.invite_link)
-                    except UserAlreadyParticipant:
-                        pass
-                    except Exception as e:
-                        return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                    return await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
     chat_id = m.chat.id
     if len(m.command) < 2:
         await m.reply("» give me a live-link/m3u8 url/youtube link to stream.")
