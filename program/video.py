@@ -278,7 +278,7 @@ async def vplay(_, m: Message):
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
-async def vstream(client, m: Message):
+async def vstream(_, m: Message):
 
     keyboard = InlineKeyboardMarkup(
         [
