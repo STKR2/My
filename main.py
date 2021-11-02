@@ -1,7 +1,7 @@
 import asyncio
 
 from program import BOT_ID, USERBOT_ID
-from driver.veez import bot, user
+from driver.veez import call_py, bot, user
 from pytgcalls import idle
 
 
