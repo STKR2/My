@@ -20,6 +20,11 @@
 
 [![GenerateString](https://img.shields.io/badge/repl.it-generateString-yellowgreen)](https://replit.com/@levinalab/StringSession#main.py) ``Pyrogram``
 
+## 🎭 Preview
+<p align="center">
+  <img src="https://telegra.ph/file/b8c1461bcbbad5664aa48.png">
+</p>
+
 ## ✨ Features
 - Music & Video stream support
 - MultiChat support
@@ -60,12 +65,8 @@ The easy way to host this bot, deploy to Heroku, Change the app country to Europ
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/levina-lab/video-stream)
 
-## 🎭 Preview
-<p align="center">
-  <img src="https://telegra.ph/file/b8c1461bcbbad5664aa48.png">
-</p>
-
 ## VPS Deployment 📡
+Get the best Quality of streaming performance by hosting it on VPS, here's the step's:
 
 ```sh
 sudo apt update && apt upgrade -y
