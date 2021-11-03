@@ -1,18 +1,19 @@
 {
-    "name": "Veez Video Stream Bot",
-    "description": "telegram bot for streaming video & music trought the telegram group video chat, powered by pytgcalls and pyrogram",
-    "logo": "https://telegra.ph/file/103a5208bb1698a8b33de.png",
+    "name": "Video x Music Stream Bot",
+    "description": "Telegram bot for Streaming Video & Music trought the Telegram Group Video Chat, powered by pytgcalls and pyrogram",
+    "logo": "https://telegra.ph/file/1c41ded2dd871eb36bd7e.png",
     "keywords": [
         "pytgcalls",
         "telegram bot",
-        "video stream"
+        "video stream",
+        "pyrogram"
     ],
     "website": "https://t.me/levinachannel",
     "repository": "https://github.com/levina-lab/video-stream",
     "success_url": "https://t.me/dlwrml",
     "env": {
         "API_ID": {
-            "description": "your APP_ID from my.telegram.org",
+            "description": "your API_ID from my.telegram.org",
             "required": true
         },
         "API_HASH": {
@@ -20,15 +21,15 @@
             "required": true
         },
         "BOT_TOKEN": {
-            "description": "your bot token from @botfather",
+            "description": "your bot token from @BotFather",
             "required": true
         },
         "BOT_USERNAME": {
-            "description": "your bot username from @botfather",
+            "description": "your bot username from @BotFather",
             "required": true
         },
         "BOT_NAME": {
-            "description": "fill with your bot name",
+            "description": "fill with your bot name from @BotFather",
             "required": true
         },
         "ASSISTANT_NAME": {
@@ -40,28 +41,28 @@
             "required": true
         },
         "SUDO_USERS": {
-            "description": "list of user ids to be added to sudo member list",
-            "required": true
-        },
-        "DURATION_LIMIT": {
-            "description": "maximum duration limit for downloadable videos (in minutes)",
+            "description": "list of user ids to be added to sudo member list, or just fill with your id",
             "required": true
         },
         "GROUP_SUPPORT": {
-            "description": "fill with your group username without @",
-            "required": true
+            "description": "if you have group, then fill the group username here without @",
+            "required": true,
+            "value": "VeezSupportGroup"
         },
         "UPDATES_CHANNEL": {
-            "description": "fill with your channel username without @",
-            "required": true
+            "description": "if you have channel, then fill the channel username here without @",
+            "required": true,
+            "value": "levinachannel"
         },
         "OWNER_NAME": {
             "description": "fill with your telegram account username without @",
-            "required": true
+            "required": true,
+            "value": "dlwrml"
         },
         "ALIVE_NAME": {
-            "description": "fill with your telegram account nickname",
-            "required": true
+            "description": "fill with your telegram account nickname/name",
+            "required": true,
+            "value": "Levina"
         }
     },
     "addons": [],
