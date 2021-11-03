@@ -75,12 +75,12 @@ async def vplay(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Restrict users__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **updated** automatically after you **promote me**"
         )
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Manage voice chat__"
+            "missing required permission:" + "\n\n» ❌ __Manage video chat__"
         )
         return
     if not a.can_delete_messages:
@@ -92,7 +92,7 @@ async def vplay(c: Client, m: Message):
         await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
         return
     if not a.can_restrict_members:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Ban users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Restrict users__")
         return
     try:
         ubot = await user.get_me()
@@ -304,12 +304,12 @@ async def vstream(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Restrict users__\n» ❌ __Add users__\n» ❌ __Manage video chat__\n\nData is **updated** automatically after you **promote me**"
         )
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Manage voice chat__"
+            "missing required permission:" + "\n\n» ❌ __Manage video chat__"
         )
         return
     if not a.can_delete_messages:
@@ -321,7 +321,7 @@ async def vstream(c: Client, m: Message):
         await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
         return
     if not a.can_restrict_members:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Ban users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Restrict users__")
         return
     try:
         ubot = await user.get_me()
