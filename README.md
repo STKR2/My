@@ -31,6 +31,7 @@
 - YouTube/Local/Live/m3u8 stream support
 - Inline Search support
 - Control With Button support
+- Volume Control
 - Userbot Auto Join
 
 ## 🛠 Commands:
@@ -44,6 +45,7 @@
 - `/stop` - end the streaming (admin only)
 - `/vmute` - for mute the userbot on voice chat
 - `/vunmute` - for unmute the userbot on voice chat
+- `/volume 1-200` - adjust the volume of userbot (userbot must be admin)
 - `/playlist` - show you all the current stream list
 - `/song (query)` - download music from youtube
 - `/video (query)` - download video from youtube
