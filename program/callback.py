@@ -136,6 +136,7 @@ async def cbadmin(_, query: CallbackQuery):
 » /stop - stop the streaming
 » /vmute - mute the userbot on voice chat
 » /vunmute - unmute the userbot on voice chat
+» /volume `1-200` - adjust the volume of music (userbot must be admin)
 » /reload - reload bot and refresh the admin data
 » /userbotjoin - invite the userbot to join group
 » /userbotleave - order userbot to leave from group
