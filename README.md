@@ -1,6 +1,6 @@
 <p align="center"><a href="https://t.me/VeezVideoBot"><img src="https://github.com/levina-lab/video-stream/raw/main/driver/veezlogo.png"></a></p>
 <p align="center">
-    <br><b>Video Stream is a telegram bot project that's allow you to play video on telegram group video chat</b><br>
+    <br><b>Video Stream is an Advanced Telegram Bot that's allow you to play Video & Music on Telegram Group Video Chat</b><br>
 </p>
 <p align="center">
     <a href="https://www.python.org/" alt="made-with-python"> <img src="https://img.shields.io/badge/Made%20with-Python-black.svg?style=flat-square&logo=python&logoColor=blue&color=red" /></a>
@@ -60,6 +60,11 @@ The easy way to host this bot, deploy to Heroku, Change the app country to Europ
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/levina-lab/video-stream)
 
+## 🎭 Preview
+<p align="center">
+  <img src="https://telegra.ph/file/b8c1461bcbbad5664aa48.png">
+</p>
+
 ## VPS Deployment 📡
 
 ```sh
@@ -75,6 +80,8 @@ pip3 install -U -r requirements.txt
 cp example.env .env # use vim to edit ENVs
 vim .env # fill up the ENVs (Steps: press i to enter in insert mode then edit the file. Press Esc to exit the editing mode then type :wq! and press Enter key to save the file).
 python3 main.py # run the bot.
+
+# continue the host with screen or anything else, thanks for reading.
 ```
 
 # Credits 💖
