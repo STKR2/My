@@ -68,6 +68,8 @@ async def vplay(c: Client, m: Message):
             ]
         ]
     )
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous Admin__ !\n\n» revert back to user account from admin rights.")
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -297,6 +299,8 @@ async def vstream(c: Client, m: Message):
             ]
         ]
     )
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous Admin__ !\n\n» revert back to user account from admin rights.")
     try:
         aing = await c.get_me()
     except Exception as e:
