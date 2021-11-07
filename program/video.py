@@ -5,7 +5,7 @@
 import asyncio
 import re
 
-from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2, UPDATES_CHANNEL
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
@@ -65,6 +65,8 @@ async def vplay(c: Client, m: Message):
             [
                 InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
                 InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            ],[
+                InlineKeyboardButton(text="✨ Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"),
             ]
         ]
     )
@@ -298,6 +300,8 @@ async def vstream(c: Client, m: Message):
             [
                 InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
                 InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            ],[
+                InlineKeyboardButton(text="✨ Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"),
             ]
         ]
     )
