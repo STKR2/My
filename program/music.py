@@ -203,6 +203,7 @@ async def play(c: Client, m: Message):
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
+                                await suhu.delete()
                                 await m.reply_text(f"🚫 error: `{ep}`")
 
     else:
@@ -252,6 +253,7 @@ async def play(c: Client, m: Message):
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
+                            await suhu.delete()
                             await m.reply_text(f"🚫 error: `{ep}`")
 
 
@@ -370,4 +372,5 @@ async def stream(c: Client, m: Message):
                         reply_markup=keyboard,
                     )
                 except Exception as ep:
+                    await suhu.delete()
                     await m.reply_text(f"🚫 error: `{ep}`")
