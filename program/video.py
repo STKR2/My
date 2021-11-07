@@ -120,7 +120,7 @@ async def vplay(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f"❌ **userbot failed to join**\n\n**reason**:{e}"
+                    f"❌ **userbot failed to join**\n\n**reason**: {e}"
                 )
 
     if replied:
@@ -231,6 +231,7 @@ async def vplay(c: Client, m: Message):
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
+                                await loser.delete()
                                 await m.reply_text(f"🚫 error: `{ep}`")
 
     else:
@@ -284,6 +285,7 @@ async def vplay(c: Client, m: Message):
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
+                            await loser.delete()
                             await m.reply_text(f"🚫 error: `{ep}`")
 
 
@@ -424,4 +426,5 @@ async def vstream(c: Client, m: Message):
                         reply_markup=keyboard,
                     )
                 except Exception as ep:
+                    await loser.delete()
                     await m.reply_text(f"🚫 error: `{ep}`")
