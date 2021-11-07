@@ -5,7 +5,7 @@
 import asyncio
 import re
 
-from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2, UPDATES_CHANNEL
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
@@ -65,6 +65,8 @@ async def vplay(c: Client, m: Message):
             [
                 InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
                 InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            ],[
+                InlineKeyboardButton(text="✨ Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"),
             ]
         ]
     )
@@ -109,7 +111,7 @@ async def vplay(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**: `{e}`")
                 return
         else:
             try:
@@ -120,7 +122,7 @@ async def vplay(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f"❌ **userbot failed to join**\n\n**reason**: {e}"
+                    f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
                 )
 
     if replied:
@@ -298,6 +300,8 @@ async def vstream(c: Client, m: Message):
             [
                 InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
                 InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            ],[
+                InlineKeyboardButton(text="✨ Cʜᴀɴɴᴇʟ", url=f"https://t.me/{UPDATES_CHANNEL}"),
             ]
         ]
     )
@@ -342,7 +346,7 @@ async def vstream(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**: `{e}`")
                 return
         else:
             try:
@@ -353,7 +357,7 @@ async def vstream(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f"❌ **userbot failed to join**\n\n**reason**:{e}"
+                    f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
                 )
 
     if len(m.command) < 2:
