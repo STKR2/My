@@ -188,12 +188,12 @@ async def cbpause(_, query: CallbackQuery):
         try:
             await call_py.pause_stream(chat_id)
             await query.edit_message_text(
-                "⏸ streaming has paused", reply_markup=bttn
+                "⏸ the streaming has paused", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+        await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbresume"))
@@ -208,12 +208,12 @@ async def cbresume(_, query: CallbackQuery):
         try:
             await call_py.resume_stream(chat_id)
             await query.edit_message_text(
-                "▶️ streaming has resumed", reply_markup=bttn
+                "▶️ the streaming has resumed", reply_markup=bttn
             )
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+        await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbstop"))
@@ -228,11 +228,11 @@ async def cbstop(_, query: CallbackQuery):
         try:
             await call_py.leave_group_call(chat_id)
             clear_queue(chat_id)
-            await query.edit_message_text("✅ **streaming has ended**", reply_markup=bcl)
+            await query.edit_message_text("✅ **the streaming has ended**", reply_markup=bcl)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+        await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbmute"))
@@ -252,7 +252,7 @@ async def cbmute(_, query: CallbackQuery):
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+        await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("cbunmute"))
@@ -272,7 +272,7 @@ async def cbunmute(_, query: CallbackQuery):
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=bcl)
     else:
-        await query.edit_message_text("❌ **nothing in streaming**", reply_markup=bcl)
+        await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_message(
