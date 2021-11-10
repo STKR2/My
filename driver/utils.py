@@ -19,6 +19,7 @@ async def skip_current_song(chat_id):
             clear_queue(chat_id)
             return 1
         else:
+         try:
             songname = chat_queue[1][0]
             url = chat_queue[1][1]
             link = chat_queue[1][2]
@@ -43,6 +44,10 @@ async def skip_current_song(chat_id):
                 )
             pop_an_item(chat_id)
             return [songname, link, type]
+          except BaseException:
+            await call_py.leave_group_call(chat_id)
+            clear_queue(chat_id)
+            return 2
     else:
         return 0
 
