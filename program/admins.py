@@ -62,7 +62,7 @@ async def skip(client, m: Message):
             await m.reply("❌ nothing is currently playing")
         elif op == 1:
             await m.reply("✅ __Queues__ **is empty.**\n\n**• userbot leaving voice chat**")
-        elif op==2:
+        elif op == 2:
             await m.reply("🗑️ **Clearing the Queues**\n\n**• userbot leaving voice chat**")
         else:
             await m.reply_photo(
