@@ -17,7 +17,7 @@ async def playlist(client, m: Message):
       if len(chat_queue)==1:
          await m.reply(f"💡 **now playing:**\n\n[{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}`", disable_web_page_preview=True)
       else:
-         QUE = f"💡 **now playing:**\n\n[{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}` \n\n**📖 play-list:**"
+         QUE = f"💡 **now playing:**\n\n[{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}` \n\n**📖 queue list:**"
          l = len(chat_queue)
          for x in range (1, l):
             han = chat_queue[x][0]
