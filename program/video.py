@@ -172,7 +172,7 @@ async def vplay(c: Client, m: Message):
                         HighQualityAudio(),
                         amaze,
                     ),
-                    stream_type=StreamType().pulse_stream,
+                    stream_type=StreamType().local_stream,
                 )
                 add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
@@ -222,7 +222,7 @@ async def vplay(c: Client, m: Message):
                                         HighQualityAudio(),
                                         amaze,
                                     ),
-                                    stream_type=StreamType().pulse_stream,
+                                    stream_type=StreamType().local_stream,
                                 )
                                 add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                                 await loser.delete()
@@ -276,7 +276,7 @@ async def vplay(c: Client, m: Message):
                                     HighQualityAudio(),
                                     amaze,
                                 ),
-                                stream_type=StreamType().pulse_stream,
+                                stream_type=StreamType().local_stream,
                             )
                             add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                             await loser.delete()
@@ -417,7 +417,7 @@ async def vstream(c: Client, m: Message):
                             HighQualityAudio(),
                             amaze,
                         ),
-                        stream_type=StreamType().pulse_stream,
+                        stream_type=StreamType().live_stream,
                     )
                     add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
                     await loser.delete()
