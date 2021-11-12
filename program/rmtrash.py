@@ -33,7 +33,7 @@ async def clear_raw(_, message: Message):
                 os.remove(os.path.join(raw, file))
         await message.reply_text("✅ **deleted all raw files**")
     else:
-        await message.reply_text("❌ **no raw files**")
+        await message.reply_text("❌ **no raw files found**")
 
 
 @Client.on_message(command(["cleanup"]) & ~filters.edited)
