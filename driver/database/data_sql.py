@@ -12,13 +12,10 @@ class Chats(BASE):
         self.chat_id = chat_id
         self.chat_name = chat_name
 
-
 Chats.__table__.create(checkfirst=True)
-
 
 CHATS_LOCK = threading.RLock()
 CHATS_DATA = set()
-
 
 def del_chat(chat_id):
     with CHATS_LOCK:
