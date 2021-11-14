@@ -5,7 +5,6 @@ from pytgcalls import idle
 from pyrogram import idle as pidle
 from driver.veez import call_py, bot
 
-
 if os.path.exists('log.txt'):
     with open('log.txt', 'r+') as f:
         f.truncate(0)
