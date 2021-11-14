@@ -8,7 +8,6 @@ youtube-search-python==1.4.9
 youtube-search
 httpx==0.13.3
 python-dotenv
-sqlalchemy
 aiofiles
 aiohttp
 requests
