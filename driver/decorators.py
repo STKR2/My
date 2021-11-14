@@ -53,12 +53,3 @@ def humanbytes(size):
         size /= power
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
-
-
-def get_arg(message):
-    msg = message.text
-    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
-    split = msg[1:].replace("\n", " \n").split(" ")
-    if " ".join(split[1:]).strip() == "":
-        return ""
-    return " ".join(split[1:])
