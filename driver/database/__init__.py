@@ -1,6 +1,7 @@
 import os
 import re
 
+from driver.veez import user as app
 from sqlalchemy import create_engine
 from config import DATABASE_URL as db
 from sqlalchemy.ext.declarative import declarative_base
