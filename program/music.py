@@ -141,6 +141,7 @@ async def play(c: Client, m: Message):
                     reply_markup=keyboard,
                 )
             else:
+             try:
                 await call_py.join_group_call(
                     chat_id,
                     AudioPiped(
@@ -156,6 +157,9 @@ async def play(c: Client, m: Message):
                     caption=f"💡 **Music streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
                     reply_markup=keyboard,
                 )
+             except Exception as e:
+                await suhu.delete()
+                await m.reply_text(f"🚫 error:\n\n» {e}")
         else:
             if len(m.command) < 2:
                 await m.reply(
