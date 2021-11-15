@@ -59,6 +59,7 @@
 - `/userbotleave` - instruct userbot to leave the group (admin only)
 - `/leaveall` - order the userbot to leave from all group (sudo only)
 - `/update` - update your bot directly without leaving telegram (sudo only)
+- `/restart` - restart your bot directly without leaving telegram (sudo only)
 - `/clean` - clean all raw files
 - `/rmd` - clean all downloaded files
 
