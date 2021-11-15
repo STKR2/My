@@ -65,14 +65,7 @@
             "value": "Levina"
         }
     },
-    "addons": [
-        {
-          "plan": "heroku-postgresql",
-          "options": {
-            "version": "12"
-          }
-        }
-    ],
+    "addons": []
     "buildpacks": [
         {
             "url": "heroku/python"
