@@ -1,4 +1,5 @@
 from driver.veez import call_py
+from pytgcalls import PyTgCalls
 from pytgcalls.types import Update
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
@@ -73,3 +74,9 @@ async def on_end_handler(_, u: Update):
         chat_id = u.chat_id
         print(chat_id)
         await skip_current_song(chat_id)
+
+
+@call_py.on_closed_voice_chat()
+async def close_handler(client: PyTgCalls, chat_id: int):
+   if chat_id in QUEUE:
+      clear_queue(chat_id)
