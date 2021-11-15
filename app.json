@@ -65,7 +65,7 @@
             "value": "Levina"
         }
     },
-    "addons": []
+    "addons": [],
     "buildpacks": [
         {
             "url": "heroku/python"
