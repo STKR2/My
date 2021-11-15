@@ -156,6 +156,7 @@ async def cbsudo(_, query: CallbackQuery):
 » /rmw - clean all raw files
 » /rmd - clean all downloaded files
 » /sysinfo - show the system information
+» /update - update your bot to latest version
 » /leaveall - order userbot to leave from all group
 
 ⚡ __Powered by {BOT_NAME} AI__""",
