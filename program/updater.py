@@ -50,6 +50,7 @@ def updater():
 
 
 @Client.on_message(command(["update", f"update@{BOT_USERNAME}"]) & ~filters.edited)
+@sudo_users_only
 async def update_repo(_, message: Message):
     chat_id = message.chat.id
     msg = await message.reply("🔄 `processing update...`")
@@ -60,3 +61,13 @@ async def update_repo(_, message: Message):
         execle(sys.executable, sys.executable, "main.py", environ)
         return
     await msg.edit("bot is **up-to-date** with [main](https://github.com/levina-lab/video-stream/tree/main)", disable_web_page_preview=True)
+
+
+@Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
+@sudo_users_only
+async def restart_bot(_, message: Message):
+    msg = await message.reply("`restarting bot...`")
+    args = [sys.executable, "main.py"]
+    await msg.edit("✅ bot restarted\n\n• now you can use this bot again.")
+    execle(sys.executable, *args, environ)
+    return
