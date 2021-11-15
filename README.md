@@ -38,6 +38,7 @@
 - Control With Button support
 - Volume Control
 - Userbot Auto Join
+- Direct Updater
 
 ## 🛠 Commands:
 - `/play (query)` - play music from youtube
@@ -57,6 +58,7 @@
 - `/userbotjoin` - invite the userbot to join group (admin only)
 - `/userbotleave` - instruct userbot to leave the group (admin only)
 - `/leaveall` - order the userbot to leave from all group (sudo only)
+- `/update` - update your bot directly without leaving telegram (sudo only)
 - `/clean` - clean all raw files
 - `/rmd` - clean all downloaded files
 
