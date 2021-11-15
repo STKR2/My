@@ -1,4 +1,4 @@
-tgcrypto
+TgCrypto
 asyncio
 ffmpeg-python
 py-tgcalls
@@ -8,9 +8,11 @@ youtube-search-python==1.4.9
 youtube-search
 httpx==0.13.3
 python-dotenv
+gitpython
 aiofiles
 aiohttp
 requests
+heroku3
 psutil
 future
 wget
