@@ -41,7 +41,7 @@
 - Direct Updater
 
 ## 🛠 Commands:
-- `/play (query)` - play music from youtube
+- `/mplay (query)` - play music from youtube
 - `/stream (radio link)` - stream a live streaming music
 - `/vplay (query)` - play video from youtube
 - `/vstream (live link)` - play video live streaming video
