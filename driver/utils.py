@@ -77,6 +77,11 @@ async def on_end_handler(_, u: Update):
 
 
 @call_py.on_closed_voice_chat()
-async def close_handler(client: PyTgCalls, chat_id: int):
+async def closed_handler(client: PyTgCalls, chat_id: int):
+   if chat_id in QUEUE:
+      clear_queue(chat_id)
+
+@call_py.on_kicked()
+async def kicked_handler(client: PyTgCalls, chat_id: int) -> None:
    if chat_id in QUEUE:
       clear_queue(chat_id)
