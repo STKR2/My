@@ -3,7 +3,6 @@ asyncio
 ffmpeg-python
 py-tgcalls
 git+https://github.com/pyrogram/pyrogram@master
-git+https://github.com/yt-dlp/yt-dlp@master
 youtube-search-python==1.4.9
 youtube-search
 httpx==0.13.3
@@ -13,6 +12,7 @@ aiofiles
 aiohttp
 requests
 heroku3
+yt-dlp
 psutil
 future
 wget
