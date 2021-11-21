@@ -2,8 +2,8 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-import asyncio
 import re
+import asyncio
 
 from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
 from driver.filters import command, other_filters
@@ -167,7 +167,7 @@ async def play(c: Client, m: Message):
                     "» reply to an **audio file** or **give something to search.**"
                 )
             else:
-                suhu = await m.send_message(chat_id, "🔎 **Searching...**")
+                suhu = await c.send_message(chat_id, "🔎 **Searching...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 if search == 0:
@@ -218,7 +218,7 @@ async def play(c: Client, m: Message):
                 "» reply to an **audio file** or **give something to search.**"
             )
         else:
-            suhu = await m.send_message(chat_id, "🔎 **Searching...**")
+            suhu = await c.send_message(chat_id, "🔎 **Searching...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
@@ -337,7 +337,7 @@ async def stream(c: Client, m: Message):
         await m.reply("» give me a live-link/m3u8 url/youtube link to stream.")
     else:
         link = m.text.split(None, 1)[1]
-        suhu = await m.send_message(chat_id, "🔄 **processing stream...**")
+        suhu = await c.send_message(chat_id, "🔄 **processing stream...**")
 
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
         match = re.match(regex, link)
