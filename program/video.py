@@ -186,7 +186,7 @@ async def vplay(c: Client, m: Message):
                     "» reply to an **video file** or **give something to search.**"
                 )
             else:
-                loser = await m.reply("🔎 **searching...**")
+                loser = await m.send_message(chat_id, "🔎 **Searching...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 Q = 720
@@ -240,7 +240,7 @@ async def vplay(c: Client, m: Message):
                 "» reply to an **video file** or **give something to search.**"
             )
         else:
-            loser = await m.reply("🔎 **searching...**")
+            loser = await m.send_message(chat_id, "🔎 **Searching...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             Q = 720
@@ -362,7 +362,7 @@ async def vstream(c: Client, m: Message):
         if len(m.command) == 2:
             link = m.text.split(None, 1)[1]
             Q = 720
-            loser = await m.reply("🔄 **processing stream...**")
+            loser = await m.send_message(chat_id, "🔄 **processing stream...**")
         elif len(m.command) == 3:
             op = m.text.split(None, 1)[1]
             link = op.split(None, 1)[0]
@@ -374,7 +374,7 @@ async def vstream(c: Client, m: Message):
                 await m.reply(
                     "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
                 )
-            loser = await m.reply("🔄 **processing stream...**")
+            loser = await m.send_message(chat_id, "🔄 **processing stream...**")
         else:
             await m.reply("**/vstream {link} {720/480/360}**")
 
