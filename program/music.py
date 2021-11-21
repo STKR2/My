@@ -142,6 +142,7 @@ async def play(c: Client, m: Message):
                 )
             else:
              try:
+                await replied.edit("🔄 **Joining Vc...**")
                 await call_py.join_group_call(
                     chat_id,
                     AudioPiped(
@@ -191,6 +192,7 @@ async def play(c: Client, m: Message):
                             )
                         else:
                             try:
+                                await suhu.edit("🔄 **Joining Vc...**")
                                 await call_py.join_group_call(
                                     chat_id,
                                     AudioPiped(
@@ -241,6 +243,7 @@ async def play(c: Client, m: Message):
                         )
                     else:
                         try:
+                            await suhu.edit("🔄 **Joining Vc...**")
                             await call_py.join_group_call(
                                 chat_id,
                                 AudioPiped(
@@ -358,6 +361,7 @@ async def stream(c: Client, m: Message):
                 )
             else:
                 try:
+                    await suhu.edit("🔄 **Joining Vc...**")
                     await call_py.join_group_call(
                         chat_id,
                         AudioPiped(
