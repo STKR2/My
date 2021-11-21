@@ -142,7 +142,7 @@ async def play(c: Client, m: Message):
                 )
             else:
              try:
-                await replied.edit("🔄 **Joining Vc...**")
+                await suhu.edit("🔄 **Joining Vc...**")
                 await call_py.join_group_call(
                     chat_id,
                     AudioPiped(
