@@ -348,7 +348,7 @@ async def stream(c: Client, m: Message):
             veez = 1
 
         if veez == 0:
-            await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
+            await suhu.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, "Radio", livelink, link, "Audio", 0)
