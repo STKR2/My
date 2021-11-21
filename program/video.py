@@ -2,8 +2,8 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-import asyncio
 import re
+import asyncio
 
 from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
 from driver.filters import command, other_filters
@@ -163,6 +163,7 @@ async def vplay(c: Client, m: Message):
                     amaze = MediumQualityVideo()
                 elif Q == 360:
                     amaze = LowQualityVideo()
+                await loser.edit("🔄 **Joining Vc...**")
                 await call_py.join_group_call(
                     chat_id,
                     AudioVideoPiped(
@@ -213,6 +214,7 @@ async def vplay(c: Client, m: Message):
                             )
                         else:
                             try:
+                                await loser.edit("🔄 **Joining Vc...**")
                                 await call_py.join_group_call(
                                     chat_id,
                                     AudioVideoPiped(
@@ -267,6 +269,7 @@ async def vplay(c: Client, m: Message):
                         )
                     else:
                         try:
+                            await loser.edit("🔄 **Joining Vc...**")
                             await call_py.join_group_call(
                                 chat_id,
                                 AudioVideoPiped(
@@ -406,6 +409,7 @@ async def vstream(c: Client, m: Message):
                 elif Q == 360:
                     amaze = LowQualityVideo()
                 try:
+                    await loser.edit("🔄 **Joining Vc...**")
                     await call_py.join_group_call(
                         chat_id,
                         AudioVideoPiped(
