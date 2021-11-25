@@ -1,10 +1,11 @@
 import asyncio
 from driver.veez import user
-from config import BOT_USERNAME, SUDO_USERS
-from driver.decorators import authorized_users_only, sudo_users_only, errors
-from driver.filters import command, other_filters
+from pyrogram.types import Message
 from pyrogram import Client, filters
+from config import BOT_USERNAME, SUDO_USERS
+from driver.filters import command, other_filters
 from pyrogram.errors import UserAlreadyParticipant
+from driver.decorators import authorized_users_only, sudo_users_only
 
 
 @Client.on_message(
