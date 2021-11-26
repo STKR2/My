@@ -26,4 +26,4 @@ UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/levina-lab/video-str
 IMG_1 = getenv("IMG_1", "https://telegra.ph/file/d6f92c979ad96b2031cba.png")
 IMG_2 = getenv("IMG_2", "https://telegra.ph/file/6213d2673486beca02967.png")
 IMG_3 = getenv("IMG_3", "https://telegra.ph/file/f02efde766160d3ff52d6.png")
-IMG_4 = getenv("IMG_4", "https://telegra.ph/file/f02efde766160d3ff52d6.png")
+IMG_4 = getenv("IMG_4", "https://telegra.ph/file/be5f551acb116292d15ec.png")
