@@ -104,17 +104,16 @@ async def left_handler(_, chat_id: int):
 
 
 @call_py.on_stream_end()
-async def stream_end_handler(_, u: Update, m: Message):
+async def stream_end_handler(_, u: Update):
     if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
         chat_id = u.chat_id
-        grup_id = m.chat.id
         print(chat_id)
         op = await skip_current_song(chat_id)
         if op==1:
-           await _.send_message(grup_id, "✅ __Queues__ **is empty**\n\n» **userbot leaving video chat**")
+           await _.send_message(chat_id, "✅ __Queues__ **is empty**\n\n» **userbot leaving video chat**")
         elif op==2:
-           await _.send_message(grup_id, "❌ **an error occurred**\n\n» **Clearing** __Queues__ **and leaving video chat.**")
+           await _.send_message(chat_id, "❌ **an error occurred**\n\n» **Clearing** __Queues__ **and leaving video chat.**")
         else:
-         await _.send_photo(grup_id, photo=f"{NEXT_IMG}", caption=f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n💭 **Chat:** `{grup_id}`", reply_markup=keyboard)
+         await _.send_photo(chat_id, photo=f"{NEXT_IMG}", caption=f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n💭 **Chat:** `{grup_id}`", reply_markup=keyboard)
     else:
        pass
