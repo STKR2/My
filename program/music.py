@@ -197,7 +197,7 @@ async def play(c: Client, m: Message):
                                     AudioPiped(
                                         ytlink,
                                     ),
-                                    stream_type=StreamType().pulse_stream,
+                                    stream_type=StreamType().local_stream,
                                 )
                                 add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                                 await suhu.delete()
@@ -248,7 +248,7 @@ async def play(c: Client, m: Message):
                                 AudioPiped(
                                     ytlink,
                                 ),
-                                stream_type=StreamType().pulse_stream,
+                                stream_type=StreamType().local_stream,
                             )
                             add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                             await suhu.delete()
