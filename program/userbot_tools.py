@@ -79,3 +79,15 @@ async def leave_all(client, message):
     await client.send_message(
         message.chat.id, f"✅ Left from: {left} chats.\n❌ Failed in: {failed} chats."
     )
+
+
+@Client.on_message(filters.left_chat_members)
+async def ubot_leave(c: Client, m: Message):
+    ass_id = (await user.get_me()).id
+    bot_id = (await c.get_me()).id
+    chat_id = m.chat.id
+    left_member = m.left_chat_member
+    if left_member.id == bot_id:
+        await user.leave_chat(chat_id)
+    elif left_member.id == ass_id:
+        await c.leave_chat(chat_id)
