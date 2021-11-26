@@ -148,7 +148,7 @@ async def new_chat(c: Client, m: Message):
         if member.id == bot_id:
             return await m.reply(
                 "❤️ **Thanks for adding me to the Group !**\n\n"
-                "**Promote me as administrator of the Group, otherwise I will not be able to work properly, don't forget to type /userbotjoin for invite the assistant.**\n\n"
+                "**Promote me as administrator of the Group, otherwise I will not be able to work properly, and don't forget to type /userbotjoin for invite the assistant.**\n\n"
                 "**Once done, type** /reload",
                 reply_markup=InlineKeyboardMarkup(
                     [
