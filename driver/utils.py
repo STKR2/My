@@ -105,7 +105,7 @@ async def left_handler(_, chat_id: int):
 
 @call_py.on_stream_end()
 async def stream_end_handler(_, u: Update):
-    if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
+    if isinstance(u, StreamAudioEnded):
         chat_id = u.chat_id
         print(chat_id)
         op = await skip_current_song(chat_id)
