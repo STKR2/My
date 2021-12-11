@@ -158,7 +158,7 @@ async def play(c: Client, m: Message):
                     "» reply to an **audio file** or **give something to search.**"
                 )
             else:
-                suhu = await c.send_message(chat_id, "🔎 **Searching...**")
+                suhu = await c.send_message(chat_id, "🔍 **Searching...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 if search == 0:
@@ -212,7 +212,7 @@ async def play(c: Client, m: Message):
                 "» reply to an **audio file** or **give something to search.**"
             )
         else:
-            suhu = await c.send_message(chat_id, "🔎 **Searching...**")
+            suhu = await c.send_message(chat_id, "🔍 **Searching...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
