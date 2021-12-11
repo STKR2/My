@@ -104,12 +104,14 @@ async def play(c: Client, m: Message):
                 return
         else:
             try:
-                user_id = (await user.get_me()).id
-                link = await c.export_chat_invite_link(chat_id)
-                if "+" in link:
-                    link_hash = (link.replace("+", "")).split("t.me/")[1]
-                    await ubot.join_chat(link_hash)
-                await c.promote_member(chat_id, user_id)
+                invitelink = await c.export_chat_invite_link(
+                    m.chat.id
+                )
+                if invitelink.startswith("https://t.me/+"):
+                    invitelink = invitelink.replace(
+                        "https://t.me/+", "https://t.me/joinchat/"
+                    )
+                await user.join_chat(invitelink)
             except UserAlreadyParticipant:
                 pass
             except Exception as e:
