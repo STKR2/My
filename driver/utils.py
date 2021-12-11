@@ -1,8 +1,7 @@
-from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
 from driver.veez import bot, call_py
-from config import IMG_4
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
+from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
 from pytgcalls.types.input_stream.quality import (
     HighQualityAudio,
     HighQualityVideo,
@@ -117,3 +116,15 @@ async def stream_end_handler(_, u: Update):
          await bot.send_message(chat_id, f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n💭 **Chat:** `{chat_id}`", disable_web_page_preview=True, reply_markup=keyboard)
     else:
        pass
+
+
+async def bash(cmd):
+    process = await asyncio.create_subprocess_shell(
+        cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    stdout, stderr = await process.communicate()
+    err = stderr.decode().strip()
+    out = stdout.decode().strip()
+    return out, err
