@@ -1,3 +1,5 @@
+import os
+import asyncio
 from driver.veez import bot, call_py
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
