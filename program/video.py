@@ -154,7 +154,7 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}",
+                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link}) | `video`\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}",
                     reply_markup=keyboard,
                 )
             else:
@@ -179,7 +179,7 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
-                    caption=f"💡 **Video streaming started.**\n\n🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
+                    caption=f"🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
                     reply_markup=keyboard,
                 )
         else:
@@ -212,7 +212,7 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
+                                caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
                                 reply_markup=keyboard,
                             )
                         else:
@@ -232,7 +232,7 @@ async def vplay(c: Client, m: Message):
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=thumbnail,
-                                    caption=f"💡 **Video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
+                                    caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
@@ -269,7 +269,7 @@ async def vplay(c: Client, m: Message):
                         )
                         await m.reply_photo(
                             photo=thumbnail,
-                            caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
+                            caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
                             reply_markup=keyboard,
                         )
                     else:
@@ -289,7 +289,7 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=thumbnail,
-                                caption=f"💡 **Video streaming started.**\n\n🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
+                                caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
