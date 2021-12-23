@@ -13,6 +13,7 @@ gitpython
 aiofiles
 aiohttp
 requests
+pillow
 heroku3
 motor
 psutil
