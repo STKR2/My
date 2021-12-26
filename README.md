@@ -94,7 +94,7 @@ python3 main.py # run the bot.
 - [Zxce3](https://github.com/Zxce3) ``Dev``
 - [DoellBarr](https://github.com/DoellBarr) ``Dev``
 - [tofikdn](https://github.com/tofikdn) ``Dev``
-- [Hunter-XDD](https://github.com/Hunter-XDD) ``Dev``
+- [Makoto-XD](https://github.com/Makoto-XD) ``Supporter``
 - [Laky's](https://github.com/Laky-64) for [``py-tgcalls``](https://github.com/pytgcalls/pytgcalls)
 - [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
 
