@@ -7,6 +7,7 @@ import asyncio
 
 from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
 from driver.design.thumbnail import thumb
+from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
