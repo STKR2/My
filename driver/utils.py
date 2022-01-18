@@ -43,7 +43,8 @@ async def skip_current_song(chat_id):
                 url = chat_queue[1][1]
                 link = chat_queue[1][2]
                 type = chat_queue[1][3]
-                Q = chat_queue[1][4]
+                resol = chat_queue[1][4]
+                image = chat_queue[1][5]
                 if type == "Audio":
                     await call_py.change_stream(
                         chat_id,
@@ -52,17 +53,22 @@ async def skip_current_song(chat_id):
                         ),
                     )
                 elif type == "Video":
-                    if Q == 720:
+                    if resol == 720:
                         hm = HighQualityVideo()
-                    elif Q == 480:
+                    elif resol == 480:
                         hm = MediumQualityVideo()
-                    elif Q == 360:
+                    elif resol == 360:
                         hm = LowQualityVideo()
                     await call_py.change_stream(
-                        chat_id, AudioVideoPiped(url, HighQualityAudio(), hm)
+                        chat_id,
+                        AudioVideoPiped(
+                            url,
+                            HighQualityAudio(),
+                            hm
+                        )
                     )
                 pop_an_item(chat_id)
-                return [songname, link, type]
+                return [songname, link, type, image]
             except:
                 await call_py.leave_group_call(chat_id)
                 clear_queue(chat_id)
