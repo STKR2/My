@@ -217,7 +217,7 @@ async def vplay(c: Client, m: Message):
                     else:
                         if chat_id in QUEUE:
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, "Video", Q
+                                chat_id, songname, ytlink, url, image, duration, "Video", Q
                             )
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -238,7 +238,7 @@ async def vplay(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                                add_to_queue(chat_id, songname, ytlink, url, image, duration, "Video", Q)
                                 await loser.delete()
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
@@ -278,7 +278,7 @@ async def vplay(c: Client, m: Message):
                     await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
-                        pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                        pos = add_to_queue(chat_id, songname, ytlink, url, image, duration, "Video", Q)
                         await loser.delete()
                         requester = (
                             f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -300,7 +300,7 @@ async def vplay(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                            add_to_queue(chat_id, songname, ytlink, url, image, duration, "Video", Q)
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
