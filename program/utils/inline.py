@@ -1,6 +1,6 @@
 """ inline section button """
 
-from pyrogram import (
+from pyrogram.types import (
   CallbackQuery,
   InlineKeyboardButton,
   InlineKeyboardMarkup,
