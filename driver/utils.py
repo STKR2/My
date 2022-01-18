@@ -3,7 +3,12 @@ import asyncio
 from driver.veez import bot, call_py
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
+from driver.queues import (
+    QUEUE,
+    clear_queue,
+    get_queue,
+    pop_an_item,
+)
 from pytgcalls.types.input_stream.quality import (
     HighQualityAudio,
     HighQualityVideo,
@@ -45,6 +50,7 @@ async def skip_current_song(chat_id):
                 type = chat_queue[1][3]
                 resol = chat_queue[1][4]
                 image = chat_queue[1][5]
+                duration = chat_queue[1][6]
                 if type == "Audio":
                     await call_py.change_stream(
                         chat_id,
@@ -68,7 +74,7 @@ async def skip_current_song(chat_id):
                         )
                     )
                 pop_an_item(chat_id)
-                return [songname, link, type, image]
+                return [songname, link, type, image, duration]
             except:
                 await call_py.leave_group_call(chat_id)
                 clear_queue(chat_id)
@@ -121,7 +127,7 @@ async def stream_end_handler(_, u: Update):
         elif op==2:
            await bot.send_message(chat_id, "❌ an error occurred\n\n» **Clearing** __Queues__ and leaving video chat.")
         else:
-         await bot.send_message(chat_id, f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n💭 **Chat:** `{chat_id}`", disable_web_page_preview=True, reply_markup=keyboard)
+         await bot.send_message(chat_id, f"💡 **Streaming next track**\n\n🏷 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n⏱ **Duration:** `{op[3]}`", disable_web_page_preview=True, reply_markup=keyboard)
     else:
        pass
 
