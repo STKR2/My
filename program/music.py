@@ -83,10 +83,10 @@ async def play(c: Client, m: Message):
         return
     try:
         ubot = (await user.get_me()).id
-        b = await c.get_chat_member(m.chat.id, ubot) 
+        b = await c.get_chat_member(chat_id, ubot) 
         if b.status == "kicked":
-            await c.unban_chat_member(m.chat.id, ubot)
-            invitelink = await c.export_chat_invite_link(m.chat.id)
+            await c.unban_chat_member(chat_id, ubot)
+            invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
@@ -94,7 +94,8 @@ async def play(c: Client, m: Message):
             await ubot.join_chat(invitelink)
     except UserNotParticipant:
         try:
-            invitelink = await c.export_chat_invite_link(m.chat.id)
+            ubot = (await user.get_me()).id
+            invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
