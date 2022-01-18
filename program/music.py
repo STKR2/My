@@ -186,7 +186,7 @@ async def play(c: Client, m: Message):
                     else:
                         if chat_id in QUEUE:
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, image, "Audio", 0
+                                chat_id, songname, ytlink, url, image, duration, "Audio", 0
                             )
                             await suhu.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -205,7 +205,7 @@ async def play(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
+                                add_to_queue(chat_id, songname, ytlink, url, image, duration, "Audio", 0)
                                 await suhu.delete()
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
@@ -244,7 +244,7 @@ async def play(c: Client, m: Message):
                     await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
-                        pos = add_to_queue(chat_id, songname, ytlink, url, image, "Audio", 0)
+                        pos = add_to_queue(chat_id, songname, ytlink, url, image, duration, "Audio", 0)
                         await suhu.delete()
                         requester = (
                             f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -264,7 +264,7 @@ async def play(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
+                            add_to_queue(chat_id, songname, ytlink, url, image, duration, "Audio", 0)
                             await suhu.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
