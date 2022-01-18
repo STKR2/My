@@ -83,19 +83,18 @@ async def vplay(c: Client, m: Message):
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Manage video chat__"
-        )
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again.")
         return
     if not a.can_delete_messages:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Delete messages__"
-        )
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Delete messages__\n\nOnce done, try again.")
         return
     if not a.can_invite_users:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
-        return
-    if not a.can_promote_members:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add new Admins__")
+        await m.reply_text(
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Add users__\n\nOnce done, try again.")
         return
     try:
         ubot = (await user.get_me()).id
@@ -107,10 +106,7 @@ async def vplay(c: Client, m: Message):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await user.join_chat(invitelink)
-            await m.chat.promote_member(
-                ubot, can_manage_voice_chats=True
-            )
+            await ubot.join_chat(invitelink)
     except UserNotParticipant:
         try:
             ubot = (await user.get_me()).id
@@ -119,10 +115,7 @@ async def vplay(c: Client, m: Message):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await user.join_chat(invitelink)
-            await m.chat.promote_member(
-                ubot, can_manage_voice_chats=True
-            )
+            await ubot.join_chat(invitelink)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
@@ -339,19 +332,18 @@ async def vstream(c: Client, m: Message):
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Manage video chat__"
-        )
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again.")
         return
     if not a.can_delete_messages:
         await m.reply_text(
-            "missing required permission:" + "\n\n» ❌ __Delete messages__"
-        )
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Delete messages__\n\nOnce done, try again.")
         return
     if not a.can_invite_users:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
-        return
-    if not a.can_promote_members:
-        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add new Admins__")
+        await m.reply_text(
+        "💡 To use me, Give me the following permission below:"
+        + "\n\n» ❌ __Add users__\n\nOnce done, try again.")
         return
     try:
         ubot = (await user.get_me()).id
@@ -363,10 +355,7 @@ async def vstream(c: Client, m: Message):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await user.join_chat(invitelink)
-            await m.chat.promote_member(
-                ubot, can_manage_voice_chats=True
-            )
+            await ubot.join_chat(invitelink)
     except UserNotParticipant:
         try:
             ubot = (await user.get_me()).id
@@ -375,10 +364,7 @@ async def vstream(c: Client, m: Message):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await user.join_chat(invitelink)
-            await m.chat.promote_member(
-                ubot, can_manage_voice_chats=True
-            )
+            await ubot.join_chat(invitelink)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
