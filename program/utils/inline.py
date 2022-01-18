@@ -11,8 +11,8 @@ from pyrogram import (
 def stream_markup(user_id):
   buttons = [
     [
-      InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+      InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data=f'cbmenu | {user_id}'),
+      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data=f'cls'),
     ],
   ]
   return buttons
@@ -21,16 +21,16 @@ def stream_markup(user_id):
 def menu_markup(user_id):
   buttons = [
     [
-      InlineKeyboardButton(text="⏹", callback_data="cbstop"),
-      InlineKeyboardButton(text="⏸", callback_data="cbresume"),
-      InlineKeyboardButton(text="▶️", callback_data="cbresume"),
+      InlineKeyboardButton(text="⏹", callback_data=f'cbstop | {user_id}'),
+      InlineKeyboardButton(text="⏸", callback_data=f'cbresume | {user_id}'),
+      InlineKeyboardButton(text="▶️", callback_data=f'cbresume | {user_id}'),
     ],
     [
-      InlineKeyboardButton(text="🔇", callback_data="cbmute"),
-      InlineKeyboardButton(text="🔊", callback_data="cbunmute"),
+      InlineKeyboardButton(text="🔇", callback_data=f'cbmute | {user_id}'),
+      InlineKeyboardButton(text="🔊", callback_data=f'cbunmute | {user_id}'),
     ],
     [
-      InlineKeyboardButton(text="🗑 Close", callback_data="cls"),
+      InlineKeyboardButton(text="🗑 Close", callback_data='cls'),
     ]
   ]
   return buttons
