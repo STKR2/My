@@ -2,21 +2,26 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
+# important things
 import re
 import asyncio
-
-from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+# pyrogram stuff
+from pyrogram import Client
+from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+# pytgcalls stuff
+from pytgcalls import StreamType
+from pytgcalls.types.input_stream import AudioPiped
+# repository stuff
+from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
 from driver.utils import bash
-from pyrogram import Client
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from pytgcalls import StreamType
-from pytgcalls.types.input_stream import AudioPiped
+from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+# youtube-dl stuff
 from youtubesearchpython import VideosSearch
 
 
@@ -46,14 +51,7 @@ async def play(c: Client, m: Message):
     await m.delete()
     replied = m.reply_to_message
     chat_id = m.chat.id
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
-            ]
-        ]
-    )
+    user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
     try:
@@ -124,11 +122,12 @@ async def play(c: Client, m: Message):
                 songname = "Voice Note"
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
+                buttons = stream_markup(user_id)
                 await suhu.delete()
                 await m.reply_photo(
                     photo=f"{IMG_1}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {m.from_user.mention()}",
-                    reply_markup=keyboard,
                 )
             else:
              try:
@@ -142,11 +141,12 @@ async def play(c: Client, m: Message):
                 )
                 add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                 await suhu.delete()
+                buttons = stream_markup(user_id)
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
-                    reply_markup=keyboard,
                 )
              except Exception as e:
                 await suhu.delete()
@@ -182,11 +182,12 @@ async def play(c: Client, m: Message):
                                 chat_id, songname, ytlink, url, "Audio", 0
                             )
                             await suhu.delete()
+                            buttons = stream_markup(user_id)
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=image,
+                                reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🎧 **Request by:** {requester}",
-                                reply_markup=keyboard,
                             )
                         else:
                             try:
@@ -200,11 +201,12 @@ async def play(c: Client, m: Message):
                                 )
                                 add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                                 await suhu.delete()
+                                buttons = stream_markup(user_id)
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=image,
+                                    reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🏷 **Name:** [{songname}]({url})\n**⏱ Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
-                                    reply_markup=keyboard,
                                 )
                             except Exception as ep:
                                 await suhu.delete()
@@ -239,13 +241,12 @@ async def play(c: Client, m: Message):
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                         await suhu.delete()
-                        requester = (
-                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        )
+                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        buttons = stream_markup(user_id)
                         await m.reply_photo(
                             photo=image,
+                            reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🎧 **Request by:** {requester}",
-                            reply_markup=keyboard,
                         )
                     else:
                         try:
@@ -260,10 +261,11 @@ async def play(c: Client, m: Message):
                             add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                             await suhu.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                            buttons = stream_markup(user_id)
                             await m.reply_photo(
                                 photo=image,
+                                reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"🏷 **Name:** [{songname}]({url})\n**⏱ Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Music`",
-                                reply_markup=keyboard,
                             )
                         except Exception as ep:
                             await suhu.delete()
