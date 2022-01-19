@@ -40,6 +40,8 @@ async def update_admin(client, message):
 
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
 async def skip(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -85,6 +87,8 @@ async def skip(client, m: Message):
     & other_filters
 )
 async def stop(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -105,6 +109,8 @@ async def stop(client, m: Message):
     command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters
 )
 async def pause(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -126,6 +132,8 @@ async def pause(client, m: Message):
     command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters
 )
 async def resume(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -147,6 +155,8 @@ async def resume(client, m: Message):
     command(["mute", f"mute@{BOT_USERNAME}", "vmute"]) & other_filters
 )
 async def mute(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -168,6 +178,8 @@ async def mute(client, m: Message):
     command(["unmute", f"unmute@{BOT_USERNAME}", "vunmute"]) & other_filters
 )
 async def unmute(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
@@ -278,6 +290,8 @@ async def cbunmute(_, query: CallbackQuery):
     command(["volume", f"volume@{BOT_USERNAME}", "vol"]) & other_filters
 )
 async def change_volume(client, m: Message):
+    if m.sender_chat:
+        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
     permission = "can_manage_voice_chats"
     s = await adminsOnly(permission, m)
     if s == 1:
