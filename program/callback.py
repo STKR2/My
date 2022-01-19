@@ -2,6 +2,7 @@
 
 from driver.queues import QUEUE
 from pyrogram import Client, filters
+from program.utils.inline import menu_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from config import (
     ASSISTANT_NAME,
@@ -15,6 +16,7 @@ from config import (
 
 @Client.on_callback_query(filters.regex("cbstart"))
 async def cbstart(_, query: CallbackQuery):
+    await query.answer("home start")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
 💭 **[{BOT_NAME}](https://t.me/{BOT_USERNAME}) allows you to play music and video on groups through the new Telegram's video chats!**
@@ -56,6 +58,7 @@ async def cbstart(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbhowtouse"))
 async def cbguides(_, query: CallbackQuery):
+    await query.answer("user guide")
     await query.edit_message_text(
         f"""❓ **Basic Guide for using this bot:**
 
@@ -79,6 +82,7 @@ async def cbguides(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbcmds(_, query: CallbackQuery):
+    await query.answer("commands menu")
     await query.edit_message_text(
         f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
 
@@ -102,6 +106,7 @@ async def cbcmds(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbbasic"))
 async def cbbasic(_, query: CallbackQuery):
+    await query.answer("basic commands")
     await query.edit_message_text(
         f"""🏮 here is the basic commands:
 
@@ -127,6 +132,7 @@ async def cbbasic(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbadmin"))
 async def cbadmin(_, query: CallbackQuery):
+    await query.answer("admin commands")
     await query.edit_message_text(
         f"""🏮 here is the admin commands:
 
@@ -149,6 +155,7 @@ async def cbadmin(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbsudo"))
 async def cbsudo(_, query: CallbackQuery):
+    await query.answer("sudo commands")
     await query.edit_message_text(
         f"""🏮 here is the sudo commands:
 
@@ -168,28 +175,17 @@ async def cbsudo(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbmenu"))
 async def cbmenu(_, query: CallbackQuery):
-    if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
     chat_id = query.message.chat.id
+    user_id = query.message.from_user.id
+    buttons = menu_markup(user_id)
+    chat = query.message.chat.title
     if chat_id in QUEUE:
           await query.edit_message_text(
-              f"⚙️ **settings of** {query.message.chat.title}\n\n⏸ : pause stream\n▶️ : resume stream\n🔇 : mute userbot\n🔊 : unmute userbot\n⏹ : stop stream",
-              reply_markup=InlineKeyboardMarkup(
-                  [[
-                      InlineKeyboardButton("⏹", callback_data="cbstop"),
-                      InlineKeyboardButton("⏸", callback_data="cbpause"),
-                      InlineKeyboardButton("▶️", callback_data="cbresume"),
-                  ],[
-                      InlineKeyboardButton("🔇", callback_data="cbmute"),
-                      InlineKeyboardButton("🔊", callback_data="cbunmute"),
-                  ],[
-                      InlineKeyboardButton("🗑 Close", callback_data="cls")],
-                  ]
-             ),
-         )
+              f"⚙️ **Settings of** {chat}\n\n⏸ : pause stream\n▶️ : resume stream\n🔇 : mute userbot\n🔊 : unmute userbot\n⏹ : stop stream",
+              reply_markup=InlineKeyboardMarkup(buttons)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
@@ -198,5 +194,5 @@ async def cbmenu(_, query: CallbackQuery):
 async def close(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
-        return await query.answer("💡 only admin with manage voice chats permission that can tap this button !", show_alert=True)
+        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
     await query.message.delete()
