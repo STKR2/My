@@ -6,6 +6,7 @@ import re
 import asyncio
 
 from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
@@ -61,14 +62,7 @@ async def vplay(c: Client, m: Message):
     await m.delete()
     replied = m.reply_to_message
     chat_id = m.chat.id
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
-            ]
-        ]
-    )
+    user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
     try:
@@ -151,10 +145,11 @@ async def vplay(c: Client, m: Message):
                 pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                buttons = stream_markup(user_id)
                 await m.reply_photo(
                     photo=f"{IMG_1}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({link}) | `video`\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}",
-                    reply_markup=keyboard,
                 )
             else:
                 if Q == 720:
@@ -176,10 +171,11 @@ async def vplay(c: Client, m: Message):
                 add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                buttons = stream_markup(user_id)
                 await m.reply_photo(
                     photo=f"{IMG_2}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"🏷 **Name:** [{songname}]({link})\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
-                    reply_markup=keyboard,
                 )
         else:
             if len(m.command) < 2:
@@ -214,10 +210,11 @@ async def vplay(c: Client, m: Message):
                             )
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                            buttons = stream_markup(user_id)
                             await m.reply_photo(
                                 photo=image,
+                                reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
-                                reply_markup=keyboard,
                             )
                         else:
                             try:
@@ -234,10 +231,11 @@ async def vplay(c: Client, m: Message):
                                 add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                                 await loser.delete()
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                                buttons = stream_markup(user_id)
                                 await m.reply_photo(
                                     photo=image,
+                                    reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
-                                    reply_markup=keyboard,
                                 )
                             except Exception as ep:
                                 await loser.delete()
@@ -273,13 +271,12 @@ async def vplay(c: Client, m: Message):
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                         await loser.delete()
-                        requester = (
-                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        )
+                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        buttons = stream_markup(user_id)
                         await m.reply_photo(
                             photo=image,
+                            reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🏷 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🎧 **Request by:** {requester}",
-                            reply_markup=keyboard,
                         )
                     else:
                         try:
@@ -296,10 +293,11 @@ async def vplay(c: Client, m: Message):
                             add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                            buttons = stream_markup(user_id)
                             await m.reply_photo(
                                 photo=image,
+                                reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"🏷 **Name:** [{songname}]({url})\n⏱ **Duration:** `{duration}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}\n📹 **Stream type:** `Video`",
-                                reply_markup=keyboard,
                             )
                         except Exception as ep:
                             await loser.delete()
@@ -310,14 +308,7 @@ async def vplay(c: Client, m: Message):
 async def vstream(c: Client, m: Message):
     await m.delete()
     chat_id = m.chat.id
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
-            ]
-        ]
-    )
+    user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
     try:
@@ -409,10 +400,11 @@ async def vstream(c: Client, m: Message):
                 pos = add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                buttons = stream_markup(user_id)
                 await m.reply_photo(
                     photo=f"{IMG_1}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n💭 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}",
-                    reply_markup=keyboard,
                 )
             else:
                 if Q == 720:
@@ -434,13 +426,12 @@ async def vstream(c: Client, m: Message):
                     )
                     add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
                     await loser.delete()
-                    requester = (
-                        f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                    )
+                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    buttons = stream_markup(user_id)
                     await m.reply_photo(
                         photo=f"{IMG_2}",
+                        reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"💡 **[Video live]({link}) stream started.**\n\n💭 **Chat:** `{chat_id}`\n💡 **Status:** `Playing`\n🎧 **Request by:** {requester}",
-                        reply_markup=keyboard,
                     )
                 except Exception as ep:
                     await loser.delete()
