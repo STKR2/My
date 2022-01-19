@@ -1,7 +1,7 @@
 from cache.admins import admins
 from driver.veez import call_py, bot
 from pyrogram import Client, filters
-from driver.chat_author import adminsOnly
+from program.utils.chat_author import adminsOnly
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
