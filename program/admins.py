@@ -199,6 +199,7 @@ async def cbpause(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await call_py.pause_stream(chat_id)
+            await query.answer("streaming paused")
             await query.edit_message_text(
                 "⏸ the streaming has paused", reply_markup=back_mark
             )
@@ -217,6 +218,7 @@ async def cbresume(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await call_py.resume_stream(chat_id)
+            await query.answer("streaming resumed")
             await query.edit_message_text(
                 "▶️ the streaming has resumed", reply_markup=back_mark
             )
@@ -252,6 +254,7 @@ async def cbmute(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await call_py.mute_stream(chat_id)
+            await query.answer("streaming muted")
             await query.edit_message_text(
                 "🔇 userbot succesfully muted", reply_markup=back_mark
             )
@@ -270,6 +273,7 @@ async def cbunmute(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await call_py.unmute_stream(chat_id)
+            await query.answer("streaming unmuted")
             await query.edit_message_text(
                 "🔊 userbot succesfully unmuted", reply_markup=back_mark
             )
