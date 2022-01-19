@@ -1,7 +1,8 @@
 from cache.admins import admins
 from driver.veez import call_py, bot
 from pyrogram import Client, filters
-from program.utils.chat_author import adminsOnly
+from driver.chat_author import adminsOnly
+from driver.perms import member_permissions
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
@@ -14,14 +15,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     Message,
 )
-
-
-async def member_permissions(chat_id: int, user_id: int):
-    perms = []
-    member = await bot.get_chat_member(chat_id, user_id)
-    if member.can_manage_voice_chats:
-        perms.append("can_manage_voice_chats")
-    return perms
 
 
 @Client.on_message(command(["reload", f"reload@{BOT_USERNAME}"]) & other_filters)
