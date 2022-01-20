@@ -1,8 +1,6 @@
 from cache.admins import admins
 from driver.veez import call_py, bot
 from pyrogram import Client, filters
-from driver.chat_author import adminsOnly
-from driver.perms import member_permissions
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
@@ -32,13 +30,8 @@ async def update_admin(client, message):
 
 
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
+@authorized_users_only
 async def skip(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     user_id = m.from_user.id
     chat_id = m.chat.id
     if len(m.command) < 2:
@@ -79,13 +72,8 @@ async def skip(client, m: Message):
     command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "vstop"])
     & other_filters
 )
+@authorized_users_only
 async def stop(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
@@ -101,14 +89,9 @@ async def stop(client, m: Message):
 @Client.on_message(
     command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters
 )
+@authorized_users_only
 async def pause(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
-    chat_id = m.chat.id
+   chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.pause_stream(chat_id)
@@ -124,13 +107,8 @@ async def pause(client, m: Message):
 @Client.on_message(
     command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters
 )
+@authorized_users_only
 async def resume(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
@@ -147,13 +125,8 @@ async def resume(client, m: Message):
 @Client.on_message(
     command(["mute", f"mute@{BOT_USERNAME}", "vmute"]) & other_filters
 )
+@authorized_users_only
 async def mute(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
@@ -170,13 +143,8 @@ async def mute(client, m: Message):
 @Client.on_message(
     command(["unmute", f"unmute@{BOT_USERNAME}", "vunmute"]) & other_filters
 )
+@authorized_users_only
 async def unmute(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
@@ -286,13 +254,8 @@ async def cbunmute(_, query: CallbackQuery):
 @Client.on_message(
     command(["volume", f"volume@{BOT_USERNAME}", "vol"]) & other_filters
 )
+@authorized_users_only
 async def change_volume(client, m: Message):
-    if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account.") 
-    permission = "can_manage_voice_chats"
-    s = await adminsOnly(permission, m)
-    if s == 1:
-        return
     range = m.command[1]
     chat_id = m.chat.id
     if chat_id in QUEUE:
