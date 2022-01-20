@@ -91,7 +91,7 @@ async def stop(client, m: Message):
 )
 @authorized_users_only
 async def pause(client, m: Message):
-   chat_id = m.chat.id
+    chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
             await call_py.pause_stream(chat_id)
