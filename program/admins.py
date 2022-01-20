@@ -32,6 +32,7 @@ async def update_admin(client, message):
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
 @authorized_users_only
 async def skip(client, m: Message):
+    await m.delete()
     user_id = m.from_user.id
     chat_id = m.chat.id
     if len(m.command) < 2:
