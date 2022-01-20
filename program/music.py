@@ -89,16 +89,15 @@ async def play(c: Client, m: Message):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await ubot.join_chat(invitelink)
+            await user.join_chat(invitelink)
     except UserNotParticipant:
         try:
-            ubot = (await user.get_me()).id
             invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
                     invitelink = invitelink.replace(
                         "https://t.me/+", "https://t.me/joinchat/"
                     )
-            await ubot.join_chat(invitelink)
+            await user.join_chat(invitelink)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
