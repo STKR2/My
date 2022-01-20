@@ -1,6 +1,5 @@
 # credit to TeamYukki for this speedtest module
 
-
 import os
 import wget
 import speedtest
@@ -15,7 +14,6 @@ from pyrogram.types import Message
 
 
 @Client.on_message(command(["speedtest", f"speedtest@{bname}"]) & ~filters.edited)
-@sudo_users_only
 async def statsguwid(_, message: Message):
     m = await message.reply_text("Running server speedtest.")
     try:
