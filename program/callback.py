@@ -120,6 +120,7 @@ async def cbbasic(_, query: CallbackQuery):
 » /search (query) - search a youtube video link
 
 » /ping - show the bot ping status
+» /speedtest - run the bot server speedtest
 » /uptime - show the bot uptime status
 » /alive - show the bot alive info (in group)
 
