@@ -9,7 +9,7 @@ from driver.decorators import authorized_users_only, sudo_users_only
 
 
 @Client.on_message(
-    command(["userbotjoin", f"userbotjoin@{BOT_USERNAME}"]) & ~filters.group & ~filters.edited
+    command(["userbotjoin", f"userbotjoin@{BOT_USERNAME}"]) & other_filters
 )
 @authorized_users_only
 async def join_chat(c: Client, m: Message):
@@ -21,13 +21,13 @@ async def join_chat(c: Client, m: Message):
                 "https://t.me/+", "https://t.me/joinchat/"
             )
             await user.join_chat(invitelink)
-            await user.send_message(chat_id, "✅ userbot entered chat")
+            return await user.send_message(chat_id, "✅ userbot joined chat")
     except UserAlreadyParticipant:
-        await user.send_message(chat_id, "✅ userbot already in chat")
+        return await user.send_message(chat_id, "✅ userbot already in this chat")
 
 
 @Client.on_message(
-    command(["userbotleave", f"userbotleave@{BOT_USERNAME}"]) & filters.group & ~filters.edited
+    command(["userbotleave", f"userbotleave@{BOT_USERNAME}"]) other_filters
 )
 @authorized_users_only
 async def leave_chat(_, m: Message):
@@ -74,13 +74,13 @@ async def leave_all(client, message):
     )
 
 
-# @Client.on_message(filters.left_chat_member)
-# async def ubot_leave(c: Client, m: Message):
+@Client.on_message(filters.left_chat_member)
+async def ubot_leave(c: Client, m: Message):
 #    ass_id = (await user.get_me()).id
-#    bot_id = (await c.get_me()).id
-#    chat_id = m.chat.id
-#    left_member = m.left_chat_member
-#    if left_member.id == bot_id:
-#        await user.leave_chat(chat_id)
+    bot_id = (await c.get_me()).id
+    chat_id = m.chat.id
+    left_member = m.left_chat_member
+    if left_member.id == bot_id:
+        await user.leave_chat(chat_id)
 #    elif left_member.id == ass_id:
 #        await c.leave_chat(chat_id)
