@@ -23,7 +23,7 @@ async def join_chat(c: Client, m: Message):
             await user.join_chat(invitelink)
             return await user.send_message(chat_id, "✅ userbot joined chat")
     except UserAlreadyParticipant:
-        return await user.send_message(chat_id, "✅ userbot already in this chat")
+        return await user.send_message(chat_id, "✅ userbot already in chat")
 
 
 @Client.on_message(
