@@ -60,20 +60,19 @@ async def cbstart(_, query: CallbackQuery):
 async def cbguides(_, query: CallbackQuery):
     await query.answer("user guide")
     await query.edit_message_text(
-        f"""❓ **Basic Guide for using this bot:**
+        f"""❓ How to use this Bot ?, read the Guide below !
 
-1.) **First, add me to your group.**
-2.) **Then, promote me as administrator and give all permissions except Anonymous Admin.**
-3.) **After promoting me, type /reload in group to refresh the admin data.**
-3.) **Add @{ASSISTANT_NAME} to your group or type /userbotjoin to invite her.**
-4.) **Turn on the video chat first before start to play video/music.**
-5.) **Sometimes, reloading the bot by using /reload command can help you to fix some problem.**
+1.) First, add this bot to your Group.
+2.) Then, promote this bot as administrator on the Group also give all permissions except Anonymous admin.
+3.) After promoting this bot, type /reload in Group to update the admin data.
+3.) Invite @{ASSISTANT_NAME} to your group or type /userbotjoin to invite her (unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`).
+4.) Turn on/Start the video chat first before start to play video/music.
 
-📌 **If the userbot not joined to video chat, make sure if the video chat already turned on, or type /userbotleave then type /userbotjoin again.**
+`--- END : EVERYTHING HAS BEEN SETUP ---`
 
-💡 **If you have a follow-up questions about this bot, you can tell it on my support chat here: @{GROUP_SUPPORT}**
+📌 If the userbot not joined to video chat, make sure if the video chat already turned on and the userbot in the chat.
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+💡 If you have a follow-up questions about this bot, you can tell it on my support chat here: @{GROUP_SUPPORT}.""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")]]
         ),
