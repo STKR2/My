@@ -68,7 +68,7 @@ async def cbguides(_, query: CallbackQuery):
 3.) Invite @{ASSISTANT_NAME} to your group or type /userbotjoin to invite her (unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`).
 4.) Turn on/Start the video chat first before start to play video/music.
 
-`--- END : EVERYTHING HAS BEEN SETUP ---`
+`- END, EVERYTHING HAS BEEN SETUP -`
 
 📌 If the userbot not joined to video chat, make sure if the video chat already turned on and the userbot in the chat.
 
