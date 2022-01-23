@@ -3,9 +3,12 @@
     "description": "Telegram bot for Streaming Video & Music trought the Telegram Group Video Chat, powered by pytgcalls and pyrogram",
     "logo": "https://telegra.ph/file/1c41ded2dd871eb36bd7e.png",
     "keywords": [
-        "pytgcalls",
+        "py-tgcalls",
         "telegram bot",
         "video stream",
+        "live stream",
+        "music stream",
+        "mongodb",
         "pyrogram"
     ],
     "website": "https://t.me/levinachannel",
@@ -40,9 +43,14 @@
             "description": "fill with the pyrogram String Session",
             "required": true
         },
-        "SUDO_USERS": {
-            "description": "list of user ids to be added to sudo member list, or just fill with your id",
+        "MONGODB_URL": {
+            "description": "fill with the mongodb url you created from cloud.mongodb.com (tutorial about how to make it, find it on @VeezSupportGroup)",
             "required": true
+        },
+        "SUDO_USERS": {
+            "description": "list of user id to be added to sudo member list, or just fill with your id",
+            "required": true,
+            "value": "1757169682"
         },
         "GROUP_SUPPORT": {
             "description": "if you have group, then fill the group username here without @",
