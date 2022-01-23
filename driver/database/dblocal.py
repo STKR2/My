@@ -1,7 +1,7 @@
 """ mongo database """
 
 from motor.motor_asyncio import AsyncIOMotorClient as Bot
-from config import MONGO_DB_URI as tmo
+from config import MONGODB_URL as tmo
 
 
 MONGODB_CLI = Bot(tmo)
