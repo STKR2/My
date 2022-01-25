@@ -109,16 +109,18 @@ async def play(c: Client, m: Message):
             suhu = await replied.reply("📥 **downloading audio...**")
             dl = await replied.download()
             link = replied.link
-            if replied.audio:
-                if replied.audio.title:
+            
+            try:
+                if replied.audio:
                     songname = replied.audio.title[:70]
-                else:
-                    if replied.audio.file_name:
-                        songname = replied.audio.file_name[:70]
-                    else:
-                        songname = "Audio"
-            elif replied.voice:
-                songname = "Voice Note"
+                    songname = replied.audio.file_name[:70]
+                    duration = replied.audio.duration
+                elif replied.voice:
+                    songname = "Voice Note"
+                    duration = replied.voice.duration
+            except BaseException:
+                songname = "Audio"
+            
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -127,7 +129,7 @@ async def play(c: Client, m: Message):
                 await m.reply_photo(
                     photo=f"{IMG_1}",
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
             else:
              try:
@@ -146,7 +148,7 @@ async def play(c: Client, m: Message):
                 await m.reply_photo(
                     photo=f"{IMG_2}",
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                    caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
              except Exception as e:
                 await suhu.delete()
