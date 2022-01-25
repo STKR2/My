@@ -28,7 +28,7 @@
             "required": true
         },
         "BOT_USERNAME": {
-            "description": "your bot username from @BotFather",
+            "description": "fill with your bot username from @BotFather but without using '@' symbol",
             "required": true
         },
         "BOT_NAME": {
@@ -51,6 +51,11 @@
             "description": "list of user id to be added to sudo member list, or just fill with your id",
             "required": true,
             "value": "1757169682"
+        },
+        "UPSTREAM_REPO": {
+            "description": "This is needed for update feature, if you deployed forked repo put your forked repo link here, if not just leave it as it",
+            "required": true,
+            "value": "https://github.com/levina-lab/video-stream"
         },
         "GROUP_SUPPORT": {
             "description": "if you have group, then fill the group username here without @",
