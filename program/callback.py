@@ -166,6 +166,9 @@ async def cbsudo(_, query: CallbackQuery):
 » /restart - restart your bot
 » /leaveall - order userbot to leave from all group
 
+» /broadcast (`message`) - send a broadcast message to all groups entered by bot
+» /broadcast_pin (`message`) - send a broadcast message to all groups entered by bot with the chat pin
+
 ⚡ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
