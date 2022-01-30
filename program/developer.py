@@ -14,7 +14,7 @@ from config import BOT_USERNAME as bname
 from driver.veez import bot
 from driver.filters import command, other_filters
 from pyrogram import Client, filters
-from driver.decorators import sudo_users_only, error
+from driver.decorators import sudo_users_only, errors
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
