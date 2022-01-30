@@ -11,6 +11,7 @@ from sys import version as pyver
 from inspect import getfullargspec
 
 from config import BOT_USERNAME as bname
+from driver.veez import bot
 from driver.filters import command, other_filters
 from pyrogram import Client, filters
 from driver.decorators import sudo_users_only, error
@@ -23,7 +24,6 @@ async def aexec(code, client, message):
         + "".join(f"\n {a}" for a in code.split("\n"))
     )
     return await locals()["__aexec"](client, message)
-
 
 async def edit_or_reply(msg: Message, **kwargs):
     func = msg.edit_text if msg.from_user.is_self else msg.reply
@@ -168,3 +168,21 @@ async def shellrunner(client, message):
         await edit_or_reply(message, text=f"`OUTPUT:`\n```{output}```")
     else:
         await edit_or_reply(message, text="`OUTPUT:`\n`no output`")
+
+
+@Client.on_message(command(["leavebot", f"leavebot{bname}"]) & other_filters)
+@sudo_users_only
+async def bot_leave_group(_, message):
+    if len(message.command) != 2:
+        await message.reply_text(
+            "**usage:**\n\n» /leavebot [chat id]"
+        )
+        return
+    chat = message.text.split(None, 2)[1]
+    try:
+        await bot.leave_chat(chat)
+    except Exception as e:
+        await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
+        print(e)
+        return
+    await message.reply_text(f"✅ Bot successfully left from chat: `{chat}`")
