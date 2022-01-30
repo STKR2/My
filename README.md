@@ -67,7 +67,7 @@
 ## Heroku Deployment 💜
 The easy way to host this bot, deploy to Heroku, Change the app country to Europe (it will help to make the bot stable).
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/levina-lab/video-stream)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## VPS Deployment 📡
 Get the best Quality of streaming performance by hosting it on VPS, here's the step's:
@@ -95,7 +95,6 @@ python3 main.py # run the bot.
 - [Zxce3](https://github.com/Zxce3) ``Dev``
 - [DoellBarr](https://github.com/DoellBarr) ``Dev``
 - [tofikdn](https://github.com/tofikdn) ``Dev``
-- [Makoto-XD](https://github.com/Makoto-XD) ``Supporter``
 - [Laky's](https://github.com/Laky-64) for [``py-tgcalls``](https://github.com/pytgcalls/pytgcalls)
 - [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
 
