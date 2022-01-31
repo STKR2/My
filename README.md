@@ -13,7 +13,7 @@
     <a href="https://github.com/levina-lab/video-stream/network/members"> <img src="https://img.shields.io/github/stars/levina-lab/video-stream?color=red&logo=github&logoColor=blue&style=flat-square" /></a>  
 </p>
 
-## 📊 Stats
+## 📊 CodeFactor Stats
 [![CodeFactor](https://www.codefactor.io/repository/github/levina-lab/video-stream/badge)](https://www.codefactor.io/repository/github/levina-lab/video-stream)
 
 ## 🎭 Preview
@@ -34,6 +34,9 @@
 - Control With Button support
 - Volume Control
 - Userbot Auto Join
+- Broadcast & Global Ban
+- Shell Executor (eval & sh)
+- SpeedTest Runner
 - Direct Updater
 
 ## 🛠 Commands:
@@ -93,7 +96,6 @@ python3 main.py # run the bot.
 
 - [Levina](https://github.com/levina-lab) ``Dev``
 - [Zxce3](https://github.com/Zxce3) ``Dev``
-- [DoellBarr](https://github.com/DoellBarr) ``Dev``
 - [tofikdn](https://github.com/tofikdn) ``Dev``
 - [Laky's](https://github.com/Laky-64) for [``py-tgcalls``](https://github.com/pytgcalls/pytgcalls)
 - [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
