@@ -4,6 +4,7 @@ import asyncio
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
+from pyrogram.errors import FloodWait
 from driver.filters import command
 from driver.decorators import sudo_users_only
 from driver.database.dbchat import get_served_chats
@@ -161,7 +162,7 @@ async def ungban_global(c: Client, message: Message):
         await message.reply_text(
             "I can't ungban myself because i can't be gbanned !"
         )
-    elif user_id in sudoers:
+    elif user_id in SUDO_USERS:
         await message.reply_text("Sudo users can't be gbanned/ungbanned !")
     else:
         is_gbanned = await is_gbanned_user(user_id)
