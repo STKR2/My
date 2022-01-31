@@ -12,6 +12,8 @@ async def ytsearch(_, message: Message):
     query = message.text.split(None, 1)[1]
     m = await message.reply_text("🔎 **Searching...**")
     results = YoutubeSearch(query, max_results=5).to_dict()
+    if len(results) == 0:
+        return await m.edit_text("❌ **no results found.**")
     text = ""
     for i in range(5):
         try:
