@@ -277,7 +277,9 @@ async def vplay(c: Client, m: Message):
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
                         await loser.delete()
-                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        requester = (
+                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        )
                         buttons = stream_markup(user_id)
                         await m.reply_photo(
                             photo=image,
