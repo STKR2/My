@@ -5,7 +5,7 @@
 import re
 import asyncio
 
-from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+from config import BOT_USERNAME, IMG_1, IMG_2
 from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
@@ -14,7 +14,7 @@ from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from pyrogram.types import InlineKeyboardMarkup, Message
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioVideoPiped
 from pytgcalls.types.input_stream.quality import (
@@ -64,7 +64,9 @@ async def vplay(c: Client, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
     if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
+        return await m.reply_text(
+            "you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights."
+        )
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -77,18 +79,21 @@ async def vplay(c: Client, m: Message):
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again."
+        )
         return
     if not a.can_delete_messages:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Delete messages__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Delete messages__\n\nOnce done, try again."
+        )
         return
     if not a.can_invite_users:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Add users__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Add users__\n\nOnce done, try again."
+        )
         return
     try:
         ubot = (await user.get_me()).id
@@ -97,17 +102,17 @@ async def vplay(c: Client, m: Message):
             await c.unban_chat_member(chat_id, ubot)
             invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
-                    invitelink = invitelink.replace(
-                        "https://t.me/+", "https://t.me/joinchat/"
-                    )
+                invitelink = invitelink.replace(
+                    "https://t.me/+", "https://t.me/joinchat/"
+                )
             await user.join_chat(invitelink)
     except UserNotParticipant:
         try:
             invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
-                    invitelink = invitelink.replace(
-                        "https://t.me/+", "https://t.me/joinchat/"
-                    )
+                invitelink = invitelink.replace(
+                    "https://t.me/+", "https://t.me/joinchat/"
+                )
             await user.join_chat(invitelink)
         except UserAlreadyParticipant:
             pass
@@ -311,7 +316,9 @@ async def vstream(c: Client, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
     if m.sender_chat:
-        return await m.reply_text("you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights.")
+        return await m.reply_text(
+            "you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights."
+        )
     try:
         aing = await c.get_me()
     except Exception as e:
@@ -324,37 +331,40 @@ async def vstream(c: Client, m: Message):
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Manage video chat__\n\nOnce done, try again."
+        )
         return
     if not a.can_delete_messages:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Delete messages__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Delete messages__\n\nOnce done, try again."
+        )
         return
     if not a.can_invite_users:
         await m.reply_text(
-        "💡 To use me, Give me the following permission below:"
-        + "\n\n» ❌ __Add users__\n\nOnce done, try again.")
+            "💡 To use me, Give me the following permission below:"
+            + "\n\n» ❌ __Add users__\n\nOnce done, try again."
+        )
         return
     try:
         ubot = (await user.get_me()).id
-        b = await c.get_chat_member(chat_id, ubot) 
+        b = await c.get_chat_member(chat_id, ubot)
         if b.status == "kicked":
             await c.unban_chat_member(chat_id, ubot)
             invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
-                    invitelink = invitelink.replace(
-                        "https://t.me/+", "https://t.me/joinchat/"
-                    )
+                invitelink = invitelink.replace(
+                    "https://t.me/+", "https://t.me/joinchat/"
+                )
             await user.join_chat(invitelink)
     except UserNotParticipant:
         try:
             invitelink = await c.export_chat_invite_link(chat_id)
             if invitelink.startswith("https://t.me/+"):
-                    invitelink = invitelink.replace(
-                        "https://t.me/+", "https://t.me/joinchat/"
-                    )
+                invitelink = invitelink.replace(
+                    "https://t.me/+", "https://t.me/joinchat/"
+                )
             await user.join_chat(invitelink)
         except UserAlreadyParticipant:
             pass
@@ -426,7 +436,9 @@ async def vstream(c: Client, m: Message):
                     )
                     add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
                     await loser.delete()
-                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    requester = (
+                        f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    )
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
                         photo=f"{IMG_2}",
