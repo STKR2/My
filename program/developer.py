@@ -158,7 +158,7 @@ async def shellrunner(client, message):
         if len(output) > 4096:
             with open("output.txt", "w+") as file:
                 file.write(output)
-            await app.send_document(
+            await bot.send_document(
                 message.chat.id,
                 "output.txt",
                 reply_to_message_id=message.message_id,
