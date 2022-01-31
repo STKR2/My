@@ -15,6 +15,7 @@ from git.exc import InvalidGitRepositoryError
 from config import UPSTREAM_REPO, BOT_USERNAME
 
 
+
 def gen_chlog(repo, diff):
     upstream_repo_url = Repo().remotes[0].config_reader.get("url").replace(".git", "")
     ac_br = repo.active_branch.name
@@ -64,7 +65,7 @@ async def update_repo(_, message: Message):
         system("git pull -f && pip3 install --no-cache-dir -r requirements.txt")
         execle(sys.executable, sys.executable, "main.py", environ)
         return
-    await msg.edit("bot is **up-to-date** with [main](https://github.com/levina-lab/video-stream/tree/main)", disable_web_page_preview=True)
+    await msg.edit(f"bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main)", disable_web_page_preview=True)
 
 
 @Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
