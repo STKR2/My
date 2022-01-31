@@ -12,7 +12,7 @@ from inspect import getfullargspec
 
 from config import BOT_USERNAME as bname
 from driver.veez import bot
-from driver.filters import command, other_filters
+from driver.filters import command
 from pyrogram import Client, filters
 from driver.decorators import sudo_users_only, errors
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -31,7 +31,7 @@ async def edit_or_reply(msg: Message, **kwargs):
     await func(**{k: v for k, v in kwargs.items() if k in spec})
 
 
-@Client.on_message(command(["eval", f"eval{bname}"]) & other_filters)
+@Client.on_message(command(["eval", f"eval{bname}"]) & & ~filters.edited)
 @sudo_users_only
 async def executor(client, message):
     if len(message.command) < 2:
@@ -107,7 +107,7 @@ async def runtime_func_cq(_, cq):
     await cq.answer(runtime, show_alert=True)
 
 
-@Client.on_message(command(["sh", f"sh{bname}"]) & other_filters)
+@Client.on_message(command(["sh", f"sh{bname}"]) & ~filters.edited)
 @sudo_users_only
 async def shellrunner(client, message):
     if len(message.command) < 2:
@@ -170,7 +170,7 @@ async def shellrunner(client, message):
         await edit_or_reply(message, text="`OUTPUT:`\n`no output`")
 
 
-@Client.on_message(command(["leavebot", f"leavebot{bname}"]) & other_filters)
+@Client.on_message(command(["leavebot", f"leavebot{bname}"]) & ~filters.edited)
 @sudo_users_only
 async def bot_leave_group(_, message):
     if len(message.command) != 2:
@@ -185,4 +185,4 @@ async def bot_leave_group(_, message):
         await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
         print(e)
         return
-    await message.reply_text(f"✅ Bot successfully left from chat: `{chat}`")
+    await message.reply_text(f"✅ Bot successfully left from the Group:\n\n» `{chat}`")
