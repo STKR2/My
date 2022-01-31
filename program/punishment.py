@@ -126,6 +126,7 @@ async def global_banned(c: Client, message: Message):
 @Client.on_message(command(["ungban", f"ungban@{bn}"]) & ~filters.edited)
 @sudo_users_only
 async def ungban_global(c: Client, message: Message):
+    chat_id = message.chat.id
     if not message.reply_to_message:
         if len(message.command) != 2:
             await message.reply_text(
@@ -147,10 +148,11 @@ async def ungban_global(c: Client, message: Message):
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("This user already ungbanned.")
+                await message.reply_text("This user not ungbanned !")
             else:
+                await c.unban_chat_member(chat_id, user.id)
                 await remove_gban_user(user.id)
-                await message.reply_text("✅ This user has ungbanned.")
+                await message.reply_text("✅ This user has ungbanned")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
@@ -167,7 +169,8 @@ async def ungban_global(c: Client, message: Message):
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("This user already un-gbanned")
+            await message.reply_text("This user not gbanned !")
         else:
+            await c.unban_chat_member(chat_id, user_id)
             await remove_gban_user(user_id)
-            await message.reply_text("✅ This user has ungbanned.")
+            await message.reply_text("✅ This user has ungbanned")
