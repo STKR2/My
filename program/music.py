@@ -200,7 +200,6 @@ async def play(c: Client, m: Message):
                                     chat_id,
                                     AudioPiped(
                                         ytlink,
-                                        HighQualityAudio(),
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
@@ -260,7 +259,6 @@ async def play(c: Client, m: Message):
                                 chat_id,
                                 AudioPiped(
                                     ytlink,
-                                    HighQualityAudio(),
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
