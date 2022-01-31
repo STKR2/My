@@ -165,6 +165,7 @@ async def cbsudo(_, query: CallbackQuery):
 » /update - update your bot to latest version
 » /restart - restart your bot
 » /leaveall - order userbot to leave from all group
+» /leavebot (`chat id`) - order bot to leave from the group you specify
 
 » /eval - execute any code
 » /sh - run any command
