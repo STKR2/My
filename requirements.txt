@@ -4,7 +4,6 @@ ffmpeg-python
 py-tgcalls
 pyrogram
 youtube-search-python
-git+https://github.com/ytdl-org/youtube-dl@master
 yt-dlp
 lyricsgenius
 speedtest-cli
