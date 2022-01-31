@@ -42,6 +42,7 @@ async def skip_current_song(chat_id):
                         chat_id,
                         AudioPiped(
                             url,
+                            HighQualityAudio(),
                         ),
                     )
                 elif type == "Video":
@@ -52,7 +53,12 @@ async def skip_current_song(chat_id):
                     elif Q == 360:
                         hm = LowQualityVideo()
                     await call_py.change_stream(
-                        chat_id, AudioVideoPiped(url, HighQualityAudio(), hm)
+                        chat_id, 
+                        AudioVideoPiped(
+                            url, 
+                            HighQualityAudio(), 
+                            hm,
+                        ),
                     )
                 pop_an_item(chat_id)
                 return [songname, link, type]

@@ -23,6 +23,17 @@ from pyrogram.types import InlineKeyboardMarkup, Message
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioPiped
 
+from pytgcalls.types.input_stream.quality import HighQualityAudio
+# repository stuff
+from program.utils.inline import stream_markup
+from driver.design.thumbnail import thumb
+from driver.design.chatname import CHAT_TITLE
+from driver.filters import command, other_filters
+from driver.queues import QUEUE, add_to_queue
+from driver.veez import call_py, user
+from driver.utils import bash
+from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+
 # youtube-dl stuff
 from youtubesearchpython import VideosSearch
 
@@ -118,16 +129,18 @@ async def play(c: Client, m: Message):
             suhu = await replied.reply("📥 **downloading audio...**")
             dl = await replied.download()
             link = replied.link
-            if replied.audio:
-                if replied.audio.title:
+            
+            try:
+                if replied.audio:
                     songname = replied.audio.title[:70]
-                else:
-                    if replied.audio.file_name:
-                        songname = replied.audio.file_name[:70]
-                    else:
-                        songname = "Audio"
-            elif replied.voice:
-                songname = "Voice Note"
+                    songname = replied.audio.file_name[:70]
+                    duration = replied.audio.duration
+                elif replied.voice:
+                    songname = "Voice Note"
+                    duration = replied.voice.duration
+            except BaseException:
+                songname = "Audio"
+            
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -136,9 +149,10 @@ async def play(c: Client, m: Message):
                 await m.reply_photo(
                     photo=f"{IMG_1}",
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
             else:
+
                 try:
                     await suhu.edit("🔄 **Joining vc...**")
                     await call_py.join_group_call(
@@ -162,6 +176,30 @@ async def play(c: Client, m: Message):
                 except Exception as e:
                     await suhu.delete()
                     await m.reply_text(f"🚫 error:\n\n» {e}")
+
+             try:
+                await suhu.edit("🔄 **Joining vc...**")
+                await call_py.join_group_call(
+                    chat_id,
+                    AudioPiped(
+                        dl,
+                        HighQualityAudio(),
+                    ),
+                    stream_type=StreamType().local_stream,
+                )
+                add_to_queue(chat_id, songname, dl, link, "Audio", 0)
+                await suhu.delete()
+                buttons = stream_markup(user_id)
+                requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                await m.reply_photo(
+                    photo=f"{IMG_2}",
+                    reply_markup=InlineKeyboardMarkup(buttons),
+                    caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
+                )
+             except Exception as e:
+                await suhu.delete()
+                await m.reply_text(f"🚫 error:\n\n» {e}")
+
         else:
             if len(m.command) < 2:
                 await m.reply(
@@ -206,6 +244,7 @@ async def play(c: Client, m: Message):
                                     chat_id,
                                     AudioPiped(
                                         ytlink,
+                                        HighQualityAudio(),
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
@@ -266,6 +305,7 @@ async def play(c: Client, m: Message):
                                 chat_id,
                                 AudioPiped(
                                     ytlink,
+                                    HighQualityAudio(),
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
