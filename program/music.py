@@ -12,6 +12,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 # pytgcalls stuff
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioPiped
+from pytgcalls.types.input_stream.quality import HighQualityAudio
 # repository stuff
 from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
@@ -40,7 +41,7 @@ def ytsearch(query: str):
 
 
 async def ytdl(format: str, link: str):
-    stdout, stderr = await bash(f'youtube-dl -g -f "{format}" {link}')
+    stdout, stderr = await bash(f'yt-dlp -g -f "{format}" {link}')
     if stdout:
         return 1, stdout.split("\n")[0]
     return 0, stderr
@@ -138,6 +139,7 @@ async def play(c: Client, m: Message):
                     chat_id,
                     AudioPiped(
                         dl,
+                        HighQualityAudio(),
                     ),
                     stream_type=StreamType().local_stream,
                 )
@@ -174,7 +176,7 @@ async def play(c: Client, m: Message):
                     gcname = m.chat.title
                     ctitle = await CHAT_TITLE(gcname)
                     image = await thumb(thumbnail, title, userid, ctitle)
-                    format = "bestaudio[ext=m4a]"
+                    format = "bestaudio/best"
                     veez, ytlink = await ytdl(format, url)
                     if veez == 0:
                         await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
@@ -198,6 +200,7 @@ async def play(c: Client, m: Message):
                                     chat_id,
                                     AudioPiped(
                                         ytlink,
+                                        HighQualityAudio(),
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
@@ -235,7 +238,7 @@ async def play(c: Client, m: Message):
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
                 image = await thumb(thumbnail, title, userid, ctitle)
-                format = "bestaudio[ext=m4a]"
+                format = "bestaudio/best"
                 veez, ytlink = await ytdl(format, url)
                 if veez == 0:
                     await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
@@ -257,6 +260,7 @@ async def play(c: Client, m: Message):
                                 chat_id,
                                 AudioPiped(
                                     ytlink,
+                                    HighQualityAudio(),
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
