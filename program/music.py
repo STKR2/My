@@ -144,6 +144,7 @@ async def play(c: Client, m: Message):
                         chat_id,
                         AudioPiped(
                             dl,
+                            HighQualityAudio(),
                         ),
                         stream_type=StreamType().local_stream,
                     )
