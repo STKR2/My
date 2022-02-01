@@ -46,7 +46,7 @@ def song(_, message):
     query = " ".join(message.command[1:])
     if is_downloading:
         message.reply(
-            "» Another download in progress, please try again after some time !"
+            "» Other download is in progress, please try again after some time !"
         )
         return
     is_downloading = True
@@ -117,7 +117,7 @@ async def vsong(client, message):
     query = " ".join(message.command[1:])
     if is_downloading:
         return await message.reply(
-            "» Another download in progress, please try again after some time !"
+            "» » Other download is in progress, please try again after some time !"
         )
     is_downloading = True
     try:
