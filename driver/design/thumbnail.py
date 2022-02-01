@@ -32,13 +32,13 @@ async def thumb(thumbnail, title, userid, ctitle):
     font = ImageFont.truetype("driver/source/regular.ttf", 52)
     font2 = ImageFont.truetype("driver/source/medium.ttf", 76)
     draw.text(
-        (25, 608),
+        (25, 609),
         f"{title[:18]}...",
         fill="black",
         font=font2,
     )
     draw.text(
-        (27, 533),
+        (27, 534),
         f"Playing on {ctitle[:12]}",
         fill="black",
         font=font,
