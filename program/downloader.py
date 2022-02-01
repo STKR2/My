@@ -45,9 +45,10 @@ def song(_, message):
     global is_downloading
     query = " ".join(message.command[1:])
     if is_downloading:
-        return await message.reply(
+        message.reply(
             "» Another download in progress, please try again after some time !"
         )
+        return
     is_downloading = True
     m = message.reply("🔎 finding song...")
     ydl_ops = {"format": "bestaudio[ext=m4a]"}
@@ -62,7 +63,7 @@ def song(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        m.edit("❌ song not found.\n\nplease give a valid song name.")
+        m.edit("❌ song not found.\n\nplease give a valid song name !")
         print(str(e))
         return
     m.edit("📥 downloading song...")
@@ -72,6 +73,7 @@ def song(_, message):
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
         rep = f"• uploader @{bn}"
+        host = str(info_dict["uploader"])
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
@@ -80,6 +82,7 @@ def song(_, message):
         message.reply_audio(
             audio_file,
             caption=rep,
+            performer=host,
             thumb=thumb_name,
             parse_mode="md",
             title=title,
