@@ -72,6 +72,7 @@ def song(_, message):
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
         rep = f"• uploader @{bn}"
+        host = str(info_dict["uploader"])
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
@@ -80,6 +81,7 @@ def song(_, message):
         message.reply_audio(
             audio_file,
             caption=rep,
+            performer=host,
             thumb=thumb_name,
             parse_mode="md",
             title=title,
