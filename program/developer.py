@@ -185,4 +185,4 @@ async def bot_leave_group(_, message):
         await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
         print(e)
         return
-    await message.reply_text(f"✅ Bot successfully left from the Group:\n\n» `{chat}`")
+    await message.reply_text(f"✅ Bot successfully left from the Group:\n\n💭 » `{chat}`")
