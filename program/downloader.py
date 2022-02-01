@@ -45,9 +45,10 @@ def song(_, message):
     global is_downloading
     query = " ".join(message.command[1:])
     if is_downloading:
-        return await message.reply(
+        message.reply(
             "» Another download in progress, please try again after some time !"
         )
+        return
     is_downloading = True
     m = message.reply("🔎 finding song...")
     ydl_ops = {"format": "bestaudio[ext=m4a]"}
@@ -62,7 +63,7 @@ def song(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        m.edit("❌ song not found.\n\nplease give a valid song name.")
+        m.edit("❌ song not found.\n\nplease give a valid song name !")
         print(str(e))
         return
     m.edit("📥 downloading song...")
