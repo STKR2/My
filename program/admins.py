@@ -5,7 +5,12 @@ from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
-from program.utils.inline import stream_markup, close_mark, back_mark
+from program.utils.inline import (
+    stream_markup,
+    close_mark,
+    back_mark,
+    confirm_board,
+)
 from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
 from pyrogram.types import (
     CallbackQuery,
@@ -31,22 +36,22 @@ async def update_admin(client, message):
 
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
 @authorized_users_only
-async def skip(client, m: Message):
+async def skip(c: Client, m: Message):
     await m.delete()
     user_id = m.from_user.id
     chat_id = m.chat.id
     if len(m.command) < 2:
         op = await skip_current_song(chat_id)
         if op == 0:
-            await m.reply("❌ nothing is currently playing")
+            await c.send_message(chat_id, "❌ nothing is currently playing")
         elif op == 1:
-            await m.reply("✅ __Queues__ **is empty.**\n\n**• userbot leaving voice chat**")
+            await c.send_message(chat_id, "💡 There's no more song in queue to skip !\n\nDo you want to end it or continue ?", reply_markup=confirm_board)
         elif op == 2:
-            await m.reply("🗑️ **Clearing the Queues**\n\n**• userbot leaving voice chat**")
+            await c.send_message(chat_id, "🗑️ Clearing the **Queues**\n\n**• userbot** leaving video chat.")
         else:
             buttons = stream_markup(user_id)
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-            await m.send_photo(
+            await c.send_photo(
                 chat_id,
                 photo=f"{IMG_3}",
                 reply_markup=InlineKeyboardMarkup(buttons),
