@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from datetime import datetime
 from sys import version_info
@@ -40,14 +39,6 @@ TIME_DURATION_UNITS = (
     ("min", 60),
     ("sec", 1),
 )
-
-
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
-logging.basicConfig(
-    level=logging.INFO,
-    datefmt="[%d/%m/%Y %H:%M:%S]",
-    format=" %(asctime)s - [APPROVE-CHAT] >> %(levelname)s << %(message)s",
-    handlers=[logging.FileHandler("approvechat.log"), logging.StreamHandler()])
 
 
 async def _human_time_duration(seconds):
@@ -162,7 +153,6 @@ async def approve_join_chat(c: Client, m: ChatJoinRequest):
     try:
         await c.approve_chat_join_request(m.chat.id, m.from_user.id)
     except FloodWait as e:
-        logging.info(f"Sleeping for {e.x + 2} seconds due to floodwaits!")
         await asyncio.sleep(e.x + 2)
         await c.approve_chat_join_request(m.chat.id, m.from_user.id)
 
