@@ -1,6 +1,8 @@
 from cache.admins import admins
 from driver.veez import call_py, bot
 from pyrogram import Client, filters
+from driver.design.thumbnail import thumb
+from driver.design.chatname import CHAT_TITLE
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
@@ -10,7 +12,7 @@ from program.utils.inline import (
     close_mark,
     back_mark,
 )
-from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
+from config import BOT_USERNAME, GROUP_SUPPORT, IMG_5, UPDATES_CHANNEL
 from pyrogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -50,11 +52,17 @@ async def skip(c: Client, m: Message):
         else:
             buttons = stream_markup(user_id)
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+            thumbnail = f"{IMG_5}"
+            title = f"{op[0]}"
+            userid = m.from_user.id
+            gcname = m.chat.title
+            ctitle = await CHAT_TITLE(gcname)
+            image = await thumb(thumbnail, title, userid, ctitle)
             await c.send_photo(
                 chat_id,
-                photo=f"{IMG_3}",
+                photo=image,
                 reply_markup=InlineKeyboardMarkup(buttons),
-                caption=f"⏭ **Skipped to the next track.**\n\n🗂 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                caption=f"⏭ **Skipped** to the next track.\n\n🗂 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
             )
     else:
         skip = m.text.split(None, 1)[1]
