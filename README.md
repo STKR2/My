@@ -60,8 +60,9 @@
 | `/leaveall` | order the userbot to leave from all group (sudo only) |
 | `/update` | update your bot directly without leaving telegram (sudo only) |
 | `/restart` | restart your bot directly without leaving telegram (sudo only) |
-| `/clean` | clean all raw files |
-| `/rmd` | clean all downloaded files |
+| `/speedtest` | run server speedtest that you use to run your bot |
+| `/broadcast` | brodcast message to all group that in bot database |
+| `/gban & /ungban` | use this to gban someone and ungban them |
 
 ## Generate Pyrogram session string from below 🔻
 
