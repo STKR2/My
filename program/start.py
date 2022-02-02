@@ -1,3 +1,6 @@
+import asyncio
+import logging
+
 from datetime import datetime
 from sys import version_info
 from time import time
@@ -16,10 +19,10 @@ from driver.veez import user
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
-from pyrogram import Client, filters
-from pyrogram import __version__ as pyrover
+from pyrogram import Client, filters, __version__ as pyrover
+from pyrogram.errors import FloodWait, MessageNotModified
 from pytgcalls import (__version__ as pytover)
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
 
 __major__ = 0
 __minor__ = 2
@@ -37,6 +40,14 @@ TIME_DURATION_UNITS = (
     ("min", 60),
     ("sec", 1),
 )
+
+
+logging.getLogger("pyrogram").setLevel(logging.WARNING)
+logging.basicConfig(
+    level=logging.INFO,
+    datefmt="[%d/%m/%Y %H:%M:%S]",
+    format=" %(asctime)s - [APPROVE-CHAT] >> %(levelname)s << %(message)s",
+    handlers=[logging.FileHandler("approvechat.log"), logging.StreamHandler()])
 
 
 async def _human_time_duration(seconds):
@@ -142,6 +153,18 @@ async def get_uptime(client: Client, message: Message):
         f"• **uptime:** `{uptime}`\n"
         f"• **start time:** `{START_TIME_ISO}`"
     )
+
+
+@Client.on_chat_join_request()
+async def approve_join_chat(c: Client, m: ChatJoinRequest):
+    if not m.from_user:
+        return
+    try:
+        await c.approve_chat_join_request(m.chat.id, m.from_user.id)
+    except FloodWait as e:
+        logging.info(f"Sleeping for {e.x + 2} seconds due to floodwaits!")
+        await asyncio.sleep(e.x + 2)
+        await c.approve_chat_join_request(m.chat.id, m.from_user.id)
 
 
 @Client.on_message(filters.new_chat_members)
