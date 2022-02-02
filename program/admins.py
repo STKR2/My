@@ -9,7 +9,6 @@ from program.utils.inline import (
     stream_markup,
     close_mark,
     back_mark,
-    confirm_board,
 )
 from config import BOT_USERNAME, GROUP_SUPPORT, IMG_3, UPDATES_CHANNEL
 from pyrogram.types import (
@@ -45,7 +44,7 @@ async def skip(c: Client, m: Message):
         if op == 0:
             await c.send_message(chat_id, "❌ nothing is currently playing")
         elif op == 1:
-            await c.send_message(chat_id, "💡 There's no more song in queue to skip !\n\nDo you want to end it or continue ?", reply_markup=confirm_board)
+            await c.send_message(chat_id, "» There's no more music in queue to skip, userbot leaving video chat.")
         elif op == 2:
             await c.send_message(chat_id, "🗑️ Clearing the **Queues**\n\n**• userbot** leaving video chat.")
         else:
@@ -108,7 +107,7 @@ async def pause(client, m: Message):
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **nothing is streaming**")
 
 
 @Client.on_message(
@@ -126,7 +125,7 @@ async def resume(client, m: Message):
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **nothing is streaming**")
 
 
 @Client.on_message(
@@ -144,7 +143,7 @@ async def mute(client, m: Message):
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **nothing is streaming**")
 
 
 @Client.on_message(
@@ -162,7 +161,7 @@ async def unmute(client, m: Message):
         except Exception as e:
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
-        await m.reply("❌ **nothing in streaming**")
+        await m.reply("❌ **nothing is streaming**")
 
 
 @Client.on_callback_query(filters.regex("cbpause"))
