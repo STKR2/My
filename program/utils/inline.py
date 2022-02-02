@@ -56,13 +56,3 @@ back_mark = InlineKeyboardMarkup(
     ]
   ]
 )
-
-
-confirm_board = InlineKeyboardMarkup(
-  [
-    [
-      InlineKeyboardButton(text="• End", callback_data="cbstop"),
-      InlineKeyboardButton(text="• Continue", callback_data="cls"),
-    ]
-  ]
-)
