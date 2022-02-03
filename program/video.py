@@ -33,7 +33,7 @@ def ytsearch(query: str):
         songname = data["title"]
         url = data["link"]
         duration = data["duration"]
-        thumbnail = f"https://i.ytimg.com/vi/{data['id']}/hqdefault.jpg"
+        thumbnail = f"https://i.ytimg.com/vi/{data['id']}/maxresdefault.jpg"
         return [songname, url, duration, thumbnail]
     except Exception as e:
         print(e)
@@ -65,7 +65,7 @@ async def vplay(c: Client, m: Message):
     user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text(
-            "you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights."
+            "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
         )
     try:
         aing = await c.get_me()
@@ -148,16 +148,28 @@ async def vplay(c: Client, m: Message):
                 songname = "Video"
 
             if chat_id in QUEUE:
+                gcname = m.chat.title
+                ctitle = await CHAT_TITLE(gcname)
+                title = songname
+                userid = m.from_user.id
+                thumbnail = f"{IMG_5}"
+                image = await thumb(thumbnail, title, userid, ctitle)
                 pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
-                    photo=f"{IMG_1}",
+                    photo=image,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
             else:
+                gcname = m.chat.title
+                ctitle = await CHAT_TITLE(gcname)
+                title = songname
+                userid = m.from_user.id
+                thumbnail = f"{IMG_5}"
+                image = await thumb(thumbnail, title, userid, ctitle)
                 if Q == 720:
                     amaze = HighQualityVideo()
                 elif Q == 480:
@@ -179,7 +191,7 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
-                    photo=f"{IMG_2}",
+                    photo=image,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
@@ -319,7 +331,7 @@ async def vstream(c: Client, m: Message):
     user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text(
-            "you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights."
+            "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
         )
     try:
         aing = await c.get_me()
