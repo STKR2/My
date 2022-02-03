@@ -2,7 +2,6 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -19,7 +18,7 @@ from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
 from driver.utils import bash
-from config import BOT_USERNAME, IMG_1, IMG_2
+from config import BOT_USERNAME, IMG_5
 # youtube-dl stuff
 from youtubesearchpython import VideosSearch
 
@@ -31,7 +30,7 @@ def ytsearch(query: str):
         songname = data["title"]
         url = data["link"]
         duration = data["duration"]
-        thumbnail = f"https://i.ytimg.com/vi/{data['id']}/hqdefault.jpg"
+        thumbnail = f"https://i.ytimg.com/vi/{data['id']}/maxresdefault.jpg"
         return [songname, url, duration, thumbnail]
     except Exception as e:
         print(e)
@@ -55,7 +54,7 @@ async def play(c: Client, m: Message):
     user_id = m.from_user.id
     if m.sender_chat:
         return await m.reply_text(
-            "you're an __Anonymous__ Admin !\n\n» revert back to user account from admin rights."
+            "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
         )
     try:
         aing = await c.get_me()
@@ -128,17 +127,29 @@ async def play(c: Client, m: Message):
                 songname = "Audio"
             
             if chat_id in QUEUE:
+                gcname = m.chat.title
+                ctitle = await CHAT_TITLE(gcname)
+                title = songname
+                userid = m.from_user.id
+                thumbnail = f"{IMG_5}"
+                image = await thumb(thumbnail, title, userid, ctitle)
                 pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await suhu.delete()
                 await m.reply_photo(
-                    photo=f"{IMG_1}",
+                    photo=image,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
             else:
                 try:
+                    gcname = m.chat.title
+                    ctitle = await CHAT_TITLE(gcname)
+                    title = songname
+                    userid = m.from_user.id
+                    thumbnail = f"{IMG_5}"
+                    image = await thumb(thumbnail, title, userid, ctitle)
                     await suhu.edit("🔄 **Joining vc...**")
                     await call_py.join_group_call(
                         chat_id,
@@ -155,7 +166,7 @@ async def play(c: Client, m: Message):
                         f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                     )
                     await m.reply_photo(
-                        photo=f"{IMG_2}",
+                        photo=image,
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
                     )
