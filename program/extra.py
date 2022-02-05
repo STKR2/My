@@ -140,7 +140,7 @@ async def broadcast(c: Client, message: Message):
 ➥ **Gbanned Users** : `{gbans_usertl}`
 
 ➛ **Python Version** : `{pyver}`
-➛ **PyTgCalls Version** : `{pytgver}`
+➛ **PyTgCalls Version** : `{pytgver.__version__}`
 ➛ **Pyrogram Version** : `{pyrover}`
 
 🤖 bot version: `{ver}`"""
