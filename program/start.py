@@ -18,6 +18,7 @@ from driver.veez import user
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
+from driver.database.dbusers import add_served_user
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait, MessageNotModified
 from pytgcalls import (__version__ as pytover)
@@ -186,10 +187,14 @@ async def new_chat(c: Client, m: Message):
             )
 
 
-chat_watcher_group = 5
+chat_watcher_group = 10
 
 @Client.on_message(group=chat_watcher_group)
 async def chat_watcher_func(_, message: Message):
+    if message.from_user:
+        user_id = message.from_user.id
+        await add_served_user(user_id)
+        return
     try:
         userid = message.from_user.id
     except Exception:
