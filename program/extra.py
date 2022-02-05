@@ -133,7 +133,7 @@ async def broadcast(c: Client, message: Message):
     served_users = len(await get_served_users())
     gbans_usertl = await get_gbans_count()
     tgm = f"""
-📊 Current Statistic of [{name}]({uname})`:`
+📊 Current Statistic of [{name}](https://t.me/{uname})`:`
 
 ➥ **Groups Chat** : `{served_chats}`
 ➥ **Users Dialog** : `{served_users}`
