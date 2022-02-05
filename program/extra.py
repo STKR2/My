@@ -1,16 +1,25 @@
 """ broadcast & statistic collector """
 
 import asyncio
-from pyrogram import Client, filters
+
 from pyrogram.types import Message
+from pyrogram import Client, filters, __version__ as pyrover
+
+from pytgcalls import (__version__ as pytgver)
+
+from program import __version__ as ver
+from program.start import __python_version__ as pyver
+
 from driver.filters import command
 from driver.decorators import sudo_users_only
 from driver.database.dbchat import get_served_chats
+from driver.database.dbusers import get_served_users
+from driver.database.dbpunish import get_gbans_count
 
-from config import BOT_USERNAME as bn
+from config import BOT_NAME as name, BOT_USERNAME as uname
 
 
-@Client.on_message(command(["broadcast", f"broadcast@{bn}"]) & ~filters.edited)
+@Client.on_message(command(["broadcast", f"broadcast@{uname}"]) & ~filters.edited)
 @sudo_users_only
 async def broadcast(c: Client, message: Message):
     if not message.reply_to_message:
@@ -53,7 +62,7 @@ async def broadcast(c: Client, message: Message):
     await message.reply_text(f"✅ Broadcast complete in {sent} Group.")
 
 
-@Client.on_message(command(["broadcast_pin", f"broadcast_pin@{bn}"]) & ~filters.edited)
+@Client.on_message(command(["broadcast_pin", f"broadcast_pin@{uname}"]) & ~filters.edited)
 @sudo_users_only
 async def broadcast_pin(c: Client, message: Message):
     if not message.reply_to_message:
@@ -110,3 +119,30 @@ async def broadcast_pin(c: Client, message: Message):
     await message.reply_text(
         f"✅ Broadcast complete in {sent} Group.\n📌 With the {pin} pins."
     )
+
+
+@Client.on_message(command(["stats", f"stats@{uname}"]) & ~filters.edited)
+@sudo_users_only
+async def broadcast(c: Client, message: Message):
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    msg = await c.send_message(
+        chat_id, "🔄 `Calculating statistic...`"
+    )
+    served_chats = len(await get_served_chats())
+    served_users = len(await get_served_users())
+    gbans_usertl = await get_gbans_count()
+    tgm = f"""
+📊 Current Statistic of [{name}]({uname})`:`
+
+➥ **Groups Chat** : `{served_chats}`
+➥ **Users Dialog** : `{served_users}`
+➥ **Gbanned Users** : `{gbans_usertl}`
+
+➛ **Python Version** : `{pyver}`
+➛ **PyTgCalls Version** : `{pytgver}`
+➛ **Pyrogram Version** : `{pyrover}`
+
+🤖 bot version: `{ver}`"""
+    
+    await msg.edit(tgm, disable_web_page_preview=True)
