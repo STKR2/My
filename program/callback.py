@@ -158,6 +158,7 @@ async def cbsudo(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""🏮 here is the sudo commands:
 
+» /stats - get the bot current statistic
 » /gban (`username` or `user id`) - for global banned people
 » /ungban (`username` or `user id`) - for un-global banned people
 » /speedtest - run the bot server speedtest
