@@ -17,5 +17,4 @@ requests
 pillow
 motor
 psutil
-future
 wget
