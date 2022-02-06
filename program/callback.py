@@ -1,6 +1,7 @@
 # Copyright (C) 2021 By VeezMusicProject
 
 from driver.queues import QUEUE
+from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
 from program.utils.inline import menu_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
@@ -16,6 +17,10 @@ from config import (
 
 @Client.on_callback_query(filters.regex("cbstart"))
 async def cbstart(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("home start")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
@@ -58,6 +63,10 @@ async def cbstart(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbhowtouse"))
 async def cbguides(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("user guide")
     await query.edit_message_text(
         f"""❓ How to use this Bot ?, read the Guide below !
@@ -81,6 +90,10 @@ async def cbguides(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbcmds(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("commands menu")
     await query.edit_message_text(
         f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
@@ -105,6 +118,10 @@ async def cbcmds(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbbasic"))
 async def cbbasic(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("basic commands")
     await query.edit_message_text(
         f"""🏮 here is the basic commands:
@@ -131,6 +148,10 @@ async def cbbasic(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbadmin"))
 async def cbadmin(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("admin commands")
     await query.edit_message_text(
         f"""🏮 here is the admin commands:
@@ -154,6 +175,10 @@ async def cbadmin(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbsudo"))
 async def cbsudo(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     await query.answer("sudo commands")
     await query.edit_message_text(
         f"""🏮 here is the sudo commands:
@@ -183,6 +208,10 @@ async def cbsudo(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbmenu"))
 async def cbmenu(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
@@ -201,6 +230,10 @@ async def cbmenu(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cls"))
 async def close(_, query: CallbackQuery):
+    user_id = query.message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
