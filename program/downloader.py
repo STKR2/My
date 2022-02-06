@@ -2,12 +2,9 @@
 
 import os
 import re
-import math
 import time
 import asyncio
 import lyricsgenius
-from random import randint
-from urllib.parse import urlparse
 
 import aiofiles
 import aiohttp
@@ -22,19 +19,9 @@ from youtubesearchpython import VideosSearch
 from yt_dlp import YoutubeDL
 
 from config import BOT_USERNAME as bn
-from driver.decorators import humanbytes
 from driver.filters import command, other_filters
 from driver.database.dbpunish import is_gbanned_user
 
-
-ydl_opts = {
-    'format': 'best',
-    'keepvideo': True,
-    'prefer_ffmpeg': False,
-    'geo_bypass': True,
-    'outtmpl': '%(title)s.%(ext)s',
-    'quite': True
-}
 
 is_downloading = False
 
@@ -54,7 +41,14 @@ def song_downloader(_, message):
         return
     is_downloading = True
     m = message.reply("🔎 finding song...")
-    ydl_ops = {"format": "bestaudio[ext=m4a]"}
+    ydl_ops = {
+        'format': 'bestaudio[ext=m4a]',
+        'keepvideo': True,
+        'prefer_ffmpeg': False,
+        'geo_bypass': True,
+        'outtmpl': '%(title)s.%(ext)s',
+        'quite': True,
+    }
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
