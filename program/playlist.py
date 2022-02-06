@@ -25,7 +25,7 @@ async def playlist(client, m: Message):
     chat_id = m.chat.id
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
         return
     if chat_id in QUEUE:
         chat_queue = get_queue(chat_id)
