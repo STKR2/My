@@ -204,7 +204,7 @@ async def unmute(client, m: Message):
 
 @Client.on_callback_query(filters.regex("cbpause"))
 async def cbpause(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -227,7 +227,7 @@ async def cbpause(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbresume"))
 async def cbresume(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -250,7 +250,7 @@ async def cbresume(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbstop"))
 async def cbstop(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -271,7 +271,7 @@ async def cbstop(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbmute"))
 async def cbmute(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -294,7 +294,7 @@ async def cbmute(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbunmute"))
 async def cbunmute(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
