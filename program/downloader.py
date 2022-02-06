@@ -1,7 +1,5 @@
 # Copyright (C) 2021 By Veez Music-Project
 
-from __future__ import unicode_literals
-
 import os
 import re
 import math
