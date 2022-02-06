@@ -27,10 +27,10 @@ is_downloading = False
 
 
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
-def song_downloader(_, message):
+async def song_downloader(_, message):
     global is_downloading
     user_id = message.from_user.id
-    if is_gbanned_user(user_id):
+    if await is_gbanned_user(user_id):
         message.reply("❗️ **You've blocked from using this bot!**")
         return
     query = " ".join(message.command[1:])
