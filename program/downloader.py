@@ -23,24 +23,14 @@ from driver.filters import command, other_filters
 from driver.database.dbpunish import is_gbanned_user
 
 
-is_downloading = False
-
-
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
 async def song_downloader(_, message):
-    global is_downloading
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        message.reply("❗️ **You've blocked from using this bot!**")
+        await message.reply("❗️ **You've blocked from using this bot!**")
         return
     query = " ".join(message.command[1:])
-    if is_downloading:
-        message.reply(
-            "» Other download is in progress, please try again after some time !"
-        )
-        return
-    is_downloading = True
-    m = message.reply("🔎 finding song...")
+    m = await message.reply("🔎 finding song...")
     ydl_ops = {
         'format': 'bestaudio[ext=m4a]',
         'keepvideo': True,
@@ -60,10 +50,10 @@ async def song_downloader(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        m.edit("❌ song not found.\n\n» Give me a valid song name !")
+        await m.edit("❌ song not found.\n\n» Give me a valid song name !")
         print(str(e))
         return
-    m.edit("📥 downloading song...")
+    await m.edit("📥 downloading song...")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -75,8 +65,8 @@ async def song_downloader(_, message):
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
-        m.edit("📤 uploading song...")
-        message.reply_audio(
+        await m.edit("📤 uploading song...")
+        await message.reply_audio(
             audio_file,
             caption=rep,
             performer=host,
@@ -85,12 +75,11 @@ async def song_downloader(_, message):
             title=title,
             duration=dur,
         )
-        m.delete()
-        is_downloading = False
-    except Exception as e:
-        m.edit("❌ error, wait for bot owner to fix")
-        print(e)
+        await m.delete()
 
+    except Exception as e:
+        await m.edit("❌ error, wait for bot owner to fix")
+        print(e)
     try:
         os.remove(audio_file)
         os.remove(thumb_name)
@@ -102,7 +91,6 @@ async def song_downloader(_, message):
     command(["vsong", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
 )
 async def video_downloader(_, message):
-    global is_downloading
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
         await message.reply_text("❗️ **You've blocked from using this bot!**")
@@ -116,11 +104,6 @@ async def video_downloader(_, message):
         "quite": True,
     }
     query = " ".join(message.command[1:])
-    if is_downloading:
-        return await message.reply(
-            "» Other download is in progress, please try again after some time !"
-        )
-    is_downloading = True
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
@@ -150,7 +133,6 @@ async def video_downloader(_, message):
         thumb=preview,
         caption=ytdl_data["title"],
     )
-    is_downloading = False
     try:
         os.remove(file_name)
         await msg.delete()
@@ -186,7 +168,7 @@ async def get_lyric_genius(_, message: Message):
             out_file.write(str(xxx.strip()))
         await message.reply_document(
             document=filename,
-            caption=f"**OUTPUT:**\n\n`Lyrics Text`",
+            caption=f"**OUTPUT:**\n\n`attached lyrics text`",
             quote=False,
         )
         os.remove(filename)
