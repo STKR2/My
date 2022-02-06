@@ -46,7 +46,7 @@ async def song_downloader(_, message: Message):
     global is_downloading
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
         return
     query = " ".join(message.command[1:])
     if is_downloading:
@@ -113,7 +113,7 @@ async def vsong(_, message: Message):
     global is_downloading
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
         return
     ydl_opts = {
         "format": "best",
@@ -170,7 +170,7 @@ async def vsong(_, message: Message):
 async def get_lyric_genius(_, message: Message):
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
         return
     if len(message.command) < 2:
         return await message.reply_text("**usage:**\n\n/lyrics (song name)")
