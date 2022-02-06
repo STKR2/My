@@ -10,7 +10,7 @@ from youtube_search import YoutubeSearch
 async def ytsearch(_, message: Message):
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
         return
     if len(message.command) < 2:
         return await message.reply_text("/search **needs an argument !**")
