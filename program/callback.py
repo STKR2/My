@@ -17,9 +17,9 @@ from config import (
 
 @Client.on_callback_query(filters.regex("cbstart"))
 async def cbstart(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("home start")
     await query.edit_message_text(
@@ -63,9 +63,9 @@ async def cbstart(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbhowtouse"))
 async def cbguides(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("user guide")
     await query.edit_message_text(
@@ -90,9 +90,9 @@ async def cbguides(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbcmds(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("commands menu")
     await query.edit_message_text(
@@ -118,9 +118,9 @@ async def cbcmds(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbbasic"))
 async def cbbasic(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("basic commands")
     await query.edit_message_text(
@@ -148,9 +148,9 @@ async def cbbasic(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbadmin"))
 async def cbadmin(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("admin commands")
     await query.edit_message_text(
@@ -175,9 +175,9 @@ async def cbadmin(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbsudo"))
 async def cbsudo(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     await query.answer("sudo commands")
     await query.edit_message_text(
@@ -208,9 +208,9 @@ async def cbsudo(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cbmenu"))
 async def cbmenu(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
@@ -230,9 +230,9 @@ async def cbmenu(_, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("cls"))
 async def close(_, query: CallbackQuery):
-    user_id = query.message.from_user.id
+    user_id = query.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
