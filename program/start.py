@@ -56,10 +56,10 @@ async def _human_time_duration(seconds):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
 )
-async def start_(client: Client, message: Message):
+async def start_(c: Client, message: Message):
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ **You're blocked from using this bot!**\n\n» If you think this was an mistake, you can appeal for this ban in our support chat: @{GROUP_SUPPORT}")
+        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
         return
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
@@ -105,6 +105,10 @@ async def start_(client: Client, message: Message):
     command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited
 )
 async def alive(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        return
     chat_id = message.chat.id
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
@@ -132,7 +136,11 @@ async def alive(c: Client, message: Message):
 
 
 @Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
-async def ping_pong(client: Client, message: Message):
+async def ping_pong(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        return
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
@@ -140,7 +148,11 @@ async def ping_pong(client: Client, message: Message):
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
-async def get_uptime(client: Client, message: Message):
+async def get_uptime(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text(f"❗️ **You've been blocked from using this bot!")
+        return
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
