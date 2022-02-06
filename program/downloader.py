@@ -40,20 +40,20 @@ is_downloading = False
 
 
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
-async def song_downloader(_, message: Message):
+def song_downloader(_, message):
     global is_downloading
     user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+    if is_gbanned_user(user_id):
+        message.reply("❗️ **You've blocked from using this bot!**")
         return
     query = " ".join(message.command[1:])
     if is_downloading:
-        await message.reply_text(
+        message.reply(
             "» Other download is in progress, please try again after some time !"
         )
         return
     is_downloading = True
-    m = await message.reply_text("🔎 finding song...")
+    m = message.reply("🔎 finding song...")
     ydl_ops = {"format": "bestaudio[ext=m4a]"}
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
@@ -66,10 +66,10 @@ async def song_downloader(_, message: Message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        await m.edit("❌ song not found.\n\n» Give me a valid song name !")
+        m.edit("❌ song not found.\n\n» Give me a valid song name !")
         print(str(e))
         return
-    await m.edit("📥 downloading song...")
+    m.edit("📥 downloading song...")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -81,8 +81,8 @@ async def song_downloader(_, message: Message):
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
-        await m.edit("📤 uploading song...")
-        await message.reply_audio(
+        m.edit("📤 uploading song...")
+        message.reply_audio(
             audio_file,
             caption=rep,
             performer=host,
@@ -91,10 +91,10 @@ async def song_downloader(_, message: Message):
             title=title,
             duration=dur,
         )
-        await m.delete()
+        m.delete()
         is_downloading = False
     except Exception as e:
-        await m.edit("❌ error, wait for bot owner to fix")
+        m.edit("❌ error, wait for bot owner to fix")
         print(e)
 
     try:
@@ -107,7 +107,7 @@ async def song_downloader(_, message: Message):
 @Client.on_message(
     command(["vsong", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
 )
-async def vsong(_, message: Message):
+async def video_downloader(_, message):
     global is_downloading
     user_id = message.from_user.id
     if await is_gbanned_user(user_id):
