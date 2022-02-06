@@ -7,6 +7,7 @@ from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
+from driver.database.dbpunish import is_gbanned_user
 from program.utils.inline import (
     stream_markup,
     close_mark,
@@ -23,9 +24,13 @@ from pyrogram.types import (
 
 @Client.on_message(command(["reload", f"reload@{BOT_USERNAME}"]) & other_filters)
 @authorized_users_only
-async def update_admin(client, message):
+async def update_admin(client, message: Message):
     global admins
     new_admins = []
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've been blocked from using this bot!")
+        return
     new_ads = await client.get_chat_members(message.chat.id, filter="administrators")
     for u in new_ads:
         new_admins.append(u.user.id)
