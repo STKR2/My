@@ -66,7 +66,7 @@ async def vplay(c: Client, m: Message):
     user_id = m.from_user.id
     user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ {user_xd} **You've been blocked from using this bot!")
+        await message.reply_text(f"❗️ {user_xd} **You've blocked from using this bot!**")
         return
     if m.sender_chat:
         return await m.reply_text(
@@ -336,7 +336,7 @@ async def vstream(c: Client, m: Message):
     user_id = m.from_user.id
     user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ {user_xd} **You've been blocked from using this bot!")
+        await message.reply_text(f"❗️ {user_xd} **You've blocked from using this bot!**")
         return
     if m.sender_chat:
         return await m.reply_text(
