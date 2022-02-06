@@ -12,6 +12,7 @@ from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.veez import call_py, user
+from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
@@ -63,6 +64,10 @@ async def vplay(c: Client, m: Message):
     replied = m.reply_to_message
     chat_id = m.chat.id
     user_id = m.from_user.id
+    user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+    if await is_gbanned_user(user_id):
+        await message.reply_text(f"❗️ {user_xd} **You've been blocked from using this bot!")
+        return
     if m.sender_chat:
         return await m.reply_text(
             "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
@@ -329,6 +334,10 @@ async def vstream(c: Client, m: Message):
     await m.delete()
     chat_id = m.chat.id
     user_id = m.from_user.id
+    user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+    if await is_gbanned_user(user_id):
+        await message.reply_text(f"❗️ {user_xd} **You've been blocked from using this bot!")
+        return
     if m.sender_chat:
         return await m.reply_text(
             "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
