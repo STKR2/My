@@ -11,7 +11,7 @@ from sys import version as pyver
 from inspect import getfullargspec
 
 from config import BOT_USERNAME as bname
-from driver.veez import bot
+from driver.core import bot
 from driver.filters import command
 from pyrogram import Client, filters
 from driver.decorators import sudo_users_only, errors
