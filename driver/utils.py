@@ -1,7 +1,7 @@
 import asyncio
 
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
-from driver.veez import bot, call_py
+from driver.core import bot, calls
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
@@ -17,8 +17,8 @@ from pytgcalls.types.stream import StreamAudioEnded
 keyboard = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="stream_menu_panel"),
+            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="close_menu"),
         ]
     ]
 )
@@ -39,7 +39,7 @@ async def skip_current_song(chat_id):
                 type = chat_queue[1][3]
                 Q = chat_queue[1][4]
                 if type == "Audio":
-                    await call_py.change_stream(
+                    await calls.change_stream(
                         chat_id,
                         AudioPiped(
                             url,
@@ -53,7 +53,7 @@ async def skip_current_song(chat_id):
                         hm = MediumQualityVideo()
                     elif Q == 360:
                         hm = LowQualityVideo()
-                    await call_py.change_stream(
+                    await calls.change_stream(
                         chat_id,
                         AudioVideoPiped(
                             url,
@@ -64,7 +64,7 @@ async def skip_current_song(chat_id):
                 pop_an_item(chat_id)
                 return [songname, link, type]
             except:
-                await call_py.leave_group_call(chat_id)
+                await calls.leave_group_call(chat_id)
                 clear_queue(chat_id)
                 return 2
     else:
