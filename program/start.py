@@ -14,11 +14,12 @@ from config import (
     UPDATES_CHANNEL,
 )
 from program import __version__
-from driver.veez import user
+from driver.veez import user, bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dbusers import add_served_user
+from driver.database.dblockchat import blacklisted_chats
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait, MessageNotModified
 from pytgcalls import (__version__ as pytover)
@@ -184,6 +185,11 @@ async def new_chat(c: Client, m: Message):
     ass_uname = (await user.get_me()).username
     bot_id = (await c.get_me()).id
     for member in m.new_chat_members:
+        if chat_id in blacklisted_chats():
+            await m.reply(
+                "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
+            )
+            return await bot.leave_chat(chat_id)
         if member.id == bot_id:
             return await m.reply(
                 "❤️ Thanks for adding me to the **Group** !\n\n"
