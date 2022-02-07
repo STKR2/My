@@ -7,6 +7,7 @@ from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
 # pytgcalls stuff
+from pytgcalls import idle
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio
@@ -174,6 +175,7 @@ async def play(c: Client, m: Message):
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
                     )
+                    await idle()
                 except Exception as e:
                     await suhu.delete()
                     await m.reply_text(f"🚫 error:\n\n» {e}")
@@ -236,6 +238,7 @@ async def play(c: Client, m: Message):
                                     reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
+                                await idle()
                             except Exception as ep:
                                 await suhu.delete()
                                 await m.reply_text(f"🚫 error: `{ep}`")
@@ -295,6 +298,7 @@ async def play(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
+                            await idle()
                         except Exception as ep:
                             await suhu.delete()
                             await m.reply_text(f"🚫 error: `{ep}`")
