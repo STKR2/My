@@ -5,13 +5,13 @@
 import re
 import asyncio
 # repository stuff
-from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
+from config import BOT_USERNAME, IMG_5
 from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
-from driver.veez import call_py, user
+from driver.core import calls, user
 from driver.database.dbpunish import is_gbanned_user
 # pyrogram stuff
 from pyrogram import Client
@@ -186,7 +186,7 @@ async def vplay(c: Client, m: Message):
                 elif Q == 360:
                     amaze = LowQualityVideo()
                 await loser.edit("🔄 **Joining vc...**")
-                await call_py.join_group_call(
+                await calls.join_group_call(
                     chat_id,
                     AudioVideoPiped(
                         dl,
@@ -247,7 +247,7 @@ async def vplay(c: Client, m: Message):
                         else:
                             try:
                                 await loser.edit("🔄 **Joining vc...**")
-                                await call_py.join_group_call(
+                                await calls.join_group_call(
                                     chat_id,
                                     AudioVideoPiped(
                                         ytlink,
@@ -312,7 +312,7 @@ async def vplay(c: Client, m: Message):
                     else:
                         try:
                             await loser.edit("🔄 **Joining vc...**")
-                            await call_py.join_group_call(
+                            await calls.join_group_call(
                                 chat_id,
                                 AudioVideoPiped(
                                     ytlink,
@@ -455,7 +455,7 @@ async def vstream(c: Client, m: Message):
                     amaze = LowQualityVideo()
                 try:
                     await loser.edit("🔄 **Joining vc...**")
-                    await call_py.join_group_call(
+                    await calls.join_group_call(
                         chat_id,
                         AudioVideoPiped(
                             livelink,
