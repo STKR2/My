@@ -15,7 +15,7 @@ from config import (
 )
 
 
-@Client.on_callback_query(filters.regex("cbstart"))
+@Client.on_callback_query(filters.regex("home_start"))
 async def cbstart(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -61,7 +61,7 @@ async def cbstart(_, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.regex("cbhowtouse"))
+@Client.on_callback_query(filters.regex("user_guide"))
 async def cbguides(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -83,12 +83,12 @@ async def cbguides(_, query: CallbackQuery):
 
 💡 If you have a follow-up questions about this bot, you can tell it on my support chat here: @{GROUP_SUPPORT}.""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="home_start")]]
         ),
     )
 
 
-@Client.on_callback_query(filters.regex("cbcmds"))
+@Client.on_callback_query(filters.regex("command_list"))
 async def cbcmds(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -98,25 +98,25 @@ async def cbcmds(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
 
-» Choose the menu below to read the explanation & see the list of available Commands !
+» Check out the menu below to read the module information & see the list of available Commands !
 
 ⚡ __Powered by {BOT_NAME} A.I__""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("👷🏻 Admin Cmd", callback_data="cbadmin"),
-                    InlineKeyboardButton("🧙🏻 Sudo Cmd", callback_data="cbsudo"),
+                    InlineKeyboardButton("» Admin Commands «", callback_data="admin_command"),
+                    InlineKeyboardButton("» Sudo Commands «", callback_data="sudo_command"),
                 ],[
-                    InlineKeyboardButton("📚 Basic Cmd", callback_data="cbbasic")
+                    InlineKeyboardButton("» User Commands «", callback_data="user_command")
                 ],[
-                    InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")
+                    InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
                 ],
             ]
         ),
     )
 
 
-@Client.on_callback_query(filters.regex("cbbasic"))
+@Client.on_callback_query(filters.regex("user_command"))
 async def cbbasic(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -124,29 +124,28 @@ async def cbbasic(_, query: CallbackQuery):
         return
     await query.answer("basic commands")
     await query.edit_message_text(
-        f"""🏮 here is the basic commands:
+        f"""✏️ Command list for all user.
 
 » /play (song name/link) - play music on video chat
 » /vplay (video name/link) - play video on video chat
 » /vstream - play live video from yt live/m3u8
 » /playlist - show you the playlist
+» /lyric (query) - scrap the song lyric
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
-» /lyric (query) - scrap the song lyric
 » /search (query) - search a youtube video link
-
 » /ping - show the bot ping status
 » /uptime - show the bot uptime status
 » /alive - show the bot alive info (in Group only)
 
 ⚡️ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
         ),
     )
 
 
-@Client.on_callback_query(filters.regex("cbadmin"))
+@Client.on_callback_query(filters.regex("admin_command"))
 async def cbadmin(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -154,7 +153,7 @@ async def cbadmin(_, query: CallbackQuery):
         return
     await query.answer("admin commands")
     await query.edit_message_text(
-        f"""🏮 here is the admin commands:
+        f"""✏️ Command list for group admin.
 
 » /pause - pause the stream
 » /resume - resume the stream
@@ -169,11 +168,11 @@ async def cbadmin(_, query: CallbackQuery):
 
 ⚡️ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
         ),
     )
 
-@Client.on_callback_query(filters.regex("cbsudo"))
+@Client.on_callback_query(filters.regex("sudo_command"))
 async def cbsudo(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -181,32 +180,33 @@ async def cbsudo(_, query: CallbackQuery):
         return
     await query.answer("sudo commands")
     await query.edit_message_text(
-        f"""🏮 here is the sudo commands:
+        f"""✏️ Command list for sudo user.
 
 » /stats - get the bot current statistic
-» /gban (`username` or `user id`) - for global banned people
-» /ungban (`username` or `user id`) - for un-global banned people
+» /gban (`username` or `user_id`) - for global banned people
+» /ungban (`username` or `user_id`) - for un-global banned people
+» /block (`chat_id`) - use this to blacklist any group from using your bot
+» /unblock (`chat_id`) - use this to whitelist any group from using your bot
+» /blocklist - show you the list of all blacklisted chat
 » /speedtest - run the bot server speedtest
 » /sysinfo - show the system information
 » /update - update your bot to latest version
-» /restart - restart your bot
+» /restart - restart your bot directly
 » /leaveall - order userbot to leave from all group
 » /leavebot (`chat id`) - order bot to leave from the group you specify
-
-» /eval - execute any code
-» /sh - run any command
-
 » /broadcast (`message`) - send a broadcast message to all groups entered by bot
 » /broadcast_pin (`message`) - send a broadcast message to all groups entered by bot with the chat pin
+» /eval - execute any code (`developer stuff`)
+» /sh - run any command (`developer stuff`)
 
 ⚡ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
         ),
     )
 
 
-@Client.on_callback_query(filters.regex("cbmenu"))
+@Client.on_callback_query(filters.regex("stream_menu_panel"))
 async def cbmenu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -228,7 +228,7 @@ async def cbmenu(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("cls"))
+@Client.on_callback_query(filters.regex("close_menu"))
 async def close(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
