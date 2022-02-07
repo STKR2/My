@@ -17,7 +17,7 @@ from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
-from driver.veez import call_py, user
+from driver.core import calls, user
 from driver.utils import bash
 from driver.database.dbpunish import is_gbanned_user
 from config import BOT_USERNAME, IMG_5
@@ -156,7 +156,7 @@ async def play(c: Client, m: Message):
                     thumbnail = f"{IMG_5}"
                     image = await thumb(thumbnail, title, userid, ctitle)
                     await suhu.edit("🔄 **Joining vc...**")
-                    await call_py.join_group_call(
+                    await calls.join_group_call(
                         chat_id,
                         AudioPiped(
                             dl,
@@ -219,7 +219,7 @@ async def play(c: Client, m: Message):
                         else:
                             try:
                                 await suhu.edit("🔄 **Joining vc...**")
-                                await call_py.join_group_call(
+                                await calls.join_group_call(
                                     chat_id,
                                     AudioPiped(
                                         ytlink,
@@ -281,7 +281,7 @@ async def play(c: Client, m: Message):
                     else:
                         try:
                             await suhu.edit("🔄 **Joining vc...**")
-                            await call_py.join_group_call(
+                            await calls.join_group_call(
                                 chat_id,
                                 AudioPiped(
                                     ytlink,
