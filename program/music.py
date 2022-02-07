@@ -56,7 +56,7 @@ async def play(c: Client, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
     user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-    if chat_id in blacklisted_chats():
+    if chat_id in await blacklisted_chats():
         await m.reply(
             "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
         )
