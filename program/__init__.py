@@ -1,3 +1,3 @@
-__version__ = "0.6.4"
+__version__ = "0.6.5"
 
-# update patch : F.1.22
+# update patch : F.8.22
