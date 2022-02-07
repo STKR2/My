@@ -14,7 +14,7 @@ from config import (
     UPDATES_CHANNEL,
 )
 from program import __version__
-from driver.veez import user, bot
+from driver.core import user, bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
