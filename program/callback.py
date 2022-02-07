@@ -38,9 +38,9 @@ async def cbstart(_, query: CallbackQuery):
                         url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
                     )
                 ],
-                [InlineKeyboardButton("❓ Basic Guide", callback_data="cbhowtouse")],
+                [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
                 [
-                    InlineKeyboardButton("📚 Commands", callback_data="cbcmds"),
+                    InlineKeyboardButton("📚 Commands", callback_data="command_list"),
                     InlineKeyboardButton("❤ Donate", url=f"https://t.me/{OWNER_NAME}"),
                 ],
                 [
@@ -105,10 +105,10 @@ async def cbcmds(_, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("» Admin Commands «", callback_data="admin_command"),
-                    InlineKeyboardButton("» Sudo Commands «", callback_data="sudo_command"),
+                    InlineKeyboardButton("Admin Commands", callback_data="admin_command"),
+                    InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
                 ],[
-                    InlineKeyboardButton("» User Commands «", callback_data="user_command")
+                    InlineKeyboardButton("Users Commands", callback_data="user_command")
                 ],[
                     InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
                 ],
