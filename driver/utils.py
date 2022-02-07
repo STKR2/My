@@ -28,7 +28,7 @@ async def skip_current_song(chat_id):
     if chat_id in QUEUE:
         chat_queue = get_queue(chat_id)
         if len(chat_queue) == 1:
-            await call_py.leave_group_call(chat_id)
+            await calls.leave_group_call(chat_id)
             clear_queue(chat_id)
             return 1
         else:
