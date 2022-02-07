@@ -127,7 +127,7 @@ async def broadcast(c: Client, message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     msg = await c.send_message(
-        chat_id, "🔄 Calculate statistics..."
+        chat_id, "🔄 Calculate..."
     )
     served_chats = len(await get_served_chats())
     served_users = len(await get_served_users())
