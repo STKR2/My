@@ -31,6 +31,6 @@ async def ytsearch(_, message: Message):
         text,
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🗑 Close", callback_data="cls")]]
+            [[InlineKeyboardButton("🗑 Close", callback_data="close_panel")]]
         ),
     )
