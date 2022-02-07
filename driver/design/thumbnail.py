@@ -1,7 +1,11 @@
 import os
 import aiofiles
 import aiohttp
-from PIL import Image, ImageDraw, ImageFont
+from PIL import (
+    Image,
+    ImageDraw,
+    ImageFont,
+)
 
 
 def changeImageSize(maxWidth, maxHeight, image):
