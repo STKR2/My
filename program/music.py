@@ -17,9 +17,10 @@ from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
-from driver.core import calls, user
+from driver.core import calls, user, bot
 from driver.utils import bash
 from driver.database.dbpunish import is_gbanned_user
+from driver.database.dblockchat import blacklisted_chats
 from config import BOT_USERNAME, IMG_5
 # youtube-dl stuff
 from youtubesearchpython import VideosSearch
@@ -55,6 +56,11 @@ async def play(c: Client, m: Message):
     chat_id = m.chat.id
     user_id = m.from_user.id
     user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+    if chat_id in blacklisted_chats():
+        await m.reply(
+            "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
+        )
+        return await bot.leave_chat(chat_id)
     if await is_gbanned_user(user_id):
         await message.reply_text(f"❗️ {user_xd} **You've blocked from using this bot!**")
         return
