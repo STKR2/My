@@ -185,7 +185,7 @@ async def new_chat(c: Client, m: Message):
     ass_uname = (await user.get_me()).username
     bot_id = (await c.get_me()).id
     for member in m.new_chat_members:
-        if chat_id in blacklisted_chats():
+        if chat_id in await blacklisted_chats():
             await m.reply(
                 "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
             )
