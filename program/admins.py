@@ -202,7 +202,7 @@ async def unmute(client, m: Message):
         await m.reply("❌ **nothing is streaming**")
 
 
-@Client.on_callback_query(filters.regex("cbpause"))
+@Client.on_callback_query(filters.regex("set_pause"))
 async def cbpause(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -225,7 +225,7 @@ async def cbpause(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("cbresume"))
+@Client.on_callback_query(filters.regex("set_resume"))
 async def cbresume(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -248,7 +248,7 @@ async def cbresume(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("cbstop"))
+@Client.on_callback_query(filters.regex("set_stop"))
 async def cbstop(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -269,7 +269,7 @@ async def cbstop(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("cbmute"))
+@Client.on_callback_query(filters.regex("set_mute"))
 async def cbmute(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
@@ -292,7 +292,7 @@ async def cbmute(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("cbunmute"))
+@Client.on_callback_query(filters.regex("set_unmute"))
 async def cbunmute(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
