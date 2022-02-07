@@ -5,6 +5,7 @@ from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
 from program.utils.inline import menu_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+
 from config import (
     ASSISTANT_NAME,
     BOT_NAME,
@@ -237,4 +238,13 @@ async def close(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+    await query.message.delete()
+
+
+@Client.on_callback_query(filters.regex("close_panel"))
+async def close(_, query: CallbackQuery):
+    user_id = query.from_user.id
+    if await is_gbanned_user(user_id):
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+        return
     await query.message.delete()
