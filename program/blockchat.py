@@ -2,7 +2,7 @@ from pyrogram.types import Message
 from pyrogram import Client, filters
 
 from config import SUDO_USERS, BOT_USERNAME
-from driver.veez import bot
+from driver.core import bot
 from driver.filters import command, other_filters
 from driver.decorators import sudo_users_only
 from driver.database.dblockchat import (
