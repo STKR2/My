@@ -1,5 +1,5 @@
 from cache.admins import admins
-from driver.veez import call_py, bot
+from driver.core import calls, bot
 from pyrogram import Client, filters
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
@@ -105,7 +105,7 @@ async def stop(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.leave_group_call(chat_id)
+            await calls.leave_group_call(chat_id)
             clear_queue(chat_id)
             await m.reply("✅ The userbot has disconnected from the video chat.")
         except Exception as e:
@@ -126,7 +126,7 @@ async def pause(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.pause_stream(chat_id)
+            await calls.pause_stream(chat_id)
             await m.reply(
                 "⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command."
             )
@@ -148,7 +148,7 @@ async def resume(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.resume_stream(chat_id)
+            await calls.resume_stream(chat_id)
             await m.reply(
                 "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
             )
@@ -170,7 +170,7 @@ async def mute(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.mute_stream(chat_id)
+            await calls.mute_stream(chat_id)
             await m.reply(
                 "🔇 **Userbot muted.**\n\n• **To unmute the userbot, use the**\n» /unmute command."
             )
@@ -192,7 +192,7 @@ async def unmute(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.unmute_stream(chat_id)
+            await calls.unmute_stream(chat_id)
             await m.reply(
                 "🔊 **Userbot unmuted.**\n\n• **To mute the userbot, use the**\n» /mute command."
             )
@@ -214,7 +214,7 @@ async def cbpause(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.pause_stream(chat_id)
+            await calls.pause_stream(chat_id)
             await query.answer("streaming paused")
             await query.edit_message_text(
                 "⏸ the streaming has paused", reply_markup=back_mark
@@ -237,7 +237,7 @@ async def cbresume(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.resume_stream(chat_id)
+            await calls.resume_stream(chat_id)
             await query.answer("streaming resumed")
             await query.edit_message_text(
                 "▶️ the streaming has resumed", reply_markup=back_mark
@@ -260,7 +260,7 @@ async def cbstop(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.leave_group_call(chat_id)
+            await calls.leave_group_call(chat_id)
             clear_queue(chat_id)
             await query.edit_message_text("✅ **this streaming has ended**", reply_markup=close_mark)
         except Exception as e:
@@ -281,7 +281,7 @@ async def cbmute(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.mute_stream(chat_id)
+            await calls.mute_stream(chat_id)
             await query.answer("streaming muted")
             await query.edit_message_text(
                 "🔇 userbot succesfully muted", reply_markup=back_mark
@@ -304,7 +304,7 @@ async def cbunmute(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.unmute_stream(chat_id)
+            await calls.unmute_stream(chat_id)
             await query.answer("streaming unmuted")
             await query.edit_message_text(
                 "🔊 userbot succesfully unmuted", reply_markup=back_mark
@@ -328,7 +328,7 @@ async def change_volume(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            await call_py.change_volume_call(chat_id, volume=int(range))
+            await calls.change_volume_call(chat_id, volume=int(range))
             await m.reply(
                 f"✅ **volume set to** `{range}`%"
             )
