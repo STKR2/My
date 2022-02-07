@@ -23,7 +23,7 @@ keyboard = InlineKeyboardMarkup(
 @Client.on_message(command(["playlist", f"playlist@{BOT_USERNAME}", "queue", f"queue@{BOT_USERNAME}"]) & other_filters)
 async def playlist(client, m: Message):
     chat_id = m.chat.id
-    user_id = message.from_user.id
+    user_id = m.from_user.id
     if await is_gbanned_user(user_id):
         await message.reply_text("❗️ **You've blocked from using this bot!**")
         return
