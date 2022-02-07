@@ -16,7 +16,7 @@ from driver.database.dbpunish import is_gbanned_user
 
 
 keyboard = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🗑 Close", callback_data="cls")]]
+    [[InlineKeyboardButton("🗑 Close", callback_data="close_menu")]]
 )
 
 
