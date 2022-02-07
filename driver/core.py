@@ -2,6 +2,7 @@ from config import API_HASH, API_ID, BOT_TOKEN, SESSION_NAME
 from pyrogram import Client
 from pytgcalls import PyTgCalls
 
+
 bot = Client(
     ":veez:",
     API_ID,
@@ -16,4 +17,4 @@ user = Client(
     api_hash=API_HASH,
 )
 
-call_py = PyTgCalls(user, overload_quiet_mode=True)
+calls = PyTgCalls(user, overload_quiet_mode=True)
