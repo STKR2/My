@@ -86,25 +86,25 @@ async def skip_item(chat_id, h):
         return 0
 
 
-@call_py.on_kicked()
+@calls.on_kicked()
 async def kicked_handler(_, chat_id: int):
     if chat_id in QUEUE:
         clear_queue(chat_id)
 
 
-@call_py.on_closed_voice_chat()
+@calls.on_closed_voice_chat()
 async def closed_voice_chat_handler(_, chat_id: int):
     if chat_id in QUEUE:
         clear_queue(chat_id)
 
 
-@call_py.on_left()
+@calls.on_left()
 async def left_handler(_, chat_id: int):
     if chat_id in QUEUE:
         clear_queue(chat_id)
 
 
-@call_py.on_stream_end()
+@calls.on_stream_end()
 async def stream_end_handler(_, u: Update):
     if isinstance(u, StreamAudioEnded):
         chat_id = u.chat_id
