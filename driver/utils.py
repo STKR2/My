@@ -18,7 +18,7 @@ keyboard = InlineKeyboardMarkup(
     [
         [
             InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="stream_menu_panel"),
-            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="close_menu"),
+            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="set_close"),
         ]
     ]
 )
