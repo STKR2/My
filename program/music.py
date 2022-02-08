@@ -33,7 +33,7 @@ def ytsearch(query: str):
         songname = data["title"]
         url = data["link"]
         duration = data["duration"]
-        thumbnail = f"https://i.ytimg.com/vi/{data['id']}/hqdefault.jpg"
+        thumbnail = data["thumbnails"][0]["url"]
         return [songname, url, duration, thumbnail]
     except Exception as e:
         print(e)
@@ -47,6 +47,14 @@ async def ytdl(link: str):
     if stdout:
         return 1, stdout
     return 0, stderr
+
+
+def convert_seconds(seconds):
+    seconds = seconds % (24 * 3600)
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+    return "%02d:%02d" % (minutes, seconds)
 
 
 @Client.on_message(command(["play", f"play@{BOT_USERNAME}"]) & other_filters)
@@ -130,10 +138,10 @@ async def play(c: Client, m: Message):
                 if replied.audio:
                     songname = replied.audio.title[:70]
                     songname = replied.audio.file_name[:70]
-                    duration = replied.audio.duration
+                    duration = convert_seconds(replied.audio.duration)
                 elif replied.voice:
                     songname = "Voice Note"
-                    duration = replied.voice.duration
+                    duration = convert_seconds(replied.voice.duration)
             except BaseException:
                 songname = "Audio"
             
