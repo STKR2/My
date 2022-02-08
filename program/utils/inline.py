@@ -12,7 +12,7 @@ def stream_markup(user_id):
   buttons = [
     [
       InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data=f'stream_menu_panel | {user_id}'),
-      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data=f'close_menu'),
+      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data=f'set_close'),
     ],
   ]
   return buttons
@@ -30,7 +30,7 @@ def menu_markup(user_id):
       InlineKeyboardButton(text="🔊", callback_data=f'set_unmute | {user_id}'),
     ],
     [
-      InlineKeyboardButton(text="🗑 Close", callback_data='close_menu'),
+      InlineKeyboardButton(text="🗑 Close", callback_data='set_close'),
     ]
   ]
   return buttons
@@ -40,7 +40,7 @@ close_mark = InlineKeyboardMarkup(
   [
     [
       InlineKeyboardButton(
-        "🗑 Close", callback_data="close_menu"
+        "🗑 Close", callback_data="set_close"
       )
     ]
   ]
