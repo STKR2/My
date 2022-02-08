@@ -229,8 +229,8 @@ async def cbmenu(_, query: CallbackQuery):
         await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
-@Client.on_callback_query(filters.regex("close_menu"))
-async def close(_, query: CallbackQuery):
+@Client.on_callback_query(filters.regex("set_close"))
+async def close_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -242,7 +242,7 @@ async def close(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("close_panel"))
-async def close(_, query: CallbackQuery):
+async def close_panel(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
