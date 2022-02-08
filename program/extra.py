@@ -21,7 +21,7 @@ from config import BOT_NAME as name, BOT_USERNAME as uname
 
 @Client.on_message(command(["broadcast", f"broadcast@{uname}"]) & ~filters.edited)
 @sudo_users_only
-async def broadcast(c: Client, message: Message):
+async def broadcast_message_nopin(c: Client, message: Message):
     if not message.reply_to_message:
         pass
     else:
@@ -64,7 +64,7 @@ async def broadcast(c: Client, message: Message):
 
 @Client.on_message(command(["broadcast_pin", f"broadcast_pin@{uname}"]) & ~filters.edited)
 @sudo_users_only
-async def broadcast_pin(c: Client, message: Message):
+async def broadcast_message_pin(c: Client, message: Message):
     if not message.reply_to_message:
         pass
     else:
@@ -94,7 +94,7 @@ async def broadcast_pin(c: Client, message: Message):
         return
     if len(message.command) < 2:
         await message.reply_text(
-            "**usage**:\n\n/broadcast (`message`) or (`reply to message`)"
+            "**usage**:\n\n/broadcast_pin (`message`) or (`reply to message`)"
         )
         return
     text = message.text.split(None, 1)[1]
