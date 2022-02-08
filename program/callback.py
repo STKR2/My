@@ -184,8 +184,8 @@ async def cbsudo(_, query: CallbackQuery):
         f"""✏️ Command list for sudo user.
 
 » /stats - get the bot current statistic
-» /gban (`username` or `user_id`) - for global banned people
-» /ungban (`username` or `user_id`) - for un-global banned people
+» /gban (`username` or `user_id`) - for global banned people, can be used only in group
+» /ungban (`username` or `user_id`) - for un-global banned people, can be used only in group
 » /block (`chat_id`) - use this to blacklist any group from using your bot
 » /unblock (`chat_id`) - use this to whitelist any group from using your bot
 » /blocklist - show you the list of all blacklisted chat
