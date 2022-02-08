@@ -29,6 +29,7 @@ async def song_downloader(_, message):
     if await is_gbanned_user(user_id):
         await message.reply("❗️ **You've blocked from using this bot!**")
         return
+    await message.delete()
     query = " ".join(message.command[1:])
     m = await message.reply("🔎 finding song...")
     ydl_ops = {
@@ -95,6 +96,7 @@ async def video_downloader(_, message):
     if await is_gbanned_user(user_id):
         await message.reply_text("❗️ **You've blocked from using this bot!**")
         return
+    await message.delete()
     ydl_opts = {
         "format": "best",
         "keepvideo": True,
