@@ -168,7 +168,7 @@ async def play(c: Client, m: Message):
                             dl,
                             HighQualityAudio(),
                         ),
-                        stream_type=StreamType().local_stream,
+                        stream_type=StreamType().pulse_stream,
                     )
                     add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                     await suhu.delete()
