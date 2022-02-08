@@ -6,7 +6,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from driver.filters import command, other_filters
-from driver.decorators import bot_creator, sudo_users_only
+from driver.decorators import bot_creator
 from driver.database.dbchat import get_served_chats
 from driver.database.dbpunish import add_gban_user, is_gbanned_user, remove_gban_user
 
