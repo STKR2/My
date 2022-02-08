@@ -11,7 +11,7 @@ from program import __version__ as ver
 from program.start import __python_version__ as pyver
 
 from driver.filters import command
-from driver.decorators import sudo_users_only
+from driver.decorators import bot_creator, sudo_users_only
 from driver.database.dbchat import get_served_chats
 from driver.database.dbusers import get_served_users
 from driver.database.dbpunish import get_gbans_count
@@ -20,7 +20,7 @@ from config import BOT_NAME as name, BOT_USERNAME as uname
 
 
 @Client.on_message(command(["broadcast", f"broadcast@{uname}"]) & ~filters.edited)
-@sudo_users_only
+@bot_creator
 async def broadcast_message_nopin(c: Client, message: Message):
     if not message.reply_to_message:
         pass
@@ -63,7 +63,7 @@ async def broadcast_message_nopin(c: Client, message: Message):
 
 
 @Client.on_message(command(["broadcast_pin", f"broadcast_pin@{uname}"]) & ~filters.edited)
-@sudo_users_only
+@bot_creator
 async def broadcast_message_pin(c: Client, message: Message):
     if not message.reply_to_message:
         pass
