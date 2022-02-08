@@ -135,7 +135,6 @@ async def vplay(c: Client, m: Message):
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
-
     if replied:
         if replied.video or replied.document:
             loser = await replied.reply("📥 **downloading video...**")
@@ -150,7 +149,7 @@ async def vplay(c: Client, m: Message):
                 else:
                     Q = 720
                     await loser.edit(
-                        "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
+                        "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
                     )
             try:
                 if replied.video:
@@ -199,7 +198,7 @@ async def vplay(c: Client, m: Message):
                         HighQualityAudio(),
                         amaze,
                     ),
-                    stream_type=StreamType().local_stream,
+                    stream_type=StreamType().pulse_stream,
                 )
                 add_to_queue(chat_id, songname, dl, link, "Video", Q)
                 await loser.delete()
@@ -430,11 +429,11 @@ async def vstream(c: Client, m: Message):
             else:
                 Q = 720
                 await m.reply(
-                    "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
+                    "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
                 )
             loser = await c.send_message(chat_id, "🔄 **processing stream...**")
         else:
-            await m.reply("**/vstream {link} {720/480/360}**")
+            await m.reply("`/vstream` {link} {720/480/360}")
 
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
         match = re.match(regex, link)
