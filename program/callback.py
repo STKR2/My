@@ -13,11 +13,13 @@ from config import (
     GROUP_SUPPORT,
     OWNER_NAME,
     UPDATES_CHANNEL,
+    SUDO_USERS,
+    OWNER_ID,
 )
 
 
 @Client.on_callback_query(filters.regex("home_start"))
-async def cbstart(_, query: CallbackQuery):
+async def set_start(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -63,7 +65,7 @@ async def cbstart(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("user_guide"))
-async def cbguides(_, query: CallbackQuery):
+async def set_guide(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -90,7 +92,7 @@ async def cbguides(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("command_list"))
-async def cbcmds(_, query: CallbackQuery):
+async def set_commands(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -106,9 +108,10 @@ async def cbcmds(_, query: CallbackQuery):
             [
                 [
                     InlineKeyboardButton("Admin Commands", callback_data="admin_command"),
-                    InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
+                    InlineKeyboardButton("Users Commands", callback_data="user_command"),
                 ],[
-                    InlineKeyboardButton("Users Commands", callback_data="user_command")
+                    InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
+                    InlineKeyboardButton("Owner Commands", callback_data="owner_command"),
                 ],[
                     InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
                 ],
@@ -118,7 +121,7 @@ async def cbcmds(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("user_command"))
-async def cbbasic(_, query: CallbackQuery):
+async def set_user(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -147,7 +150,7 @@ async def cbbasic(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("admin_command"))
-async def cbadmin(_, query: CallbackQuery):
+async def set_admin(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -174,29 +177,25 @@ async def cbadmin(_, query: CallbackQuery):
     )
 
 @Client.on_callback_query(filters.regex("sudo_command"))
-async def cbsudo(_, query: CallbackQuery):
+async def set_sudo(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+        return
+    if user_id not in SUDO_USERS:
+        await query.answer("This button can only be accessed by sudo users", show_alert=True)
         return
     await query.answer("sudo commands")
     await query.edit_message_text(
         f"""✏️ Command list for sudo user.
 
 » /stats - get the bot current statistic
-» /gban (`username` or `user_id`) - for global banned people, can be used only in group
-» /ungban (`username` or `user_id`) - for un-global banned people, can be used only in group
+» /calls - show you the list of all active video chat
 » /block (`chat_id`) - use this to blacklist any group from using your bot
 » /unblock (`chat_id`) - use this to whitelist any group from using your bot
 » /blocklist - show you the list of all blacklisted chat
 » /speedtest - run the bot server speedtest
 » /sysinfo - show the system information
-» /update - update your bot to latest version
-» /restart - restart your bot directly
-» /leaveall - order userbot to leave from all group
-» /leavebot (`chat id`) - order bot to leave from the group you specify
-» /broadcast (`message`) - send a broadcast message to all groups entered by bot
-» /broadcast_pin (`message`) - send a broadcast message to all groups entered by bot with the chat pin
 » /eval - execute any code (`developer stuff`)
 » /sh - run any command (`developer stuff`)
 
@@ -207,8 +206,37 @@ async def cbsudo(_, query: CallbackQuery):
     )
 
 
+@Client.on_callback_query(filters.regex("owner_command"))
+async def set_owner(_, query: CallbackQuery):
+    user_id = query.from_user.id
+    if await is_gbanned_user(user_id):
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+        return
+    if user_id not in OWNER_ID:
+        await query.answer("This button can only be accessed by bot owner", show_alert=True)
+        return
+    await query.answer("owner commands")
+    await query.edit_message_text(
+        f"""✏️ Command list for bot owner.
+
+» /gban (`username` or `user_id`) - for global banned people, can be used only in group
+» /ungban (`username` or `user_id`) - for un-global banned people, can be used only in group
+» /update - update your bot to latest version
+» /restart - restart your bot directly
+» /leaveall - order userbot to leave from all group
+» /leavebot (`chat id`) - order bot to leave from the group you specify
+» /broadcast (`message`) - send a broadcast message to all groups entered by bot
+» /broadcast_pin (`message`) - send a broadcast message to all groups entered by bot with the chat pin
+
+⚡ __Powered by {BOT_NAME} AI__""",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
+        ),
+    )
+
+
 @Client.on_callback_query(filters.regex("stream_menu_panel"))
-async def cbmenu(_, query: CallbackQuery):
+async def set_markup_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
