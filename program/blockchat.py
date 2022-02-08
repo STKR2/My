@@ -12,7 +12,7 @@ from driver.database.dblockchat import (
 )
 
 
-@Client.on_message(command(["block", f"block@{BOT_USERNAME}", "blacklist"]) & other_filters)
+@Client.on_message(command(["block", f"block@{BOT_USERNAME}", "blacklist"]) & ~filters.edited)
 @sudo_users_only
 async def blacklist_chat_func(_, message: Message):
     if len(message.command) != 2:
@@ -30,7 +30,7 @@ async def blacklist_chat_func(_, message: Message):
     await message.reply_text("❗️ something wrong happened, check logs!")
 
 
-@Client.on_message(command(["unblock", f"unblock@{BOT_USERNAME}", "whitelist"]) & other_filters)
+@Client.on_message(command(["unblock", f"unblock@{BOT_USERNAME}", "whitelist"]) & ~filters.edited)
 @sudo_users_only
 async def whitelist_chat_func(_, message: Message):
     if len(message.command) != 2:
@@ -48,7 +48,7 @@ async def whitelist_chat_func(_, message: Message):
     await message.reply_text("❗️ something wrong happened, check logs!")
 
 
-@Client.on_message(command(["blocklist", f"blocklist@{BOT_USERNAME}", "blacklisted"]) & other_filters)
+@Client.on_message(command(["blocklist", f"blocklist@{BOT_USERNAME}", "blacklisted"]) & ~filters.edited)
 @sudo_users_only
 async def blacklisted_chats_func(_, message: Message):
     text = "📵 » Blocked Chat list:\n\n"
