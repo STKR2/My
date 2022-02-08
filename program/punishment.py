@@ -6,7 +6,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
 from driver.filters import command, other_filters
-from driver.decorators import sudo_users_only
+from driver.decorators import bot_creator, sudo_users_only
 from driver.database.dbchat import get_served_chats
 from driver.database.dbpunish import add_gban_user, is_gbanned_user, remove_gban_user
 
@@ -14,7 +14,7 @@ from config import BOT_NAME, SUDO_USERS, BOT_USERNAME as bn
 
 
 @Client.on_message(command(["gban", f"gban@{bn}"]) & other_filters)
-@sudo_users_only
+@bot_creator
 async def global_banned(c: Client, message: Message):
     if not message.reply_to_message:
         if len(message.command) < 2:
@@ -124,7 +124,7 @@ async def global_banned(c: Client, message: Message):
 
 
 @Client.on_message(command(["ungban", f"ungban@{bn}"]) & other_filters)
-@sudo_users_only
+@bot_creator
 async def ungban_global(c: Client, message: Message):
     chat_id = message.chat.id
     if not message.reply_to_message:
