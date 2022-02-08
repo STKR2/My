@@ -4,7 +4,7 @@ from pytgcalls import PyTgCalls
 
 
 bot = Client(
-    ":telegram:",
+    ":veez:",
     API_ID,
     API_HASH,
     bot_token=BOT_TOKEN,
