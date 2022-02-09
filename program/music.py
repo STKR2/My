@@ -2,6 +2,8 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
+import os
+
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -21,6 +23,7 @@ from driver.core import calls, user, bot
 from driver.utils import bash
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
+from driver.database.dbqueue import add_active_chat, remove_active_chat, is_active_chat, music_on
 from config import BOT_USERNAME, IMG_5
 # youtube-dl stuff
 from youtubesearchpython import VideosSearch
@@ -115,6 +118,7 @@ async def play(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
     except UserNotParticipant:
         try:
             invitelink = await c.export_chat_invite_link(chat_id)
@@ -123,6 +127,7 @@ async def play(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
@@ -161,6 +166,7 @@ async def play(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
+                os.remove(image)
             else:
                 try:
                     gcname = m.chat.title
@@ -170,6 +176,7 @@ async def play(c: Client, m: Message):
                     thumbnail = f"{IMG_5}"
                     image = await thumb(thumbnail, title, userid, ctitle)
                     await suhu.edit("🔄 **Joining vc...**")
+                    await music_on(chat_id)
                     await calls.join_group_call(
                         chat_id,
                         AudioPiped(
@@ -190,8 +197,11 @@ async def play(c: Client, m: Message):
                         caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                     )
                     await idle()
+                    await add_active_chat(chat_id)
+                    os.remove(image)
                 except Exception as e:
                     await suhu.delete()
+                    await remove_active_chat(chat_id)
                     await m.reply_text(f"🚫 error:\n\n» {e}")
         else:
             if len(m.command) < 2:
@@ -230,9 +240,11 @@ async def play(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
+                            os.remove(image)
                         else:
                             try:
                                 await suhu.edit("🔄 **Joining vc...**")
+                                await music_on(chat_id)
                                 await calls.join_group_call(
                                     chat_id,
                                     AudioPiped(
@@ -253,8 +265,11 @@ async def play(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
+                                await add_active_chat(chat_id)
+                                os.remove(image)
                             except Exception as ep:
                                 await suhu.delete()
+                                await remove_active_chat(chat_id)
                                 await m.reply_text(f"🚫 error: `{ep}`")
 
     else:
@@ -292,9 +307,11 @@ async def play(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
+                        os.remove(image)
                     else:
                         try:
                             await suhu.edit("🔄 **Joining vc...**")
+                            await music_on(chat_id)
                             await calls.join_group_call(
                                 chat_id,
                                 AudioPiped(
@@ -313,6 +330,9 @@ async def play(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
+                            await add_active_chat(chat_id)
+                            os.remove(image)
                         except Exception as ep:
                             await suhu.delete()
+                            await remove_active_chat(chat_id)
                             await m.reply_text(f"🚫 error: `{ep}`")
