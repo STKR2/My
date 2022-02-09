@@ -66,7 +66,7 @@
 
 ## Generate Session Name 🔻
 
-[![GenerateString](https://img.shields.io/badge/repl.it-generateString-yellowgreen)](https://replit.com/@levinalab/StringSession#main.py)
+[![GenerateString](https://img.shields.io/badge/repl.it-generateString-yellowgreen)](https://replit.com/@levinalab/Session-Generator?lite=1&outputonly=1#main.py)
 
 ## Heroku Deployment 💜
 
