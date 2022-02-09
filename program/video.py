@@ -2,6 +2,7 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
+
 import os
 import re
 import asyncio
@@ -15,7 +16,7 @@ from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, bot
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
-from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on, music_off
+from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -293,7 +294,6 @@ async def vplay(c: Client, m: Message):
                                 os.remove(image)
                             except Exception as ep:
                                 await loser.delete()
-                                await music_off(chat_id)
                                 await remove_active_chat(chat_id)
                                 await m.reply_text(f"🚫 error: `{ep}`")
 
@@ -364,7 +364,6 @@ async def vplay(c: Client, m: Message):
                             os.remove(image)
                         except Exception as ep:
                             await loser.delete()
-                            await music_off(chat_id)
                             await remove_active_chat(chat_id)
                             await m.reply_text(f"🚫 error: `{ep}`")
 
@@ -519,6 +518,5 @@ async def vstream(c: Client, m: Message):
                     )
                 except Exception as ep:
                     await loser.delete()
-                    await music_off(chat_id)
                     await remove_active_chat(chat_id)
                     await m.reply_text(f"🚫 error: `{ep}`")
