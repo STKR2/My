@@ -1,7 +1,6 @@
 import asyncio
-
 from driver.core import bot, calls
-from driver.database.dbqueue import remove_active_chat, music_off
+from driver.database.dbqueue import remove_active_chat
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -32,7 +31,6 @@ async def skip_current_song(chat_id):
         if len(chat_queue) == 1:
             await calls.leave_group_call(chat_id)
             await remove_active_chat(chat_id)
-            await music_off(chat_id)
             clear_queue(chat_id)
             return 1
         else:
@@ -70,7 +68,6 @@ async def skip_current_song(chat_id):
             except:
                 await calls.leave_group_call(chat_id)
                 await remove_active_chat(chat_id)
-                await music_off(chat_id)
                 clear_queue(chat_id)
                 return 2
     else:
@@ -95,7 +92,6 @@ async def skip_item(chat_id, h):
 @calls.on_kicked()
 async def kicked_handler(_, chat_id: int):
     if chat_id in QUEUE:
-        await music_off(chat_id)
         await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
@@ -103,7 +99,6 @@ async def kicked_handler(_, chat_id: int):
 @calls.on_closed_voice_chat()
 async def closed_voice_chat_handler(_, chat_id: int):
     if chat_id in QUEUE:
-        await music_off(chat_id)
         await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
@@ -111,7 +106,6 @@ async def closed_voice_chat_handler(_, chat_id: int):
 @calls.on_left()
 async def left_handler(_, chat_id: int):
     if chat_id in QUEUE:
-        await music_off(chat_id)
         await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
