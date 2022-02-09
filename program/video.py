@@ -15,7 +15,7 @@ from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, bot
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
-from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
+from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on, music_off
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
