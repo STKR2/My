@@ -2,6 +2,7 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
+import os
 import re
 import asyncio
 # repository stuff
@@ -14,6 +15,7 @@ from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, bot
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
+from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -129,6 +131,7 @@ async def vplay(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
     except UserNotParticipant:
         try:
             invitelink = await c.export_chat_invite_link(chat_id)
@@ -137,6 +140,7 @@ async def vplay(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
@@ -185,6 +189,7 @@ async def vplay(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
+                os.remove(image)
             else:
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
@@ -199,6 +204,8 @@ async def vplay(c: Client, m: Message):
                 elif Q == 360:
                     amaze = LowQualityVideo()
                 await loser.edit("🔄 **Joining vc...**")
+                await music_on(chat_id)
+                await add_active_chat(chat_id)
                 await calls.join_group_call(
                     chat_id,
                     AudioVideoPiped(
@@ -218,6 +225,7 @@ async def vplay(c: Client, m: Message):
                     caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
                 await idle()
+                os.remove(image)
         else:
             if len(m.command) < 2:
                 await m.reply(
@@ -257,9 +265,12 @@ async def vplay(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
+                            os.remove(image)
                         else:
                             try:
                                 await loser.edit("🔄 **Joining vc...**")
+                                await music_on(chat_id)
+                                await add_active_chat(chat_id)
                                 await calls.join_group_call(
                                     chat_id,
                                     AudioVideoPiped(
@@ -279,8 +290,11 @@ async def vplay(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
+                                os.remove(image)
                             except Exception as ep:
                                 await loser.delete()
+                                await music_off(chat_id)
+                                await remove_active_chat(chat_id)
                                 await m.reply_text(f"🚫 error: `{ep}`")
 
     else:
@@ -322,9 +336,12 @@ async def vplay(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
+                        os.remove(image)
                     else:
                         try:
                             await loser.edit("🔄 **Joining vc...**")
+                            await music_on(chat_id)
+                            await add_active_chat(chat_id)
                             await calls.join_group_call(
                                 chat_id,
                                 AudioVideoPiped(
@@ -344,8 +361,11 @@ async def vplay(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
+                            os.remove(image)
                         except Exception as ep:
                             await loser.delete()
+                            await music_off(chat_id)
+                            await remove_active_chat(chat_id)
                             await m.reply_text(f"🚫 error: `{ep}`")
 
 
@@ -406,6 +426,7 @@ async def vstream(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
     except UserNotParticipant:
         try:
             invitelink = await c.export_chat_invite_link(chat_id)
@@ -414,6 +435,7 @@ async def vstream(c: Client, m: Message):
                     "https://t.me/+", "https://t.me/joinchat/"
                 )
             await user.join_chat(invitelink)
+            await remove_active_chat(chat_id)
         except UserAlreadyParticipant:
             pass
         except Exception as e:
@@ -473,6 +495,8 @@ async def vstream(c: Client, m: Message):
                     amaze = LowQualityVideo()
                 try:
                     await loser.edit("🔄 **Joining vc...**")
+                    await music_on(chat_id)
+                    await add_active_chat(chat_id)
                     await calls.join_group_call(
                         chat_id,
                         AudioVideoPiped(
@@ -495,4 +519,6 @@ async def vstream(c: Client, m: Message):
                     )
                 except Exception as ep:
                     await loser.delete()
+                    await music_off(chat_id)
+                    await remove_active_chat(chat_id)
                     await m.reply_text(f"🚫 error: `{ep}`")
