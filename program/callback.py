@@ -107,7 +107,8 @@ async def set_commands(_, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Admin Commands", callback_data="admin_command"),
+                    InlineKeyboardButton("Admins Commands", callback_data="admin_command"),
+                ],[
                     InlineKeyboardButton("Users Commands", callback_data="user_command"),
                 ],[
                     InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
@@ -175,6 +176,7 @@ async def set_admin(_, query: CallbackQuery):
             [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
         ),
     )
+
 
 @Client.on_callback_query(filters.regex("sudo_command"))
 async def set_sudo(_, query: CallbackQuery):
