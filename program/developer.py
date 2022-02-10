@@ -73,7 +73,7 @@ async def executor(client, message):
             [
                 [
                     InlineKeyboardButton(
-                        text="⏳", callback_data=f"runtime {t2-t1} Seconds"
+                        text="⏳", callback_data=f"runtime {t2-t1} seconds"
                     )
                 ]
             ]
@@ -93,7 +93,7 @@ async def executor(client, message):
                 [
                     InlineKeyboardButton(
                         text="⏳",
-                        callback_data=f"runtime {round(t2-t1, 3)} Seconds",
+                        callback_data=f"runtime {round(t2-t1, 3)} seconds",
                     )
                 ]
             ]
@@ -111,7 +111,7 @@ async def runtime_func_cq(_, cq):
 @sudo_users_only
 async def shellrunner(client, message):
     if len(message.command) < 2:
-        return await edit_or_reply(message, text="**usage:**\n\n» /sh git pull")
+        return await edit_or_reply(message, text="**usage:**\n\n» /sh echo hello world")
     text = message.text.split(None, 1)[1]
     if "\n" in text:
         code = text.split("\n")
@@ -126,7 +126,7 @@ async def shellrunner(client, message):
                 )
             except Exception as err:
                 print(err)
-                await edit_or_reply(message, text=f"`ERROR:`\n```{err}```")
+                await edit_or_reply(message, text=f"`ERROR:`\n\n```{err}```")
             output += f"**{code}**\n"
             output += process.stdout.read()[:-1].decode("utf-8")
             output += "\n"
@@ -149,7 +149,7 @@ async def shellrunner(client, message):
                 tb=exc_tb,
             )
             return await edit_or_reply(
-                message, text=f"`ERROR:`\n```{''.join(errors)}```"
+                message, text=f"`ERROR:`\n\n```{''.join(errors)}```"
             )
         output = process.stdout.read()[:-1].decode("utf-8")
     if str(output) == "\n":
@@ -165,9 +165,9 @@ async def shellrunner(client, message):
                 caption="`OUTPUT`",
             )
             return os.remove("output.txt")
-        await edit_or_reply(message, text=f"`OUTPUT:`\n```{output}```")
+        await edit_or_reply(message, text=f"`OUTPUT:`\n\n```{output}```")
     else:
-        await edit_or_reply(message, text="`OUTPUT:`\n`no output`")
+        await edit_or_reply(message, text="`OUTPUT:`\n\n`no output`")
 
 
 @Client.on_message(command(["leavebot", f"leavebot{bname}"]) & ~filters.edited)
