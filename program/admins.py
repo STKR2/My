@@ -113,7 +113,7 @@ async def resume(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            if not await is_music_playing(chat_id):
+            if await is_music_playing(chat_id):
                 await m.reply("ℹ️ The music is already resumed.")
                 return
             await calls.resume_stream(chat_id)
@@ -217,7 +217,7 @@ async def unmute(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
-            if not await is_music_playing(chat_id):
+            if await is_music_playing(chat_id):
                 await m.reply("ℹ️ The stream userbot is already unmuted.")
                 return
             await calls.unmute_stream(chat_id)
@@ -267,7 +267,7 @@ async def cbresume(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            if not await is_music_playing(chat_id):
+            if await is_music_playing(chat_id):
                 await query.answer("ℹ️ The music is already resumed.")
                 return
             await calls.resume_stream(chat_id)
@@ -337,7 +337,7 @@ async def cbunmute(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
-            if not await is_music_playing(chat_id):
+            if await is_music_playing(chat_id):
                 await query.answer("ℹ️ The stream userbot is already unmuted.")
                 return
             await calls.unmute_stream(chat_id)
