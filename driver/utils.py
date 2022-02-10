@@ -1,6 +1,4 @@
 import asyncio
-import socket
-from config import HEROKU_API_KEY
 from driver.core import bot, calls
 from driver.database.dbqueue import remove_active_chat
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
@@ -146,13 +144,3 @@ async def bash(cmd):
     err = stderr.decode().strip()
     out = stdout.decode().strip()
     return out, err
-
-
-async def is_heroku():
-    return "heroku" in socket.getfqdn()
-
-
-async def user_input(input):
-    if " " in input or "\n" in input:
-        return str(input.split(maxsplit=1)[1].strip())
-    return ""
