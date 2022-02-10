@@ -9,7 +9,6 @@ from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
 from driver.database.dbpunish import is_gbanned_user
-
 from driver.database.dbqueue import (
     is_music_playing,
     remove_active_chat,
@@ -244,8 +243,12 @@ async def cbpause(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await query.answer("ℹ️ The music is already paused.")
+                return
             await calls.pause_stream(chat_id)
-            await query.answer("streaming has paused\n\nto resume the stream click on resume button !", show_alert=True)
+            await music_off(chat_id)
+            await query.answer("⏸ The music has paused !\n\n» to resume the music click on resume button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -264,8 +267,12 @@ async def cbresume(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await query.answer("ℹ️ The music is already resumed.")
+                return
             await calls.resume_stream(chat_id)
-            await query.answer("streaming has resumed\n\nto pause the stream click on pause button !", show_alert=True)
+            await music_on(chat_id)
+            await query.answer("⏯ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -285,6 +292,7 @@ async def cbstop(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await calls.leave_group_call(chat_id)
+            await remove_active_chat(chat_id)
             clear_queue(chat_id)
             await query.edit_message_text("✅ **this streaming has ended**", reply_markup=close_mark)
         except Exception as e:
@@ -305,8 +313,12 @@ async def cbmute(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await query.answer("ℹ️ The stream userbot is already muted.")
+                return
             await calls.mute_stream(chat_id)
-            await query.answer("userbot has muted (silent stream)\n\nto unmute the userbot click on unmute button !", show_alert=True)
+            await music_off(chat_id)
+            await query.answer("🔇 The stream userbot has muted !\n\n» to unmute the userbot click on unmute button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -325,8 +337,12 @@ async def cbunmute(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await query.answer("ℹ️ The stream userbot is already unmuted.")
+                return
             await calls.unmute_stream(chat_id)
-            await query.answer("userbot has unmuted (unsilent stream)\n\nto mute the userbot click on mute button !", show_alert=True)
+            await music_on(chat_id)
+            await query.answer("🔊 The stream userbot has unmuted !\n\n» to mute the userbot click on mute button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
