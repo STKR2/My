@@ -14,6 +14,7 @@ from config import BOT_USERNAME as bname
 from driver.core import bot
 from driver.filters import command
 from pyrogram import Client, filters
+from driver.database.dbchat import remove_served_chat
 from driver.decorators import bot_creator, sudo_users_only, errors
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -181,6 +182,7 @@ async def bot_leave_group(_, message):
     chat = message.text.split(None, 2)[1]
     try:
         await bot.leave_chat(chat)
+        await remove_served_chat(chat)
     except Exception as e:
         await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
         print(e)
