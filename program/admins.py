@@ -217,10 +217,7 @@ async def cbpause(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await calls.pause_stream(chat_id)
-            await query.answer("streaming paused")
-            await query.edit_message_text(
-                "⏸ the streaming has paused", reply_markup=back_mark
-            )
+            await query.answer("streaming has paused\n\nto resume the stream click on resume button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -240,10 +237,7 @@ async def cbresume(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await calls.resume_stream(chat_id)
-            await query.answer("streaming resumed")
-            await query.edit_message_text(
-                "▶️ the streaming has resumed", reply_markup=back_mark
-            )
+            await query.answer("streaming has resumed\n\nto pause the stream click on pause button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -284,10 +278,7 @@ async def cbmute(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await calls.mute_stream(chat_id)
-            await query.answer("streaming muted")
-            await query.edit_message_text(
-                "🔇 userbot succesfully muted", reply_markup=back_mark
-            )
+            await query.answer("userbot has muted (silent stream)\n\nto unmute the userbot click on unmute button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
@@ -307,10 +298,7 @@ async def cbunmute(_, query: CallbackQuery):
     if chat_id in QUEUE:
         try:
             await calls.unmute_stream(chat_id)
-            await query.answer("streaming unmuted")
-            await query.edit_message_text(
-                "🔊 userbot succesfully unmuted", reply_markup=back_mark
-            )
+            await query.answer("userbot has unmuted (unsilent stream)\n\nto mute the userbot click on mute button !", show_alert=True)
         except Exception as e:
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
