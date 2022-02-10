@@ -1,6 +1,7 @@
-from config import API_HASH, API_ID, BOT_TOKEN, SESSION_NAME
 from pyrogram import Client
 from pytgcalls import PyTgCalls
+from aiohttp import ClientSession
+from config import API_HASH, API_ID, BOT_TOKEN, SESSION_NAME
 
 
 bot = Client(
@@ -18,3 +19,6 @@ user = Client(
 )
 
 calls = PyTgCalls(user, overload_quiet_mode=True)
+
+
+aiohttpsession = ClientSession()
