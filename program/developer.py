@@ -14,7 +14,7 @@ from config import BOT_USERNAME as bname
 from driver.core import bot
 from driver.filters import command
 from pyrogram import Client, filters
-from driver.decorators import sudo_users_only, errors
+from driver.decorators import bot_creator, sudo_users_only, errors
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
@@ -171,7 +171,7 @@ async def shellrunner(client, message):
 
 
 @Client.on_message(command(["leavebot", f"leavebot{bname}"]) & ~filters.edited)
-@sudo_users_only
+@bot_creator
 async def bot_leave_group(_, message):
     if len(message.command) != 2:
         await message.reply_text(
