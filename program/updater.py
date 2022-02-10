@@ -24,6 +24,7 @@ from config import (
     HEROKU_APP_NAME,
     UPSTREAM_BRANCH,
     UPSTREAM_REPO,
+    BOT_NAME,
     BOT_USERNAME as bname,
 )
 
@@ -36,6 +37,7 @@ from driver.database.dbqueue import get_active_chats, remove_active_chat
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 XCB = [
     "/",
