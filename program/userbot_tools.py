@@ -6,7 +6,7 @@ from config import BOT_USERNAME, SUDO_USERS
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
-from driver.decorators import authorized_users_only, sudo_users_only
+from driver.decorators import authorized_users_only, bot_creator
 
 
 @Client.on_message(
@@ -47,7 +47,7 @@ async def leave_chat(_, m: Message):
 
 
 @Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]))
-@sudo_users_only
+@bot_creator
 async def leave_all(client, message):
     if message.from_user.id not in SUDO_USERS:
         return
@@ -82,5 +82,4 @@ async def bot_kicked(c: Client, m: Message):
     left_member = m.left_chat_member
     if left_member.id == bot_id:
         await user.leave_chat(chat_id)
-        return
-    await remove_served_chat(chat_id)
+        await remove_served_chat(chat_id)
