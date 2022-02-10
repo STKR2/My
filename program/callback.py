@@ -5,6 +5,7 @@ from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
 from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+
 from config import (
     ASSISTANT_NAME,
     BOT_NAME,
@@ -243,6 +244,7 @@ async def set_markup_menu(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+    await query.answer("control panel opened")
     chat_id = query.message.chat.id
     user_id = query.message.from_user.id
     buttons = menu_markup(user_id)
