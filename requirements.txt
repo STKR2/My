@@ -11,6 +11,7 @@ youtube-search
 python-dotenv
 dnspython
 gitpython
+heroku3
 aiofiles
 aiohttp
 requests
