@@ -1,3 +1,5 @@
+import os
+
 from cache.admins import admins
 from driver.core import calls, bot
 from pyrogram import Client, filters
@@ -74,9 +76,10 @@ async def skip(c: Client, m: Message):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 caption=f"⏭ **Skipped** to the next track.\n\n🗂 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
             )
+            os.remove(image)
     else:
         skip = m.text.split(None, 1)[1]
-        OP = "🗑 **removed song from queue:**"
+        track = "🗑 **removed song from queue:**"
         if chat_id in QUEUE:
             items = [int(x) for x in skip.split(" ") if x.isdigit()]
             items.sort(reverse=True)
@@ -84,12 +87,12 @@ async def skip(c: Client, m: Message):
                 if x == 0:
                     pass
                 else:
-                    hm = await skip_item(chat_id, x)
-                    if hm == 0:
+                    data = await skip_item(chat_id, x)
+                    if data == 0:
                         pass
                     else:
-                        OP = OP + "\n" + f"**#{x}** - {hm}"
-            await m.reply(OP)
+                        track = track + "\n" + f"**#{x}** - {hm}"
+            await m.reply(track)
 
 
 @Client.on_message(
