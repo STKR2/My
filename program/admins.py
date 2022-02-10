@@ -10,12 +10,23 @@ from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
 from driver.database.dbpunish import is_gbanned_user
 
+from driver.database.dbqueue import (
+    is_music_playing,
+    remove_active_chat,
+    music_off,
+    music_on,
+)
 from program.utils.inline import (
     stream_markup,
     close_mark,
     back_mark,
 )
-from config import BOT_USERNAME, GROUP_SUPPORT, IMG_5, UPDATES_CHANNEL
+from config import (
+    BOT_USERNAME,
+    GROUP_SUPPORT,
+    IMG_5,
+    UPDATES_CHANNEL,
+)
 from pyrogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -40,6 +51,81 @@ async def update_admin(client, message: Message):
     await message.reply_text(
         "✅ Bot **reloaded correctly !**\n✅ **Admin list** has **updated !**"
     )
+
+
+@Client.on_message(
+    command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "vstop"])
+    & other_filters
+)
+@authorized_users_only
+async def stop(client, m: Message):
+    user_id = m.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
+    chat_id = m.chat.id
+    if chat_id in QUEUE:
+        try:
+            await calls.leave_group_call(chat_id)
+            await remove_active_chat(chat_id)
+            clear_queue(chat_id)
+            await m.reply("✅ The userbot has disconnected from the video chat.")
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing is streaming**")
+
+
+@Client.on_message(
+    command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters
+)
+@authorized_users_only
+async def pause(client, m: Message):
+    user_id = m.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
+    chat_id = m.chat.id
+    if chat_id in QUEUE:
+        try:
+            if not await is_music_playing(chat_id):
+                await m.reply("ℹ️ The music is already paused.")
+                return
+            await calls.pause_stream(chat_id)
+            await music_off(chat_id)
+            await m.reply(
+                "⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command."
+            )
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing is streaming**")
+
+
+@Client.on_message(
+    command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters
+)
+@authorized_users_only
+async def resume(client, m: Message):
+    user_id = m.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
+    chat_id = m.chat.id
+    if chat_id in QUEUE:
+        try:
+            if not await is_music_playing(chat_id):
+                await m.reply("ℹ️ The music is already resumed.")
+                return
+            await calls.resume_stream(chat_id)
+            await music_on(chat_id)
+            await m.reply(
+                "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
+            )
+        except Exception as e:
+            await m.reply(f"🚫 **error:**\n\n`{e}`")
+    else:
+        await m.reply("❌ **nothing is streaming**")
 
 
 @Client.on_message(command(["skip", f"skip@{BOT_USERNAME}", "vskip"]) & other_filters)
@@ -95,72 +181,6 @@ async def skip(c: Client, m: Message):
 
 
 @Client.on_message(
-    command(["stop", f"stop@{BOT_USERNAME}", "end", f"end@{BOT_USERNAME}", "vstop"])
-    & other_filters
-)
-@authorized_users_only
-async def stop(client, m: Message):
-    user_id = m.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
-    chat_id = m.chat.id
-    if chat_id in QUEUE:
-        try:
-            await calls.leave_group_call(chat_id)
-            clear_queue(chat_id)
-            await m.reply("✅ The userbot has disconnected from the video chat.")
-        except Exception as e:
-            await m.reply(f"🚫 **error:**\n\n`{e}`")
-    else:
-        await m.reply("❌ **nothing is streaming**")
-
-
-@Client.on_message(
-    command(["pause", f"pause@{BOT_USERNAME}", "vpause"]) & other_filters
-)
-@authorized_users_only
-async def pause(client, m: Message):
-    user_id = m.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
-    chat_id = m.chat.id
-    if chat_id in QUEUE:
-        try:
-            await calls.pause_stream(chat_id)
-            await m.reply(
-                "⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command."
-            )
-        except Exception as e:
-            await m.reply(f"🚫 **error:**\n\n`{e}`")
-    else:
-        await m.reply("❌ **nothing is streaming**")
-
-
-@Client.on_message(
-    command(["resume", f"resume@{BOT_USERNAME}", "vresume"]) & other_filters
-)
-@authorized_users_only
-async def resume(client, m: Message):
-    user_id = m.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
-    chat_id = m.chat.id
-    if chat_id in QUEUE:
-        try:
-            await calls.resume_stream(chat_id)
-            await m.reply(
-                "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
-            )
-        except Exception as e:
-            await m.reply(f"🚫 **error:**\n\n`{e}`")
-    else:
-        await m.reply("❌ **nothing is streaming**")
-
-
-@Client.on_message(
     command(["mute", f"mute@{BOT_USERNAME}", "vmute"]) & other_filters
 )
 @authorized_users_only
@@ -172,7 +192,11 @@ async def mute(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await m.reply("ℹ️ The stream userbot is already muted.")
+                return
             await calls.mute_stream(chat_id)
+            await music_off(chat_id)
             await m.reply(
                 "🔇 **Userbot muted.**\n\n• **To unmute the userbot, use the**\n» /unmute command."
             )
@@ -194,7 +218,11 @@ async def unmute(client, m: Message):
     chat_id = m.chat.id
     if chat_id in QUEUE:
         try:
+            if not await is_music_playing(chat_id):
+                await m.reply("ℹ️ The stream userbot is already unmuted.")
+                return
             await calls.unmute_stream(chat_id)
+            await music_on(chat_id)
             await m.reply(
                 "🔊 **Userbot unmuted.**\n\n• **To mute the userbot, use the**\n» /mute command."
             )
