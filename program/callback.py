@@ -3,9 +3,8 @@
 from driver.queues import QUEUE
 from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
-from program.utils.inline import menu_markup
+from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
-
 from config import (
     ASSISTANT_NAME,
     BOT_NAME,
@@ -183,7 +182,7 @@ async def set_sudo(_, query: CallbackQuery):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     if user_id not in SUDO_USERS:
-        await query.answer("This button can only be accessed by sudo users", show_alert=True)
+        await query.answer("⚠️ You don't have permissions to click this button\n\n» This button is reserved for sudo members of this bot.", show_alert=True)
         return
     await query.answer("sudo commands")
     await query.edit_message_text(
@@ -213,7 +212,7 @@ async def set_owner(_, query: CallbackQuery):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
     if user_id not in OWNER_ID:
-        await query.answer("This button can only be accessed by bot owner", show_alert=True)
+        await query.answer("⚠️ You don't have permissions to click this button\n\n» This button is reserved for owner of this bot.", show_alert=True)
         return
     await query.answer("owner commands")
     await query.edit_message_text(
@@ -247,14 +246,25 @@ async def set_markup_menu(_, query: CallbackQuery):
     chat_id = query.message.chat.id
     user_id = query.message.from_user.id
     buttons = menu_markup(user_id)
-    chat = query.message.chat.title
     if chat_id in QUEUE:
-          await query.edit_message_text(
-              f"⚙️ **Settings of** {chat}\n\n⏸ : pause stream\n▶️ : resume stream\n🔇 : mute userbot\n🔊 : unmute userbot\n⏹ : stop stream",
-              reply_markup=InlineKeyboardMarkup(buttons),
-          )
+        await query.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
+
+
+@Client.on_callback_query(filters.regex("stream_home_panel"))
+async def set_home_menu(_, query: CallbackQuery):
+    user_id = query.from_user.id
+    if await is_gbanned_user(user_id):
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+        return
+    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+    if not a.can_manage_voice_chats:
+        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+    await query.answer("control panel closed")
+    user_id = query.message.from_user.id
+    buttons = stream_markup(user_id)
+    await query.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
 
 
 @Client.on_callback_query(filters.regex("set_close"))
