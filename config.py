@@ -17,11 +17,15 @@ OWNER_NAME = getenv("OWNER_NAME")
 ALIVE_NAME = getenv("ALIVE_NAME")
 BOT_USERNAME = getenv("BOT_USERNAME")
 ASSISTANT_NAME = getenv("ASSISTANT_NAME")
-UPSTREAM_REPO = getenv("UPSTREAM_REPO")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/levina-lab/video-stream")
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
 GROUP_SUPPORT = getenv("GROUP_SUPPORT", "VeezSupportGroup")
 UPDATES_CHANNEL = getenv("UPDATES_CHANNEL", "levinachannel")
+
+# heroku mandatory vars
+HEROKU_API_KEY = getenv("HEROKU_API_KEY")
+HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 
 # database, decorators, handlers mandatory vars
 MONGODB_URL = getenv("MONGODB_URL")
