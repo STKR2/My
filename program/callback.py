@@ -244,11 +244,11 @@ async def set_markup_menu(_, query: CallbackQuery):
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
-    await query.answer("control panel opened")
     chat_id = query.message.chat.id
     user_id = query.message.from_user.id
     buttons = menu_markup(user_id)
     if chat_id in QUEUE:
+        await query.answer("control panel opened")
         await query.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
