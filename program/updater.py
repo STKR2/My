@@ -20,7 +20,8 @@ from driver.database.dbqueue import get_active_chats, remove_active_chat
 def gen_chlog(repo, diff):
     upstream_repo_url = Repo().remotes[0].config_reader.get("url").replace(".git", "")
     ac_br = repo.active_branch.name
-    ch_log = tldr_log = ""
+    ch_log = ""
+    tldr_log = ""
     ch = f"<b>updates for <a href={upstream_repo_url}/tree/{ac_br}>[{ac_br}]</a>:</b>"
     ch_tl = f"updates for {ac_br}:"
     d_form = "%d/%m/%y || %H:%M"
