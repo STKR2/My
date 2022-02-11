@@ -35,10 +35,6 @@
             "description": "fill with your bot name from @BotFather",
             "required": true
         },
-        "ASSISTANT_USERNAME": {
-            "description": "fill with the assistant username account without @",
-            "required": true
-        },
         "SESSION_NAME": {
             "description": "fill with the pyrogram String Session",
             "required": true
