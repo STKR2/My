@@ -73,7 +73,7 @@ async def quick_set(_, query: CallbackQuery):
         return
     await query.answer("quick bot usage")
     await query.edit_message_text(
-        f"""Quick use Guide bot, please read fully !
+        f"""ℹ️ Quick use Guide bot, please read fully !
 
 👩🏻‍💼 » /play - Type this with give the song title or youtube link or audio file to play Music. (Remember to don't play YouTube live stream by using this command!, because it will cause unforeseen problems.)
 
