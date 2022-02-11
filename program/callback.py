@@ -7,11 +7,11 @@ from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import (
-    ASSISTANT_USERNAME as uname,
+    ASSISTANT_USERNAME,
     BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
-    OWNER_USERNAME as oname,
+    OWNER_USERNAME,
     UPDATES_CHANNEL,
     SUDO_USERS,
     OWNER_ID,
@@ -43,7 +43,7 @@ async def set_start(_, query: CallbackQuery):
                 [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
                 [
                     InlineKeyboardButton("📚 Commands", callback_data="command_list"),
-                    InlineKeyboardButton("❤ Donate", url=f"https://t.me/{oname}"),
+                    InlineKeyboardButton("❤ Donate", url=f"https://t.me/{OWNER_USERNAME}"),
                 ],
                 [
                     InlineKeyboardButton(
@@ -77,7 +77,7 @@ async def set_guide(_, query: CallbackQuery):
 1.) First, add this bot to your Group.
 2.) Then, promote this bot as administrator on the Group also give all permissions except Anonymous admin.
 3.) After promoting this bot, type /reload in Group to update the admin data.
-3.) Invite @{uname} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
+3.) Invite @{ASSISTANT_USERNAME} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
 4.) Turn on/Start the video chat first before start to play video/music.
 
 `- END, EVERYTHING HAS BEEN SETUP -`
