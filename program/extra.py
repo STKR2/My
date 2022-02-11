@@ -1,5 +1,6 @@
 """ broadcast & statistic collector """
 
+
 import asyncio
 
 from pyrogram.types import Message
@@ -16,7 +17,7 @@ from driver.database.dbusers import get_served_users
 from driver.database.dbpunish import get_gbans_count
 from driver.database.dbqueue import get_active_chats
 
-from config import BOT_NAME as name, BOT_USERNAME as uname
+from config import BOT_USERNAME as uname
 
 
 @Client.on_message(command(["broadcast", f"broadcast@{uname}"]) & ~filters.edited)
@@ -124,6 +125,7 @@ async def broadcast_message_pin(c: Client, message: Message):
 @Client.on_message(command(["stats", f"stats@{uname}"]) & ~filters.edited)
 @sudo_users_only
 async def bot_statistic(c: Client, message: Message):
+    name = (await c.get_me()).first_name
     chat_id = message.chat.id
     user_id = message.from_user.id
     msg = await c.send_message(
@@ -177,6 +179,6 @@ async def active_calls(c: Client, message: Message):
         await message.reply_text("❌ no active group calls")
     else:
         await message.reply_text(
-            f"✏️ **Active Group Call list:**\n\n{text}\n\n❖ This is the list of all current active group call in my database.",
+            f"✏️ **Running Group Call List:**\n\n{text}\n\n❖ This is the list of all current active group call in my database.",
             disable_web_page_preview=True,
         )
