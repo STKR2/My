@@ -107,9 +107,9 @@ async def set_commands(_, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("👷🏻 Admins Commands", callback_data="admin_command"),
+                    InlineKeyboardButton("👷🏼🏻 Admins Commands", callback_data="admin_command"),
                 ],[
-                    InlineKeyboardButton("👩🏻‍💼 Users Commands", callback_data="user_command"),
+                    InlineKeyboardButton("🧑🏼‍💼 Users Commands", callback_data="user_command"),
                 ],[
                     InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
                     InlineKeyboardButton("Owner Commands", callback_data="owner_command"),
