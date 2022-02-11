@@ -65,7 +65,7 @@ async def update_bot(_, message: Message):
     msg = await message.reply("❖ Checking updates...")
     update_avail = updater()
     if update_avail:
-        await msg.edit("✅ Update finished !\n\n• Bot restarting, back active again in 1-2 minutes.")
+        await msg.edit("✅ Update finished !\n\n• Bot restarting, back active again in 1 minutes.")
         system("git pull -f && pip3 install --no-cache-dir -r requirements.txt")
         execle(sys.executable, sys.executable, "main.py", environ)
         return
@@ -77,6 +77,6 @@ async def update_bot(_, message: Message):
 async def restart_bot(_, message: Message):
     msg = await message.reply("❖ Restarting bot...")
     args = [sys.executable, "main.py"]
-    await msg.edit("✅ Bot restarted !\n\n• wait until 1-2 minutes after bot Rebooted.")
+    await msg.edit("✅ Bot restarted !\n\n• wait until 1 minutes after bot Rebooted.")
     execle(sys.executable, *args, environ)
     return
