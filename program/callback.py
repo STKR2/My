@@ -83,8 +83,9 @@ async def set_quick(_, query: CallbackQuery):
 
 ❓ Have questions? Contact us in [Support Group](https://t.me/{GROUP_SUPPORT}).""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="home_start")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
         ),
+        disable_web_page_preview=True,
     )
 
 
