@@ -1,5 +1,6 @@
 # Copyright (C) 2021 By VeezMusicProject
 
+from driver.core import user
 from driver.queues import QUEUE
 from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
@@ -7,7 +8,6 @@ from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import (
-    ASSISTANT_USERNAME,
     BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
@@ -67,6 +67,7 @@ async def set_start(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("user_guide"))
 async def set_guide(_, query: CallbackQuery):
     user_id = query.from_user.id
+    ass_uname = (await user.get_me()).username
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -77,7 +78,7 @@ async def set_guide(_, query: CallbackQuery):
 1.) First, add this bot to your Group.
 2.) Then, promote this bot as administrator on the Group also give all permissions except Anonymous admin.
 3.) After promoting this bot, type /reload in Group to update the admin data.
-3.) Invite @{ASSISTANT_USERNAME} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
+3.) Invite @{ass_uname} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
 4.) Turn on/Start the video chat first before start to play video/music.
 
 `- END, EVERYTHING HAS BEEN SETUP -`
