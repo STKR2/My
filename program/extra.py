@@ -89,7 +89,7 @@ async def broadcast_message_pin(c: Client, message: Message):
             except Exception:
                 pass
         await message.reply_text(
-            f"✅ Broadcast complete in {sent} Group.\n📌 With the {pin} pins."
+            f"✅ Broadcast complete in {sent} Group.\n📌 Sent with {pin} chat pins."
         )
         return
     if len(message.command) < 2:
@@ -117,7 +117,7 @@ async def broadcast_message_pin(c: Client, message: Message):
         except Exception:
             pass
     await message.reply_text(
-        f"✅ Broadcast complete in {sent} Group.\n📌 With the {pin} pins."
+        f"✅ Broadcast complete in {sent} Group.\n📌 Sent with {pin} chat pins."
     )
 
 
@@ -127,7 +127,7 @@ async def bot_statistic(c: Client, message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     msg = await c.send_message(
-        chat_id, "🔄 Calculate..."
+        chat_id, "❖ Collecting Stats..."
     )
     served_chats = len(await get_served_chats())
     served_users = len(await get_served_users())
@@ -177,6 +177,6 @@ async def active_calls(c: Client, message: Message):
         await message.reply_text("❌ no active group calls")
     else:
         await message.reply_text(
-            f"✏️ **Active video chats list:**\n\n{text}",
+            f"✏️ **Active Group Call list:**\n\n{text}\n\n❖ This is the list of all current active group call in my database.",
             disable_web_page_preview=True,
         )
