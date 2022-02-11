@@ -9,6 +9,7 @@ from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
 from driver.utils import skip_current_song, skip_item
 from driver.database.dbpunish import is_gbanned_user
+
 from driver.database.dbqueue import (
     is_music_playing,
     remove_active_chat,
@@ -231,122 +232,113 @@ async def unmute(client, m: Message):
         await m.reply("❌ **nothing is streaming**")
 
 
-@Client.on_callback_query(filters.regex("set_pause"))
-async def cbpause(_, query: CallbackQuery):
+@Client.on_callback_query(
+    filters.regex(
+        pattern=r"^(set_pause|set_resume|set_stop|set_mute|set_unmute)$"
+    )
+)
+async def data_stream_markup(_, query: CallbackQuery):
     user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
-    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
-    if not a.can_manage_voice_chats:
-        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
     chat_id = query.message.chat.id
-    if chat_id in QUEUE:
-        try:
-            if not await is_music_playing(chat_id):
-                await query.answer("ℹ️ The music is already paused.")
-                return
-            await calls.pause_stream(chat_id)
-            await music_off(chat_id)
-            await query.answer("⏸ The music has paused !\n\n» to resume the music click on resume button !", show_alert=True)
-        except Exception as e:
-            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
-    else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
-
-
-@Client.on_callback_query(filters.regex("set_resume"))
-async def cbresume(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
-    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
-    if not a.can_manage_voice_chats:
-        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
-    chat_id = query.message.chat.id
-    if chat_id in QUEUE:
-        try:
-            if await is_music_playing(chat_id):
-                await query.answer("ℹ️ The music is already resumed.")
-                return
-            await calls.resume_stream(chat_id)
-            await music_on(chat_id)
-            await query.answer("⏯ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
-        except Exception as e:
-            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
-    else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
-
-
-@Client.on_callback_query(filters.regex("set_stop"))
-async def cbstop(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
-    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
-    if not a.can_manage_voice_chats:
-        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
-    chat_id = query.message.chat.id
-    if chat_id in QUEUE:
-        try:
-            await calls.leave_group_call(chat_id)
-            await remove_active_chat(chat_id)
-            clear_queue(chat_id)
-            await query.edit_message_text("✅ **this streaming has ended**", reply_markup=close_mark)
-        except Exception as e:
-            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
-    else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
-
-
-@Client.on_callback_query(filters.regex("set_mute"))
-async def cbmute(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
-    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
-    if not a.can_manage_voice_chats:
-        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
-    chat_id = query.message.chat.id
-    if chat_id in QUEUE:
-        try:
-            if not await is_music_playing(chat_id):
-                await query.answer("ℹ️ The stream userbot is already muted.")
-                return
-            await calls.mute_stream(chat_id)
-            await music_off(chat_id)
-            await query.answer("🔇 The stream userbot has muted !\n\n» to unmute the userbot click on unmute button !", show_alert=True)
-        except Exception as e:
-            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
-    else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
-
-
-@Client.on_callback_query(filters.regex("set_unmute"))
-async def cbunmute(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
-    a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
-    if not a.can_manage_voice_chats:
-        return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
-    chat_id = query.message.chat.id
-    if chat_id in QUEUE:
-        try:
-            if await is_music_playing(chat_id):
-                await query.answer("ℹ️ The stream userbot is already unmuted.")
-                return
-            await calls.unmute_stream(chat_id)
-            await music_on(chat_id)
-            await query.answer("🔊 The stream userbot has unmuted !\n\n» to mute the userbot click on mute button !", show_alert=True)
-        except Exception as e:
-            await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
-    else:
-        await query.answer("❌ nothing is currently streaming", show_alert=True)
+    data = query.matches[0].group(1)
+    if data == "set_pause":
+        if await is_gbanned_user(user_id):
+            await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+            return
+        a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+        if not a.can_manage_voice_chats:
+            await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+            return
+        if chat_id in QUEUE:
+            try:
+                if not await is_music_playing(chat_id):
+                    await query.answer("ℹ️ The music is already paused.")
+                    return
+                await calls.pause_stream(chat_id)
+                await music_off(chat_id)
+                await query.answer("⏸ The music has paused !\n\n» to resume the music click on resume button !", show_alert=True)
+            except Exception as e:
+                await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
+        else:
+            await query.answer("❌ nothing is currently streaming", show_alert=True)
+    if data == "set_resume":
+        if await is_gbanned_user(user_id):
+            await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+            return
+        a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+        if not a.can_manage_voice_chats:
+            await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+            return
+        if chat_id in QUEUE:
+            try:
+                if await is_music_playing(chat_id):
+                    await query.answer("ℹ️ The music is already resumed.")
+                    return
+                await calls.resume_stream(chat_id)
+                await music_on(chat_id)
+                await query.answer("⏯ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
+            except Exception as e:
+                await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
+        else:
+            await query.answer("❌ nothing is currently streaming", show_alert=True)
+    if data == "set_stop":
+        if await is_gbanned_user(user_id):
+            await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+            return
+        a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+        if not a.can_manage_voice_chats:
+            await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+            return
+        if chat_id in QUEUE:
+            try:
+                await calls.leave_group_call(chat_id)
+                await remove_active_chat(chat_id)
+                clear_queue(chat_id)
+                await query.edit_message_text("✅ **this streaming has ended**", reply_markup=close_mark)
+            except Exception as e:
+                await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
+        else:
+            await query.answer("❌ nothing is currently streaming", show_alert=True)
+    if data == "set_mute":
+        if await is_gbanned_user(user_id):
+            await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+            return
+        a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+        if not a.can_manage_voice_chats:
+            await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+            return
+        if chat_id in QUEUE:
+            try:
+                if not await is_music_playing(chat_id):
+                    await query.answer("ℹ️ The stream userbot is already muted.")
+                    return
+                await calls.mute_stream(chat_id)
+                await music_off(chat_id)
+                await query.answer("🔇 The stream userbot has muted !\n\n» to unmute the userbot click on unmute button !", show_alert=True)
+            except Exception as e:
+                await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
+        else:
+            await query.answer("❌ nothing is currently streaming", show_alert=True)
+    if data = "set_unmute":
+        if await is_gbanned_user(user_id):
+            await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+            return
+        a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
+        if not a.can_manage_voice_chats:
+            await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
+            return
+        if chat_id in QUEUE:
+            try:
+                if await is_music_playing(chat_id):
+                    await query.answer("ℹ️ The stream userbot is already unmuted.")
+                    return
+                await calls.unmute_stream(chat_id)
+                await music_on(chat_id)
+                await query.answer("🔊 The stream userbot has unmuted !\n\n» to mute the userbot click on mute button !", show_alert=True)
+            except Exception as e:
+                await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
+        else:
+            await query.answer("❌ nothing is currently streaming", show_alert=True)
 
 
 @Client.on_message(
