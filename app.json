@@ -31,10 +31,6 @@
             "description": "fill with your bot username from @BotFather but without using '@' symbol",
             "required": true
         },
-        "BOT_NAME": {
-            "description": "fill with your bot name from @BotFather",
-            "required": true
-        },
         "SESSION_NAME": {
             "description": "fill with the pyrogram String Session",
             "required": true
