@@ -13,10 +13,10 @@ SESSION_NAME = getenv("SESSION_NAME", "session")
 
 # mandatory vars
 BOT_NAME = getenv("BOT_NAME")
-OWNER_NAME = getenv("OWNER_NAME")
+OWNER_USERNAME = getenv("OWNER_USERNAME")
 ALIVE_NAME = getenv("ALIVE_NAME")
 BOT_USERNAME = getenv("BOT_USERNAME")
-ASSISTANT_NAME = getenv("ASSISTANT_NAME")
+ASSISTANT_USERNAME = getenv("ASSISTANT_USERNAME")
 UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/levina-lab/video-stream")
 UPSTREAM_BRANCH = getenv("UPSTREM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
