@@ -35,7 +35,7 @@
             "description": "fill with your bot name from @BotFather",
             "required": true
         },
-        "ASSISTANT_NAME": {
+        "ASSISTANT_USERNAME": {
             "description": "fill with the assistant username account without @",
             "required": true
         },
@@ -63,7 +63,7 @@
             "description": "if you have channel, then fill the channel username here without @",
             "required": true
         },
-        "OWNER_NAME": {
+        "OWNER_USERNAME": {
             "description": "fill with your telegram account username without @",
             "required": true
         },
