@@ -252,7 +252,7 @@ async def data_stream_markup(_, query: CallbackQuery):
         if chat_id in QUEUE:
             try:
                 if not await is_music_playing(chat_id):
-                    await query.answer("ℹ️ The music is already paused.")
+                    await query.answer("ℹ️ The music is already paused.", show_alert=True)
                     return
                 await calls.pause_stream(chat_id)
                 await music_off(chat_id)
@@ -272,11 +272,11 @@ async def data_stream_markup(_, query: CallbackQuery):
         if chat_id in QUEUE:
             try:
                 if await is_music_playing(chat_id):
-                    await query.answer("ℹ️ The music is already resumed.")
+                    await query.answer("ℹ️ The music is already resumed.", show_alert=True)
                     return
                 await calls.resume_stream(chat_id)
                 await music_on(chat_id)
-                await query.answer("⏯ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
+                await query.answer("▶️ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
             except Exception as e:
                 await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
         else:
@@ -310,7 +310,7 @@ async def data_stream_markup(_, query: CallbackQuery):
         if chat_id in QUEUE:
             try:
                 if not await is_music_playing(chat_id):
-                    await query.answer("ℹ️ The stream userbot is already muted.")
+                    await query.answer("ℹ️ The stream userbot is already muted.", show_alert=True)
                     return
                 await calls.mute_stream(chat_id)
                 await music_off(chat_id)
@@ -330,7 +330,7 @@ async def data_stream_markup(_, query: CallbackQuery):
         if chat_id in QUEUE:
             try:
                 if await is_music_playing(chat_id):
-                    await query.answer("ℹ️ The stream userbot is already unmuted.")
+                    await query.answer("ℹ️ The stream userbot is already unmuted.", show_alert=True)
                     return
                 await calls.unmute_stream(chat_id)
                 await music_on(chat_id)
