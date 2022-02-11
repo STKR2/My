@@ -60,14 +60,14 @@ def updater():
 @bot_creator
 async def update_bot(_, message: Message):
     chat_id = message.chat.id
-    msg = await message.reply("🔄 `processing update...`")
+    msg = await message.reply("❖ Checking updates...")
     update_avail = updater()
     if update_avail:
         await msg.edit("✅ Update finished !\n\n• Bot restarting, back active again in 1-2 minutes.")
-        os.system("git pull -f && pip3 install --no-cache-dir -r requirements.txt")
+        system("git pull -f && pip3 install --no-cache-dir -r requirements.txt")
         execle(sys.executable, sys.executable, "main.py", environ)
         return
-    await msg.edit(f"bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main)", disable_web_page_preview=True)
+    await msg.edit(f"❖ bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main) ❖", disable_web_page_preview=True)
 
 
 @Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
@@ -78,8 +78,8 @@ async def restart_bot(_, message: Message):
         chats = await get_active_chats()
         for chat in chats:
             served_chats.append(int(chat["chat_id"]))
-    except Exception as e:
-        pass
+    except BaseException as e:
+        print(e)
     for x in served_chats:
         try:
             await bot.send_message(
@@ -87,9 +87,9 @@ async def restart_bot(_, message: Message):
                 f"💡 Bot server has just restarted !\n\n• Sorry for the inconveniences due to bot maintenance.",
             )
             await remove_active_chat(x)
-        except Exception:
-            pass
-        msg = await message.reply("`restarting bot...`")
+        except BaseException as e:
+            print(e)
+        msg = await message.reply("❖ Restarting bot...")
         args = [sys.executable, "main.py"]
         await msg.edit("✅ Bot restarted\n\n• now bot is working again.")
         execle(sys.executable, *args, environ)
