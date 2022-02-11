@@ -1,6 +1,6 @@
 # Copyright (C) 2021 By VeezMusicProject
 
-from driver.core import user
+from driver.core import user, bot
 from driver.queues import QUEUE
 from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
@@ -8,7 +8,6 @@ from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import (
-    BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
     OWNER_USERNAME,
@@ -21,6 +20,7 @@ from config import (
 @Client.on_callback_query(filters.regex("home_start"))
 async def set_start(_, query: CallbackQuery):
     user_id = query.from_user.id
+    BOT_NAME = (await bot.get_me()).first_name
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
