@@ -1,15 +1,10 @@
 # Copyright (C) 2021 By Veez Music-Project
 
-from __future__ import unicode_literals
-
 import os
 import re
-import math
 import time
 import asyncio
 import lyricsgenius
-from random import randint
-from urllib.parse import urlparse
 
 import aiofiles
 import aiohttp
@@ -24,34 +19,27 @@ from youtubesearchpython import VideosSearch
 from yt_dlp import YoutubeDL
 
 from config import BOT_USERNAME as bn
-from driver.decorators import humanbytes
 from driver.filters import command, other_filters
-
-
-ydl_opts = {
-    'format': 'best',
-    'keepvideo': True,
-    'prefer_ffmpeg': False,
-    'geo_bypass': True,
-    'outtmpl': '%(title)s.%(ext)s',
-    'quite': True
-}
-
-is_downloading = False
+from driver.database.dbpunish import is_gbanned_user
 
 
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
-def song(_, message):
-    global is_downloading
-    query = " ".join(message.command[1:])
-    if is_downloading:
-        message.reply(
-            "» Other download is in progress, please try again after some time !"
-        )
+async def song_downloader(_, message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply("❗️ **You've blocked from using this bot!**")
         return
-    is_downloading = True
-    m = message.reply("🔎 finding song...")
-    ydl_ops = {"format": "bestaudio[ext=m4a]"}
+    await message.delete()
+    query = " ".join(message.command[1:])
+    m = await message.reply("🔎 finding song...")
+    ydl_ops = {
+        'format': 'bestaudio[ext=m4a]',
+        'keepvideo': True,
+        'prefer_ffmpeg': False,
+        'geo_bypass': True,
+        'outtmpl': '%(title)s.%(ext)s',
+        'quite': True,
+    }
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
@@ -63,10 +51,10 @@ def song(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        m.edit("❌ song not found.\n\nplease give a valid song name !")
+        await m.edit("❌ song not found.\n\n» Give me a valid song name !")
         print(str(e))
         return
-    m.edit("📥 downloading song...")
+    await m.edit("📥 downloading song...")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
@@ -78,8 +66,8 @@ def song(_, message):
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
-        m.edit("📤 uploading song...")
-        message.reply_audio(
+        await m.edit("📤 uploading song...")
+        await message.reply_audio(
             audio_file,
             caption=rep,
             performer=host,
@@ -88,12 +76,11 @@ def song(_, message):
             title=title,
             duration=dur,
         )
-        m.delete()
-        is_downloading = False
-    except Exception as e:
-        m.edit("❌ error, wait for bot owner to fix")
-        print(e)
+        await m.delete()
 
+    except Exception as e:
+        await m.edit("❌ error, wait for bot owner to fix")
+        print(e)
     try:
         os.remove(audio_file)
         os.remove(thumb_name)
@@ -104,8 +91,12 @@ def song(_, message):
 @Client.on_message(
     command(["vsong", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
 )
-async def vsong(client, message):
-    global is_downloading
+async def video_downloader(_, message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
+    await message.delete()
     ydl_opts = {
         "format": "best",
         "keepvideo": True,
@@ -115,11 +106,6 @@ async def vsong(client, message):
         "quite": True,
     }
     query = " ".join(message.command[1:])
-    if is_downloading:
-        return await message.reply(
-            "» Other download is in progress, please try again after some time !"
-        )
-    is_downloading = True
     try:
         results = YoutubeSearch(query, max_results=1).to_dict()
         link = f"https://youtube.com{results[0]['url_suffix']}"
@@ -149,7 +135,6 @@ async def vsong(client, message):
         thumb=preview,
         caption=ytdl_data["title"],
     )
-    is_downloading = False
     try:
         os.remove(file_name)
         await msg.delete()
@@ -159,6 +144,10 @@ async def vsong(client, message):
 
 @Client.on_message(command(["lyric", f"lyric@{bn}", "lyrics"]))
 async def get_lyric_genius(_, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     if len(message.command) < 2:
         return await message.reply_text("**usage:**\n\n/lyrics (song name)")
     m = await message.reply_text("🔍 Searching lyrics...")
@@ -181,7 +170,7 @@ async def get_lyric_genius(_, message: Message):
             out_file.write(str(xxx.strip()))
         await message.reply_document(
             document=filename,
-            caption=f"**OUTPUT:**\n\n`Lyrics Text`",
+            caption=f"**OUTPUT:**\n\n`attached lyrics text`",
             quote=False,
         )
         os.remove(filename)

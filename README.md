@@ -1,6 +1,6 @@
 <p align="center"><a href="https://t.me/VeezVideoBot"><img src="https://github.com/levina-lab/video-stream/raw/main/driver/veezlogo.png"></a></p>
 <p align="center">
-    <br><b>Video Stream is an Advanced Telegram Bot that's allow you to play Video & Music on Telegram Group Video Chat</b><br>
+    <br><b>Video Stream is an Open-Source Telegram Bot project that's allow you to play Video & Music on Telegram Group Video Chat</b><br>
 </p>
 <p align="center">
     <a href="https://www.python.org/" alt="made-with-python"> <img src="https://img.shields.io/badge/Made%20with-Python-black.svg?style=flat-square&logo=python&logoColor=blue&color=red" /></a>
@@ -63,6 +63,7 @@
 | `/speedtest` | run server speedtest that you use to run your bot |
 | `/broadcast` | brodcast message to all group that in bot database |
 | `/gban & /ungban` | use this to gban someone and ungban them |
+| `/stats` | get the bot current statistic |
 
 ## Generate Session Name 🔻
 
@@ -70,8 +71,10 @@
 
 ## Heroku Deployment 💜
 
-<h3 align="center">Click The button below for deploy your bot to Heroku, Note: Set the app country to Europe (it will help to make the bot stable).</h3>
+<h3 align="center">Click The button below for deploy your bot to Heroku, Note: Set the app country to Europe (it will help to make the bot much faster and stable).</h3>
 <p align="center"><a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" target="_blank"/></a></p>
+
+📝 Remember to fork this repo first then you can deploy this repo, if not your deployment proccess will failed that because Heroku has blacklisted this repo !
 
 ## VPS Deployment 📡
 Get the best Quality of streaming performance by hosting it on VPS, here's the step's:

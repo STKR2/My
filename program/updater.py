@@ -6,20 +6,24 @@ import subprocess
 from asyncio import sleep
 
 from git import Repo
-from pyrogram.types import Message
-from driver.filters import command
-from pyrogram import Client, filters
 from os import system, execle, environ
-from driver.decorators import sudo_users_only
 from git.exc import InvalidGitRepositoryError
+
+from pyrogram.types import Message
+from pyrogram import Client, filters
 from config import UPSTREAM_REPO, BOT_USERNAME
 
+from driver.core import bot
+from driver.filters import command
+from driver.decorators import bot_creator
+from driver.database.dbqueue import get_active_chats, remove_active_chat
 
 
 def gen_chlog(repo, diff):
     upstream_repo_url = Repo().remotes[0].config_reader.get("url").replace(".git", "")
     ac_br = repo.active_branch.name
-    ch_log = tldr_log = ""
+    ch_log = ""
+    tldr_log = ""
     ch = f"<b>updates for <a href={upstream_repo_url}/tree/{ac_br}>[{ac_br}]</a>:</b>"
     ch_tl = f"updates for {ac_br}:"
     d_form = "%d/%m/%y || %H:%M"
@@ -55,24 +59,24 @@ def updater():
 
 
 @Client.on_message(command(["update", f"update@{BOT_USERNAME}"]) & ~filters.edited)
-@sudo_users_only
-async def update_repo(_, message: Message):
+@bot_creator
+async def update_bot(_, message: Message):
     chat_id = message.chat.id
-    msg = await message.reply("🔄 `processing update...`")
+    msg = await message.reply("❖ Checking updates...")
     update_avail = updater()
     if update_avail:
-        await msg.edit("✅ update finished\n\n• bot restarted, back active again in 1 minutes.")
+        await msg.edit("✅ Update finished !\n\n• Bot restarting, back active again in 1-2 minutes.")
         system("git pull -f && pip3 install --no-cache-dir -r requirements.txt")
         execle(sys.executable, sys.executable, "main.py", environ)
         return
-    await msg.edit(f"bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main)", disable_web_page_preview=True)
+    await msg.edit(f"❖ bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main) ❖", disable_web_page_preview=True)
 
 
 @Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
-@sudo_users_only
+@bot_creator
 async def restart_bot(_, message: Message):
-    msg = await message.reply("`restarting bot...`")
+    msg = await message.reply("❖ Restarting bot...")
     args = [sys.executable, "main.py"]
-    await msg.edit("✅ bot restarted\n\n• now you can use this bot again.")
+    await msg.edit("✅ Bot restarted !\n\n• wait until 1-2 minutes after bot Rebooted.")
     execle(sys.executable, *args, environ)
     return

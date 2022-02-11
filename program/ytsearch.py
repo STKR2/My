@@ -1,5 +1,6 @@
 from config import BOT_USERNAME
 from driver.filters import command
+from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtube_search import YoutubeSearch
@@ -7,6 +8,10 @@ from youtube_search import YoutubeSearch
 
 @Client.on_message(command(["search", f"search@{BOT_USERNAME}"]))
 async def ytsearch(_, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     if len(message.command) < 2:
         return await message.reply_text("/search **needs an argument !**")
     query = message.text.split(None, 1)[1]
@@ -26,6 +31,6 @@ async def ytsearch(_, message: Message):
         text,
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🗑 Close", callback_data="cls")]]
+            [[InlineKeyboardButton("🗑 Close", callback_data="close_panel")]]
         ),
     )

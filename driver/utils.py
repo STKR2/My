@@ -1,7 +1,8 @@
 import asyncio
-
+from driver.core import bot, calls
+from driver.database.dbqueue import remove_active_chat
 from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
-from driver.veez import bot, call_py
+
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
@@ -17,8 +18,8 @@ from pytgcalls.types.stream import StreamAudioEnded
 keyboard = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="cbmenu"),
-            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="cls"),
+            InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="stream_menu_panel"),
+            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="set_close"),
         ]
     ]
 )
@@ -28,7 +29,8 @@ async def skip_current_song(chat_id):
     if chat_id in QUEUE:
         chat_queue = get_queue(chat_id)
         if len(chat_queue) == 1:
-            await call_py.leave_group_call(chat_id)
+            await calls.leave_group_call(chat_id)
+            await remove_active_chat(chat_id)
             clear_queue(chat_id)
             return 1
         else:
@@ -39,7 +41,7 @@ async def skip_current_song(chat_id):
                 type = chat_queue[1][3]
                 Q = chat_queue[1][4]
                 if type == "Audio":
-                    await call_py.change_stream(
+                    await calls.change_stream(
                         chat_id,
                         AudioPiped(
                             url,
@@ -53,7 +55,7 @@ async def skip_current_song(chat_id):
                         hm = MediumQualityVideo()
                     elif Q == 360:
                         hm = LowQualityVideo()
-                    await call_py.change_stream(
+                    await calls.change_stream(
                         chat_id,
                         AudioVideoPiped(
                             url,
@@ -64,7 +66,8 @@ async def skip_current_song(chat_id):
                 pop_an_item(chat_id)
                 return [songname, link, type]
             except:
-                await call_py.leave_group_call(chat_id)
+                await calls.leave_group_call(chat_id)
+                await remove_active_chat(chat_id)
                 clear_queue(chat_id)
                 return 2
     else:
@@ -86,25 +89,28 @@ async def skip_item(chat_id, h):
         return 0
 
 
-@call_py.on_kicked()
+@calls.on_kicked()
 async def kicked_handler(_, chat_id: int):
     if chat_id in QUEUE:
+        await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
 
-@call_py.on_closed_voice_chat()
+@calls.on_closed_voice_chat()
 async def closed_voice_chat_handler(_, chat_id: int):
     if chat_id in QUEUE:
+        await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
 
-@call_py.on_left()
+@calls.on_left()
 async def left_handler(_, chat_id: int):
     if chat_id in QUEUE:
+        await remove_active_chat(chat_id)
         clear_queue(chat_id)
 
 
-@call_py.on_stream_end()
+@calls.on_stream_end()
 async def stream_end_handler(_, u: Update):
     if isinstance(u, StreamAudioEnded):
         chat_id = u.chat_id

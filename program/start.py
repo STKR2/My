@@ -10,14 +10,16 @@ from config import (
     BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
-    OWNER_NAME,
+    OWNER_USERNAME,
     UPDATES_CHANNEL,
 )
 from program import __version__
-from driver.veez import user
+from driver.core import user, bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
+from driver.database.dbusers import add_served_user
+from driver.database.dblockchat import blacklisted_chats
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait, MessageNotModified
 from pytgcalls import (__version__ as pytover)
@@ -55,10 +57,14 @@ async def _human_time_duration(seconds):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
 )
-async def start_(client: Client, message: Message):
+async def start_(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
-💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Allows you to play music and video on groups through the Telegram Group video chat!**
+💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
 
 💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
@@ -72,10 +78,10 @@ async def start_(client: Client, message: Message):
                         url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
                     )
                 ],
-                [InlineKeyboardButton("❓ Basic Guide", callback_data="cbhowtouse")],
+                [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
                 [
-                    InlineKeyboardButton("📚 Commands", callback_data="cbcmds"),
-                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_NAME}"),
+                    InlineKeyboardButton("📚 Commands", callback_data="command_list"),
+                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}"),
                 ],
                 [
                     InlineKeyboardButton(
@@ -100,6 +106,10 @@ async def start_(client: Client, message: Message):
     command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited
 )
 async def alive(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     chat_id = message.chat.id
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
@@ -127,7 +137,11 @@ async def alive(c: Client, message: Message):
 
 
 @Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
-async def ping_pong(client: Client, message: Message):
+async def ping_pong(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
@@ -135,7 +149,11 @@ async def ping_pong(client: Client, message: Message):
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
-async def get_uptime(client: Client, message: Message):
+async def get_uptime(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_gbanned_user(user_id):
+        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
@@ -167,6 +185,11 @@ async def new_chat(c: Client, m: Message):
     ass_uname = (await user.get_me()).username
     bot_id = (await c.get_me()).id
     for member in m.new_chat_members:
+        if chat_id in await blacklisted_chats():
+            await m.reply(
+                "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
+            )
+            return await bot.leave_chat(chat_id)
         if member.id == bot_id:
             return await m.reply(
                 "❤️ Thanks for adding me to the **Group** !\n\n"
@@ -186,10 +209,14 @@ async def new_chat(c: Client, m: Message):
             )
 
 
-chat_watcher_group = 5
+chat_watcher_group = 10
 
 @Client.on_message(group=chat_watcher_group)
 async def chat_watcher_func(_, message: Message):
+    if message.from_user:
+        user_id = message.from_user.id
+        await add_served_user(user_id)
+        return
     try:
         userid = message.from_user.id
     except Exception:

@@ -11,8 +11,8 @@ from pyrogram.types import (
 def stream_markup(user_id):
   buttons = [
     [
-      InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data=f'cbmenu | {user_id}'),
-      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data=f'cls'),
+      InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data=f'stream_menu_panel | {user_id}'),
+      InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data=f'set_close'),
     ],
   ]
   return buttons
@@ -21,16 +21,16 @@ def stream_markup(user_id):
 def menu_markup(user_id):
   buttons = [
     [
-      InlineKeyboardButton(text="⏹", callback_data=f'cbstop | {user_id}'),
-      InlineKeyboardButton(text="⏸", callback_data=f'cbpause | {user_id}'),
-      InlineKeyboardButton(text="▶️", callback_data=f'cbresume | {user_id}'),
+      InlineKeyboardButton(text="⏹", callback_data=f'set_stop | {user_id}'),
+      InlineKeyboardButton(text="⏸", callback_data=f'set_pause | {user_id}'),
+      InlineKeyboardButton(text="▶️", callback_data=f'set_resume | {user_id}'),
     ],
     [
-      InlineKeyboardButton(text="🔇", callback_data=f'cbmute | {user_id}'),
-      InlineKeyboardButton(text="🔊", callback_data=f'cbunmute | {user_id}'),
+      InlineKeyboardButton(text="🔇", callback_data=f'set_mute | {user_id}'),
+      InlineKeyboardButton(text="🔊", callback_data=f'set_unmute | {user_id}'),
     ],
     [
-      InlineKeyboardButton(text="🗑 Close", callback_data='cls'),
+      InlineKeyboardButton(text="🔙 Go Back", callback_data='stream_home_panel'),
     ]
   ]
   return buttons
@@ -40,7 +40,7 @@ close_mark = InlineKeyboardMarkup(
   [
     [
       InlineKeyboardButton(
-        "🗑 Close", callback_data="cls"
+        "🗑 Close", callback_data="set_close"
       )
     ]
   ]
@@ -51,7 +51,7 @@ back_mark = InlineKeyboardMarkup(
   [
     [
       InlineKeyboardButton(
-        "🔙 Go Back", callback_data="cbmenu"
+        "🔙 Go Back", callback_data="stream_menu_panel"
       )
     ]
   ]
