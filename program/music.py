@@ -2,7 +2,6 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-
 import os
 # pyrogram stuff
 from pyrogram import Client
@@ -136,7 +135,7 @@ async def play(c: Client, m: Message):
             )
     if replied:
         if replied.audio or replied.voice:
-            suhu = await replied.reply("📥 **downloading audio...**")
+            suhu = await replied.reply("📥 downloading audio...")
             dl = await replied.download()
             link = replied.link
             try:
@@ -151,6 +150,7 @@ async def play(c: Client, m: Message):
                 songname = "Audio"
             
             if chat_id in QUEUE:
+                await suhu.edit("🔄 Queueing Track...")
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
                 title = songname
@@ -175,7 +175,7 @@ async def play(c: Client, m: Message):
                     userid = m.from_user.id
                     thumbnail = f"{IMG_5}"
                     image = await thumb(thumbnail, title, userid, ctitle)
-                    await suhu.edit("🔄 **Joining vc...**")
+                    await suhu.edit("🔄 Joining Group Call...")
                     await music_on(chat_id)
                     await add_active_chat(chat_id)
                     await calls.join_group_call(
@@ -209,7 +209,7 @@ async def play(c: Client, m: Message):
                     "» reply to an **audio file** or **give something to search.**"
                 )
             else:
-                suhu = await c.send_message(chat_id, "🔍 **Searching...**")
+                suhu = await c.send_message(chat_id, "🔍 **Loading...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 if search == 0:
@@ -229,6 +229,7 @@ async def play(c: Client, m: Message):
                         await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
+                            await suhu.edit("🔄 Queueing Track...")
                             pos = add_to_queue(
                                 chat_id, songname, ytlink, url, "Audio", 0
                             )
@@ -243,7 +244,7 @@ async def play(c: Client, m: Message):
                             os.remove(image)
                         else:
                             try:
-                                await suhu.edit("🔄 **Joining vc...**")
+                                await suhu.edit("🔄 Joining Group Call...")
                                 await music_on(chat_id)
                                 await add_active_chat(chat_id)
                                 await calls.join_group_call(
@@ -278,7 +279,7 @@ async def play(c: Client, m: Message):
                 "» reply to an **audio file** or **give something to search.**"
             )
         else:
-            suhu = await c.send_message(chat_id, "🔍 **Searching...**")
+            suhu = await c.send_message(chat_id, "🔍 **Loading...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
@@ -298,6 +299,7 @@ async def play(c: Client, m: Message):
                     await suhu.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
+                        await suhu.edit("🔄 Queueing Track...")
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
                         await suhu.delete()
                         requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -310,7 +312,7 @@ async def play(c: Client, m: Message):
                         os.remove(image)
                     else:
                         try:
-                            await suhu.edit("🔄 **Joining vc...**")
+                            await suhu.edit("🔄 Joining Group Call...")
                             await music_on(chat_id)
                             await add_active_chat(chat_id)
                             await calls.join_group_call(
