@@ -12,7 +12,6 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 SESSION_NAME = getenv("SESSION_NAME", "session")
 
 # mandatory vars
-BOT_NAME = getenv("BOT_NAME")
 OWNER_USERNAME = getenv("OWNER_USERNAME")
 ALIVE_NAME = getenv("ALIVE_NAME")
 BOT_USERNAME = getenv("BOT_USERNAME")
