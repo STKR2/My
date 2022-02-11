@@ -18,7 +18,7 @@ from config import (
 
 
 @Client.on_callback_query(filters.regex("home_start"))
-async def set_start(_, query: CallbackQuery):
+async def start_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     BOT_NAME = (await bot.get_me()).first_name
     if await is_gbanned_user(user_id):
@@ -65,7 +65,7 @@ async def set_start(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("quick_use"))
-async def set_quick(_, query: CallbackQuery):
+async def quick_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     ass_uname = (await user.get_me()).username
     if await is_gbanned_user(user_id):
@@ -90,7 +90,7 @@ async def set_quick(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("user_guide"))
-async def set_guide(_, query: CallbackQuery):
+async def guide_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     ass_uname = (await user.get_me()).username
     if await is_gbanned_user(user_id):
@@ -118,7 +118,7 @@ async def set_guide(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("command_list"))
-async def set_commands(_, query: CallbackQuery):
+async def commands_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -150,7 +150,7 @@ All commands can be used with (`! / .`) handler""",
 
 
 @Client.on_callback_query(filters.regex("user_command"))
-async def set_user(_, query: CallbackQuery):
+async def user_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -179,7 +179,7 @@ async def set_user(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("admin_command"))
-async def set_admin(_, query: CallbackQuery):
+async def admin_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -207,7 +207,7 @@ async def set_admin(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("sudo_command"))
-async def set_sudo(_, query: CallbackQuery):
+async def sudo_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -237,7 +237,7 @@ async def set_sudo(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("owner_command"))
-async def set_owner(_, query: CallbackQuery):
+async def owner_set(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -266,7 +266,7 @@ async def set_owner(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("stream_menu_panel"))
-async def set_markup_menu(_, query: CallbackQuery):
+async def at_set_markup_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -285,7 +285,7 @@ async def set_markup_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("stream_home_panel"))
-async def set_home_menu(_, query: CallbackQuery):
+async def is_set_home_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -300,7 +300,7 @@ async def set_home_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("set_close"))
-async def close_menu(_, query: CallbackQuery):
+async def on_close_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -312,7 +312,7 @@ async def close_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("close_panel"))
-async def close_panel(_, query: CallbackQuery):
+async def in_close_panel(_, query: CallbackQuery):
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
