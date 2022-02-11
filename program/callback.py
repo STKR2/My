@@ -103,13 +103,13 @@ async def set_commands(_, query: CallbackQuery):
 
 » Check out the menu below to read the module information & see the list of available Commands !
 
-⚡ __Powered by {BOT_NAME} A.I__""",
+All commands can be used with (`! / .`) handler""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("👷🏼🏻 Admins Commands", callback_data="admin_command"),
+                    InlineKeyboardButton("👮🏻‍♀️ Admins Commands", callback_data="admin_command"),
                 ],[
-                    InlineKeyboardButton("🧑🏼‍💼 Users Commands", callback_data="user_command"),
+                    InlineKeyboardButton("👩🏻‍💼 Users Commands", callback_data="user_command"),
                 ],[
                     InlineKeyboardButton("Sudo Commands", callback_data="sudo_command"),
                     InlineKeyboardButton("Owner Commands", callback_data="owner_command"),
@@ -133,8 +133,8 @@ async def set_user(_, query: CallbackQuery):
 
 » /play (song name/link) - play music on video chat
 » /vplay (video name/link) - play video on video chat
-» /vstream - play live video from yt live/m3u8
-» /playlist - show you the playlist
+» /vstream (m3u8/yt live link) - play live stream video
+» /playlist - see the current playing song
 » /lyric (query) - scrap the song lyric
 » /video (query) - download video from youtube
 » /song (query) - download song from youtube
@@ -160,12 +160,12 @@ async def set_admin(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""✏️ Command list for group admin.
 
-» /pause - pause the stream
-» /resume - resume the stream
-» /skip - switch to next stream
-» /stop - stop the streaming
-» /vmute - mute the userbot on voice chat
-» /vunmute - unmute the userbot on voice chat
+» /pause - pause the current track being played
+» /resume - play the previously paused track
+» /skip - goes to the next track
+» /stop - stop playback of the track and clears the queue
+» /vmute - mute the streamer userbot on group call
+» /vunmute - unmute the streamer userbot on group call
 » /volume `1-200` - adjust the volume of music (userbot must be admin)
 » /reload - reload bot and refresh the admin data
 » /userbotjoin - invite the userbot to join group
@@ -192,7 +192,7 @@ async def set_sudo(_, query: CallbackQuery):
         f"""✏️ Command list for sudo user.
 
 » /stats - get the bot current statistic
-» /calls - show you the list of all active video chat
+» /calls - show you the list of all active group call in database
 » /block (`chat_id`) - use this to blacklist any group from using your bot
 » /unblock (`chat_id`) - use this to whitelist any group from using your bot
 » /blocklist - show you the list of all blacklisted chat
@@ -227,8 +227,8 @@ async def set_owner(_, query: CallbackQuery):
 » /restart - restart your bot directly
 » /leaveall - order userbot to leave from all group
 » /leavebot (`chat id`) - order bot to leave from the group you specify
-» /broadcast (`message`) - send a broadcast message to all groups entered by bot
-» /broadcast_pin (`message`) - send a broadcast message to all groups entered by bot with the chat pin
+» /broadcast (`message`) - send a broadcast message to all groups in bot database
+» /broadcast_pin (`message`) - send a broadcast message to all groups in bot database with the chat pin
 
 ⚡ __Powered by {BOT_NAME} AI__""",
         reply_markup=InlineKeyboardMarkup(
