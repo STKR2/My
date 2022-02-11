@@ -64,6 +64,30 @@ async def set_start(_, query: CallbackQuery):
     )
 
 
+@Client.on_callback_query(filters.regex("quick_use"))
+async def set_quick(_, query: CallbackQuery):
+    user_id = query.from_user.id
+    ass_uname = (await user.get_me()).username
+    if await is_gbanned_user(user_id):
+        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
+        return
+    await query.answer("quick bot usage")
+    await query.edit_message_text(
+        f"""Quick use Guide bot, please read fully !
+
+👩🏻‍💼 » /play - Type this with give the song title or youtube link or audio file to play Music. (Remember to don't play YouTube live stream by using this command!, because it will cause unforeseen problems.)
+
+👩🏻‍💼 » /vplay - Type this with give the song title or youtube link or video file to play Video. (Remember to don't play YouTube live video by using this command!, because it will cause unforeseen problems.)
+
+👩🏻‍💼 » /vstream - Type this with give the YouTube live stream video link or m3u8 link to play live Video. (Remember to don't play local audio/video files or non-live YouTube video by using this command!, because it will cause unforeseen problems.)
+
+❓ Have questions? Contact us in [Support Group](https://t.me/{GROUP_SUPPORT}).""",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="home_start")]]
+        ),
+    )
+
+
 @Client.on_callback_query(filters.regex("user_guide"))
 async def set_guide(_, query: CallbackQuery):
     user_id = query.from_user.id
@@ -108,6 +132,8 @@ All commands can be used with (`! / .`) handler""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
+                    InlineKeyboardButton("» Quick use Guide «", callback_data="quick_use"),
+                ],[
                     InlineKeyboardButton("👮🏻‍♀️ Admins Commands", callback_data="admin_command"),
                 ],[
                     InlineKeyboardButton("👩🏻‍💼 Users Commands", callback_data="user_command"),
