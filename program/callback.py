@@ -151,6 +151,7 @@ All commands can be used with (`! / .`) handler""",
 
 @Client.on_callback_query(filters.regex("user_command"))
 async def user_set(_, query: CallbackQuery):
+    BOT_NAME = (await bot.get_me()).first_name
     user_id = query.from_user.id
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
@@ -181,6 +182,7 @@ async def user_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("admin_command"))
 async def admin_set(_, query: CallbackQuery):
     user_id = query.from_user.id
+    BOT_NAME = (await bot.get_me()).first_name
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -209,6 +211,7 @@ async def admin_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("sudo_command"))
 async def sudo_set(_, query: CallbackQuery):
     user_id = query.from_user.id
+    BOT_NAME = (await bot.get_me()).first_name
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
@@ -239,6 +242,7 @@ async def sudo_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("owner_command"))
 async def owner_set(_, query: CallbackQuery):
     user_id = query.from_user.id
+    BOT_NAME = (await bot.get_me()).first_name
     if await is_gbanned_user(user_id):
         await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
         return
