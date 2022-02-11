@@ -1,4 +1,5 @@
 import asyncio
+
 from driver.core import user
 from pyrogram.types import Message
 from pyrogram import Client, filters
@@ -6,6 +7,7 @@ from config import BOT_USERNAME, SUDO_USERS
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from driver.database.dbqueue import remove_active_chat
+from driver.database.dbpunish import is_gbanned_user
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from driver.decorators import authorized_users_only, bot_creator
 
@@ -16,6 +18,10 @@ from driver.decorators import authorized_users_only, bot_creator
 @authorized_users_only
 async def join_chat(c: Client, m: Message):
     chat_id = m.chat.id
+    user_id = m.from_user.id
+    if await is_gbanned_user(user_id):
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     try:
         invitelink = await c.export_chat_invite_link(chat_id)
         if invitelink.startswith("https://t.me/+"):
@@ -35,6 +41,10 @@ async def join_chat(c: Client, m: Message):
 @authorized_users_only
 async def leave_chat(_, m: Message):
     chat_id = m.chat.id
+    user_id = m.from_user.id
+    if await is_gbanned_user(user_id):
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
+        return
     try:
         await user.leave_chat(chat_id)
         await remove_active_chat(chat_id)
