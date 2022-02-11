@@ -61,7 +61,7 @@ async def update_admin(client, message: Message):
 async def stop(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     chat_id = m.chat.id
     if chat_id in QUEUE:
@@ -83,7 +83,7 @@ async def stop(client, m: Message):
 async def pause(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     chat_id = m.chat.id
     if chat_id in QUEUE:
@@ -109,7 +109,7 @@ async def pause(client, m: Message):
 async def resume(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     chat_id = m.chat.id
     if chat_id in QUEUE:
@@ -136,7 +136,7 @@ async def skip(c: Client, m: Message):
     chat_id = m.chat.id
     user_xd = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
     if await is_gbanned_user(user_id):
-        await message.reply_text(f"❗️ {user_xd} **You've blocked from using this bot!**")
+        await m.reply_text(f"❗️ {user_xd} **You've blocked from using this bot!**")
         return
     if len(m.command) < 2:
         op = await skip_current_song(chat_id)
@@ -187,7 +187,7 @@ async def skip(c: Client, m: Message):
 async def mute(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     chat_id = m.chat.id
     if chat_id in QUEUE:
@@ -213,7 +213,7 @@ async def mute(client, m: Message):
 async def unmute(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     chat_id = m.chat.id
     if chat_id in QUEUE:
@@ -357,7 +357,10 @@ async def cbunmute(_, query: CallbackQuery):
 async def change_volume(client, m: Message):
     user_id = m.from_user.id
     if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
+        await m.reply_text("❗️ **You've blocked from using this bot!**")
+        return
+    if len(m.command) < 2:
+        await m.reply_text("usage: `/volume` (`0-200`)")
         return
     range = m.command[1]
     chat_id = m.chat.id
