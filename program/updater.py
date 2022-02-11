@@ -75,24 +75,8 @@ async def update_bot(_, message: Message):
 @Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
 async def restart_bot(_, message: Message):
-    served_chats = []
-    try:
-        chats = await get_active_chats()
-        for chat in chats:
-            served_chats.append(int(chat["chat_id"]))
-    except BaseException as e:
-        print(e)
-    for x in served_chats:
-        try:
-            await bot.send_message(
-                x,
-                f"💡 Bot server has just restarted !\n\n• Sorry for the inconveniences due to bot maintenance.",
-            )
-            await remove_active_chat(x)
-        except BaseException as e:
-            print(e)
-        msg = await message.reply("❖ Restarting bot...")
-        args = [sys.executable, "main.py"]
-        await msg.edit("✅ Bot restarted\n\n• now bot is working again.")
-        execle(sys.executable, *args, environ)
-        return
+    msg = await message.reply("❖ Restarting bot...")
+    args = [sys.executable, "main.py"]
+    execle(sys.executable, *args, environ)
+    return
+await msg.edit("✅ Bot restarted !\n\n• now bot is working again.")
