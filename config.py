@@ -16,7 +16,6 @@ BOT_NAME = getenv("BOT_NAME")
 OWNER_USERNAME = getenv("OWNER_USERNAME")
 ALIVE_NAME = getenv("ALIVE_NAME")
 BOT_USERNAME = getenv("BOT_USERNAME")
-ASSISTANT_USERNAME = getenv("ASSISTANT_USERNAME")
 UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/levina-lab/video-stream")
 UPSTREAM_BRANCH = getenv("UPSTREM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
@@ -25,7 +24,7 @@ UPDATES_CHANNEL = getenv("UPDATES_CHANNEL", "levinachannel")
 
 # database, decorators, handlers mandatory vars
 MONGODB_URL = getenv("MONGODB_URL")
-COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ ! .").split())
+COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ ! . $").split())
 OWNER_ID = list(map(int, getenv("OWNER_ID").split()))
 SUDO_USERS = list(map(int, getenv("SUDO_USERS").split()))
 
