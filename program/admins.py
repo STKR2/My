@@ -261,7 +261,7 @@ async def data_stream_markup(_, query: CallbackQuery):
                 await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
         else:
             await query.answer("❌ nothing is currently streaming", show_alert=True)
-    if data == "set_resume":
+    elif data == "set_resume":
         if await is_gbanned_user(user_id):
             await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
             return
@@ -281,7 +281,7 @@ async def data_stream_markup(_, query: CallbackQuery):
                 await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
         else:
             await query.answer("❌ nothing is currently streaming", show_alert=True)
-    if data == "set_stop":
+    elif data == "set_stop":
         if await is_gbanned_user(user_id):
             await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
             return
@@ -299,7 +299,7 @@ async def data_stream_markup(_, query: CallbackQuery):
                 await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
         else:
             await query.answer("❌ nothing is currently streaming", show_alert=True)
-    if data == "set_mute":
+    elif data == "set_mute":
         if await is_gbanned_user(user_id):
             await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
             return
@@ -319,7 +319,7 @@ async def data_stream_markup(_, query: CallbackQuery):
                 await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
         else:
             await query.answer("❌ nothing is currently streaming", show_alert=True)
-    if data == "set_unmute":
+    elif data == "set_unmute":
         if await is_gbanned_user(user_id):
             await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
             return
