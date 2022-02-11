@@ -77,6 +77,6 @@ async def update_bot(_, message: Message):
 async def restart_bot(_, message: Message):
     msg = await message.reply("❖ Restarting bot...")
     args = [sys.executable, "main.py"]
+    await msg.edit("✅ Bot restarted !\n\n• wait until 1-2 minutes after bot Rebooted.")
     execle(sys.executable, *args, environ)
     return
-await msg.edit("✅ Bot restarted !\n\n• now bot is working again.")
