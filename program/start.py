@@ -7,7 +7,6 @@ from time import time
 from config import (
     ALIVE_IMG,
     ALIVE_NAME,
-    BOT_NAME,
     BOT_USERNAME,
     GROUP_SUPPORT,
     OWNER_USERNAME,
@@ -59,6 +58,7 @@ async def _human_time_duration(seconds):
 )
 async def start_(c: Client, message: Message):
     user_id = message.from_user.id
+    BOT_NAME = (await c.get_me()).first_name
     if await is_gbanned_user(user_id):
         await message.reply_text("❗️ **You've blocked from using this bot!**")
         return
