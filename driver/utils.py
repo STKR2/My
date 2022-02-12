@@ -1,7 +1,13 @@
 import asyncio
 from driver.core import bot, calls
 from driver.database.dbqueue import remove_active_chat
-from driver.queues import QUEUE, clear_queue, get_queue, pop_an_item
+from driver.queues import (
+    QUEUE,
+    clear_queue,
+    get_queue,
+    pop_an_item,
+    clear_trash,
+)
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls.types import Update
@@ -28,6 +34,9 @@ keyboard = InlineKeyboardMarkup(
 async def skip_current_song(chat_id):
     if chat_id in QUEUE:
         chat_queue = get_queue(chat_id)
+        if "t.me" in chat_queue[0][2]:
+            clean_trash(chat_queue[0][1], chat_id)
+            return
         if len(chat_queue) == 1:
             await calls.leave_group_call(chat_id)
             await remove_active_chat(chat_id)
