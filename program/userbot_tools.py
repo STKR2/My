@@ -1,15 +1,18 @@
 import asyncio
 
-from driver.core import user
-from pyrogram.types import Message
-from pyrogram import Client, filters
 from config import BOT_USERNAME, SUDO_USERS
+
+from driver.core import user
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from driver.database.dbqueue import remove_active_chat
 from driver.database.dbpunish import is_gbanned_user
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from driver.decorators import authorized_users_only, bot_creator
+
+from pyrogram.types import Message
+from pyrogram import Client, filters
+from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
+
 
 
 @Client.on_message(
@@ -23,7 +26,6 @@ async def join_chat(c: Client, m: Message):
         await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     try:
-        # If it exists, use it.
         invitelink = (await c.get_chat(chat_id)).invite_link
         if not invitelink:
             await c.export_chat_invite_link(chat_id)
