@@ -23,14 +23,18 @@ async def join_chat(c: Client, m: Message):
         await m.reply_text("❗️ **You've blocked from using this bot!**")
         return
     try:
-        invitelink = await c.export_chat_invite_link(chat_id)
+        # If it exists, use it.
+        invitelink = (await c.get_chat(chat_id)).invite_link
+        if not invitelink:
+            await c.export_chat_invite_link(chat_id)
+            invitelink = (await c.get_chat(chat_id)).invite_link
         if invitelink.startswith("https://t.me/+"):
             invitelink = invitelink.replace(
                 "https://t.me/+", "https://t.me/joinchat/"
             )
-            await user.join_chat(invitelink)
-            await remove_active_chat(chat_id)
-            return await user.send_message(chat_id, "✅ userbot joined chat")
+        await user.join_chat(invitelink)
+        await remove_active_chat(chat_id)
+        return await user.send_message(chat_id, "✅ userbot joined chat")
     except UserAlreadyParticipant:
         return await user.send_message(chat_id, "✅ userbot already in chat")
 
