@@ -3,9 +3,9 @@
 # Finished On 28/10/2021
 
 
-import os
 import re
 import asyncio
+import traceback
 # repository stuff
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
 from program.utils.inline import stream_markup
@@ -17,6 +17,7 @@ from driver.core import calls, user, bot
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
+from driver.utils import remove_if_exists
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -96,6 +97,7 @@ async def vplay(c: Client, m: Message):
     try:
         aing = await c.get_me()
     except Exception as e:
+        traceback.print_exc()
         return await m.reply_text(f"error:\n\n{e}")
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
@@ -151,6 +153,7 @@ async def vplay(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
+            traceback.print_exc()
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
@@ -197,7 +200,7 @@ async def vplay(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
-                os.remove(image)
+                remove_if_exists(image)
             else:
                 await loser.edit("🔄 Joining Group Call...")
                 gcname = m.chat.title
@@ -233,7 +236,7 @@ async def vplay(c: Client, m: Message):
                     caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
                 await idle()
-                os.remove(image)
+                remove_if_exists(image)
         else:
             if len(m.command) < 2:
                 await m.reply(
@@ -274,7 +277,7 @@ async def vplay(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            os.remove(image)
+                            remove_if_exists(image)
                         else:
                             try:
                                 await loser.edit("🔄 Joining Group Call...")
@@ -299,7 +302,7 @@ async def vplay(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
-                                os.remove(image)
+                                remove_if_exists(image)
                             except Exception as ep:
                                 await loser.delete()
                                 await remove_active_chat(chat_id)
@@ -345,7 +348,7 @@ async def vplay(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
-                        os.remove(image)
+                        remove_if_exists(image)
                     else:
                         try:
                             await loser.edit("🔄 Joining Group Call...")
@@ -370,7 +373,7 @@ async def vplay(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
-                            os.remove(image)
+                            remove_if_exists(image)
                         except Exception as ep:
                             await loser.delete()
                             await remove_active_chat(chat_id)
@@ -398,6 +401,7 @@ async def vstream(c: Client, m: Message):
     try:
         aing = await c.get_me()
     except Exception as e:
+        traceback.print_exc()
         return await m.reply_text(f"error:\n\n{e}")
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
@@ -453,6 +457,7 @@ async def vstream(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
+            traceback.print_exc()
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )

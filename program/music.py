@@ -2,8 +2,9 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-import os
 # pyrogram stuff
+import traceback
+
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
@@ -19,7 +20,7 @@ from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, bot
-from driver.utils import bash
+from driver.utils import bash, remove_if_exists
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
@@ -81,6 +82,7 @@ async def play(c: Client, m: Message):
     try:
         aing = await c.get_me()
     except Exception as e:
+        traceback.print_exc()
         return await m.reply_text(f"error:\n\n{e}")
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
@@ -136,6 +138,7 @@ async def play(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
+            traceback.print_exc()
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
@@ -172,7 +175,7 @@ async def play(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
-                os.remove(image)
+                remove_if_exists(image)
             else:
                 try:
                     gcname = m.chat.title
@@ -204,10 +207,11 @@ async def play(c: Client, m: Message):
                         caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                     )
                     await idle()
-                    os.remove(image)
+                    remove_if_exists(image)
                 except Exception as e:
                     await suhu.delete()
                     await remove_active_chat(chat_id)
+                    traceback.print_exc()
                     await m.reply_text(f"🚫 error:\n\n» {e}")
         else:
             if len(m.command) < 2:
@@ -247,7 +251,7 @@ async def play(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            os.remove(image)
+                            remove_if_exists(image)
                         else:
                             try:
                                 await suhu.edit("🔄 Joining Group Call...")
@@ -273,7 +277,7 @@ async def play(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
-                                os.remove(image)
+                                remove_if_exists(image)
                             except Exception as ep:
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
@@ -315,7 +319,7 @@ async def play(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
-                        os.remove(image)
+                        remove_if_exists(image)
                     else:
                         try:
                             await suhu.edit("🔄 Joining Group Call...")
@@ -339,7 +343,7 @@ async def play(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
-                            os.remove(image)
+                            remove_if_exists(image)
                         except Exception as ep:
                             await suhu.delete()
                             await remove_active_chat(chat_id)

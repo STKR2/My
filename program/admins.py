@@ -1,4 +1,5 @@
-import os
+import traceback
+
 from cache.admins import admins
 from driver.core import calls, bot
 from pyrogram import Client, filters
@@ -7,7 +8,7 @@ from driver.design.chatname import CHAT_TITLE
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
-from driver.utils import skip_current_song, skip_item
+from driver.utils import skip_current_song, skip_item, remove_if_exists
 from driver.database.dbpunish import is_gbanned_user
 
 from driver.database.dbqueue import (
@@ -71,6 +72,7 @@ async def stop(client, m: Message):
             clear_queue(chat_id)
             await m.reply("✅ The userbot has disconnected from the video chat.")
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing is streaming**")
@@ -97,6 +99,7 @@ async def pause(client, m: Message):
                 "⏸ **Track paused.**\n\n• **To resume the stream, use the**\n» /resume command."
             )
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing is streaming**")
@@ -123,6 +126,7 @@ async def resume(client, m: Message):
                 "▶️ **Track resumed.**\n\n• **To pause the stream, use the**\n» /pause command."
             )
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing is streaming**")
@@ -161,7 +165,7 @@ async def skip(c: Client, m: Message):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 caption=f"⏭ **Skipped** to the next track.\n\n🗂 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
             )
-            os.remove(image)
+            remove_if_exists(image)
     else:
         skip = m.text.split(None, 1)[1]
         track = "🗑 removed song from queue:"
@@ -201,6 +205,7 @@ async def mute(client, m: Message):
                 "🔇 **Userbot muted.**\n\n• **To unmute the userbot, use the**\n» /unmute command."
             )
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing is streaming**")
@@ -227,6 +232,7 @@ async def unmute(client, m: Message):
                 "🔊 **Userbot unmuted.**\n\n• **To mute the userbot, use the**\n» /mute command."
             )
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing is streaming**")
@@ -251,6 +257,7 @@ async def cbpause(_, query: CallbackQuery):
             await music_off(chat_id)
             await query.answer("⏸ The music has paused !\n\n» to resume the music click on resume button !", show_alert=True)
         except Exception as e:
+            traceback.print_exc()
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
@@ -275,6 +282,7 @@ async def cbresume(_, query: CallbackQuery):
             await music_on(chat_id)
             await query.answer("▶️ The music has resumed !\n\n» to pause the music click on pause button !", show_alert=True)
         except Exception as e:
+            traceback.print_exc()
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
@@ -297,6 +305,7 @@ async def cbstop(_, query: CallbackQuery):
             clear_queue(chat_id)
             await query.edit_message_text("✅ **this streaming has ended**", reply_markup=close_mark)
         except Exception as e:
+            traceback.print_exc()
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
@@ -321,6 +330,7 @@ async def cbmute(_, query: CallbackQuery):
             await music_off(chat_id)
             await query.answer("🔇 The stream userbot has muted !\n\n» to unmute the userbot click on unmute button !", show_alert=True)
         except Exception as e:
+            traceback.print_exc()
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
@@ -345,6 +355,7 @@ async def cbunmute(_, query: CallbackQuery):
             await music_on(chat_id)
             await query.answer("🔊 The stream userbot has unmuted !\n\n» to mute the userbot click on mute button !", show_alert=True)
         except Exception as e:
+            traceback.print_exc()
             await query.edit_message_text(f"🚫 **error:**\n\n`{e}`", reply_markup=close_mark)
     else:
         await query.answer("❌ nothing is currently streaming", show_alert=True)
@@ -371,6 +382,7 @@ async def change_volume(client, m: Message):
                 f"✅ **volume set to** `{range}`%"
             )
         except Exception as e:
+            traceback.print_exc()
             await m.reply(f"🚫 **error:**\n\n`{e}`")
     else:
         await m.reply("❌ **nothing in streaming**")

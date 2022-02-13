@@ -2,6 +2,7 @@
 
 
 import asyncio
+import traceback
 
 from pyrogram.types import Message
 from pyrogram import Client, filters, __version__ as pyrover
@@ -159,6 +160,7 @@ async def active_calls(c: Client, message: Message):
         for chat in chats:
             served_chats.append(int(chat["chat_id"]))
     except Exception as e:
+        traceback.print_exc()
         await message.reply_text(f"🚫 error: `{e}`")
     text = ""
     j = 0

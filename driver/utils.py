@@ -1,4 +1,5 @@
 import asyncio
+import os
 from driver.core import bot, calls
 from driver.database.dbqueue import remove_active_chat
 from driver.queues import (
@@ -152,3 +153,8 @@ async def bash(cmd):
     err = stderr.decode().strip()
     out = stdout.decode().strip()
     return out, err
+
+
+def remove_if_exists(path):
+    if os.path.exists(path):
+        os.remove(path)
