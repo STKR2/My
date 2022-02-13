@@ -147,24 +147,29 @@ async def play(c: Client, m: Message):
             suhu = await replied.reply("📥 downloading audio...")
             dl = await replied.download()
             link = replied.link
+            songname = "Audio"
+            thumbnail = f"{IMG_5}"
             try:
                 if replied.audio:
-                    songname = replied.audio.title[:70]
-                    songname = replied.audio.file_name[:70]
+                    if replied.audio.title:
+                        songname = replied.audio.title[:70]
+                    else:
+                        songname = replied.audio.file_name[:70]
+                    if replied.audio.thumbs:
+                        thumbnail = await c.download_media(replied.audio.thumbs[0].file_id)
                     duration = convert_seconds(replied.audio.duration)
                 elif replied.voice:
                     songname = "Voice Note"
                     duration = convert_seconds(replied.voice.duration)
             except BaseException:
-                songname = "Audio"
-            
+                pass
+
             if chat_id in QUEUE:
                 await suhu.edit("🔄 Queueing Track...")
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
                 title = songname
                 userid = m.from_user.id
-                thumbnail = f"{IMG_5}"
                 image = await thumb(thumbnail, title, userid, ctitle)
                 pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -182,7 +187,6 @@ async def play(c: Client, m: Message):
                     ctitle = await CHAT_TITLE(gcname)
                     title = songname
                     userid = m.from_user.id
-                    thumbnail = f"{IMG_5}"
                     image = await thumb(thumbnail, title, userid, ctitle)
                     await suhu.edit("🔄 Joining Group Call...")
                     await music_on(chat_id)

@@ -9,22 +9,34 @@ from PIL import (
 
 
 def changeImageSize(maxWidth, maxHeight, image):
-    widthRatio = maxWidth / image.size[0]
-    heightRatio = maxHeight / image.size[1]
-    newWidth = int(widthRatio * image.size[0])
-    newHeight = int(heightRatio * image.size[1])
-    newImage = image.resize((newWidth, newHeight))
+    if image.size[0] == image.size[1]:
+        # Does not change the scale of the orientation image and displays it centered.
+        # It may look even better
+        newImage = image.resize((maxHeight, maxHeight))
+        img = Image.new("RGBA", (maxWidth, maxHeight))
+        img.paste(newImage, (int((maxWidth - maxHeight) / 2), 0))
+        return img
+    else:
+        widthRatio = maxWidth / image.size[0]
+        heightRatio = maxHeight / image.size[1]
+        newWidth = int(widthRatio * image.size[0])
+        newHeight = int(heightRatio * image.size[1])
+        newImage = image.resize((newWidth, newHeight))
     return newImage
 
 
 async def thumb(thumbnail, title, userid, ctitle):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(thumbnail) as resp:
-            if resp.status == 200:
-                f = await aiofiles.open(f"search/thumb{userid}.png", mode="wb")
-                await f.write(await resp.read())
-                await f.close()
-    image1 = Image.open(f"search/thumb{userid}.png")
+    img_path = f"search/thumb{userid}.png"
+    if 'http' in thumbnail:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(thumbnail) as resp:
+                if resp.status == 200:
+                    f = await aiofiles.open(img_path, mode="wb")
+                    await f.write(await resp.read())
+                    await f.close()
+    else:
+        img_path = thumbnail
+    image1 = Image.open(img_path)
     image2 = Image.open("driver/source/LightGreen.png")
     image3 = changeImageSize(1280, 720, image1)
     image4 = changeImageSize(1280, 720, image2)
@@ -49,6 +61,6 @@ async def thumb(thumbnail, title, userid, ctitle):
     )
     img.save(f"search/final{userid}.png")
     os.remove(f"search/temp{userid}.png")
-    os.remove(f"search/thumb{userid}.png")
+    os.remove(img_path)
     final = f"search/final{userid}.png"
     return final
