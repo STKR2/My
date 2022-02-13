@@ -1,4 +1,3 @@
-import os
 import traceback
 
 from cache.admins import admins
@@ -9,7 +8,7 @@ from driver.design.chatname import CHAT_TITLE
 from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only
-from driver.utils import skip_current_song, skip_item
+from driver.utils import skip_current_song, skip_item, remove_if_exists
 from driver.database.dbpunish import is_gbanned_user
 
 from driver.database.dbqueue import (
@@ -166,7 +165,7 @@ async def skip(c: Client, m: Message):
                 reply_markup=InlineKeyboardMarkup(buttons),
                 caption=f"⏭ **Skipped** to the next track.\n\n🗂 **Name:** [{op[0]}]({op[1]})\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
             )
-            os.remove(image)
+            remove_if_exists(image)
     else:
         skip = m.text.split(None, 1)[1]
         track = "🗑 removed song from queue:"

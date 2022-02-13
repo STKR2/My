@@ -2,7 +2,6 @@
 # Commit Start Date 20/10/2021
 # Finished On 28/10/2021
 
-import os
 # pyrogram stuff
 import traceback
 
@@ -21,7 +20,7 @@ from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, bot
-from driver.utils import bash
+from driver.utils import bash, remove_if_exists
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
@@ -176,7 +175,7 @@ async def play(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
-                os.remove(image)
+                remove_if_exists(image)
             else:
                 try:
                     gcname = m.chat.title
@@ -208,7 +207,7 @@ async def play(c: Client, m: Message):
                         caption=f"🗂 **Name:** [{songname}]({link}) | `music`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                     )
                     await idle()
-                    os.remove(image)
+                    remove_if_exists(image)
                 except Exception as e:
                     await suhu.delete()
                     await remove_active_chat(chat_id)
@@ -252,7 +251,7 @@ async def play(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            os.remove(image)
+                            remove_if_exists(image)
                         else:
                             try:
                                 await suhu.edit("🔄 Joining Group Call...")
@@ -278,7 +277,7 @@ async def play(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
-                                os.remove(image)
+                                remove_if_exists(image)
                             except Exception as ep:
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
@@ -320,7 +319,7 @@ async def play(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
-                        os.remove(image)
+                        remove_if_exists(image)
                     else:
                         try:
                             await suhu.edit("🔄 Joining Group Call...")
@@ -344,7 +343,7 @@ async def play(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
-                            os.remove(image)
+                            remove_if_exists(image)
                         except Exception as ep:
                             await suhu.delete()
                             await remove_active_chat(chat_id)

@@ -1,4 +1,3 @@
-import os
 import re
 import sys
 import shutil
@@ -16,6 +15,7 @@ from driver.filters import command
 from pyrogram import Client, filters
 from driver.database.dbchat import remove_served_chat
 from driver.decorators import bot_creator, sudo_users_only, errors
+from driver.utils import remove_if_exists
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
@@ -86,7 +86,7 @@ async def executor(client, message):
             reply_markup=keyboard,
         )
         await message.delete()
-        os.remove(filename)
+        remove_if_exists(filename)
     else:
         t2 = time()
         keyboard = InlineKeyboardMarkup(
@@ -165,7 +165,7 @@ async def shellrunner(client, message):
                 reply_to_message_id=message.message_id,
                 caption="`OUTPUT`",
             )
-            return os.remove("output.txt")
+            return remove_if_exists("output.txt")
         await edit_or_reply(message, text=f"`OUTPUT:`\n\n```{output}```")
     else:
         await edit_or_reply(message, text="`OUTPUT:`\n\n`no output`")

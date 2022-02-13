@@ -3,7 +3,6 @@
 # Finished On 28/10/2021
 
 
-import os
 import re
 import asyncio
 import traceback
@@ -18,6 +17,7 @@ from driver.core import calls, user, bot
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
+from driver.utils import remove_if_exists
 # pyrogram stuff
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -200,7 +200,7 @@ async def vplay(c: Client, m: Message):
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
-                os.remove(image)
+                remove_if_exists(image)
             else:
                 await loser.edit("🔄 Joining Group Call...")
                 gcname = m.chat.title
@@ -236,7 +236,7 @@ async def vplay(c: Client, m: Message):
                     caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n⏱️ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                 )
                 await idle()
-                os.remove(image)
+                remove_if_exists(image)
         else:
             if len(m.command) < 2:
                 await m.reply(
@@ -277,7 +277,7 @@ async def vplay(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            os.remove(image)
+                            remove_if_exists(image)
                         else:
                             try:
                                 await loser.edit("🔄 Joining Group Call...")
@@ -302,7 +302,7 @@ async def vplay(c: Client, m: Message):
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
                                 await idle()
-                                os.remove(image)
+                                remove_if_exists(image)
                             except Exception as ep:
                                 await loser.delete()
                                 await remove_active_chat(chat_id)
@@ -348,7 +348,7 @@ async def vplay(c: Client, m: Message):
                             reply_markup=InlineKeyboardMarkup(buttons),
                             caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                         )
-                        os.remove(image)
+                        remove_if_exists(image)
                     else:
                         try:
                             await loser.edit("🔄 Joining Group Call...")
@@ -373,7 +373,7 @@ async def vplay(c: Client, m: Message):
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
                             await idle()
-                            os.remove(image)
+                            remove_if_exists(image)
                         except Exception as ep:
                             await loser.delete()
                             await remove_active_chat(chat_id)
