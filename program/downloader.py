@@ -4,6 +4,8 @@ import os
 import re
 import time
 import asyncio
+import traceback
+
 import lyricsgenius
 
 import aiofiles
@@ -126,6 +128,7 @@ async def video_downloader(_, message):
             ytdl_data = ytdl.extract_info(link, download=True)
             file_name = ytdl.prepare_filename(ytdl_data)
     except Exception as e:
+        traceback.print_exc()
         return await msg.edit(f"🚫 error: `{e}`")
     preview = wget.download(thumbnail)
     await msg.edit("📤 uploading video...")

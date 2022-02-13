@@ -6,6 +6,7 @@
 import os
 import re
 import asyncio
+import traceback
 # repository stuff
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
 from program.utils.inline import stream_markup
@@ -96,6 +97,7 @@ async def vplay(c: Client, m: Message):
     try:
         aing = await c.get_me()
     except Exception as e:
+        traceback.print_exc()
         return await m.reply_text(f"error:\n\n{e}")
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
@@ -151,6 +153,7 @@ async def vplay(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
+            traceback.print_exc()
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
@@ -398,6 +401,7 @@ async def vstream(c: Client, m: Message):
     try:
         aing = await c.get_me()
     except Exception as e:
+        traceback.print_exc()
         return await m.reply_text(f"error:\n\n{e}")
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
@@ -453,6 +457,7 @@ async def vstream(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
+            traceback.print_exc()
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
