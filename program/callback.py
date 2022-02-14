@@ -21,7 +21,7 @@ from config import (
 @Client.on_callback_query(filters.regex("home_start"))
 @check_blacklist()
 async def start_set(_, query: CallbackQuery):
-    BOT_NAME = me["result"]["first_name"]
+    BOT_NAME = me["first_name"]
     await query.answer("home start")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
