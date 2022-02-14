@@ -12,8 +12,9 @@ from config import (
     OWNER_USERNAME,
     UPDATES_CHANNEL,
 )
+from driver.decorators import check_blacklist
 from program import __version__
-from driver.core import user, bot
+from driver.core import user, bot, me
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
@@ -56,12 +57,9 @@ async def _human_time_duration(seconds):
 @Client.on_message(
     command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
 )
+@check_blacklist()
 async def start_(c: Client, message: Message):
-    user_id = message.from_user.id
-    BOT_NAME = (await c.get_me()).first_name
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
+    BOT_NAME = me["first_name"]
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
@@ -105,11 +103,8 @@ async def start_(c: Client, message: Message):
 @Client.on_message(
     command(["alive", f"alive@{BOT_USERNAME}"]) & filters.group & ~filters.edited
 )
+@check_blacklist()
 async def alive(c: Client, message: Message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
     chat_id = message.chat.id
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
@@ -138,11 +133,8 @@ async def alive(c: Client, message: Message):
 
 
 @Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
+@check_blacklist()
 async def ping_pong(c: Client, message: Message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
@@ -150,11 +142,8 @@ async def ping_pong(c: Client, message: Message):
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
+@check_blacklist()
 async def get_uptime(c: Client, message: Message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))

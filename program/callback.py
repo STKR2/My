@@ -1,6 +1,7 @@
 # Copyright (C) 2021 By VeezMusicProject
 
-from driver.core import user, bot
+from driver.core import me
+from driver.decorators import check_blacklist
 from driver.queues import QUEUE
 from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
@@ -18,12 +19,9 @@ from config import (
 
 
 @Client.on_callback_query(filters.regex("home_start"))
+@check_blacklist()
 async def start_set(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    BOT_NAME = (await bot.get_me()).first_name
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    BOT_NAME = me["result"]["first_name"]
     await query.answer("home start")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
@@ -65,12 +63,8 @@ async def start_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("quick_use"))
+@check_blacklist()
 async def quick_set(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    ass_uname = (await user.get_me()).username
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     await query.answer("quick bot usage")
     await query.edit_message_text(
         f"""ℹ️ Quick use Guide bot, please read fully !
@@ -90,12 +84,9 @@ async def quick_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("user_guide"))
+@check_blacklist()
 async def guide_set(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    ass_uname = (await user.get_me()).username
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    ass_uname = me["username"]
     await query.answer("user guide")
     await query.edit_message_text(
         f"""❓ How to use this Bot ?, read the Guide below !
@@ -118,11 +109,9 @@ async def guide_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("command_list"))
+@check_blacklist()
 async def commands_set(_, query: CallbackQuery):
     user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     await query.answer("commands menu")
     await query.edit_message_text(
         f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
@@ -150,12 +139,9 @@ All commands can be used with (`! / .`) handler""",
 
 
 @Client.on_callback_query(filters.regex("user_command"))
+@check_blacklist()
 async def user_set(_, query: CallbackQuery):
-    BOT_NAME = (await bot.get_me()).first_name
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    BOT_NAME = me["first_name"]
     await query.answer("basic commands")
     await query.edit_message_text(
         f"""✏️ Command list for all user.
@@ -180,12 +166,9 @@ async def user_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("admin_command"))
+@check_blacklist()
 async def admin_set(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    BOT_NAME = (await bot.get_me()).first_name
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    BOT_NAME = me["first_name"]
     await query.answer("admin commands")
     await query.edit_message_text(
         f"""✏️ Command list for group admin.
@@ -209,12 +192,10 @@ async def admin_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("sudo_command"))
+@check_blacklist()
 async def sudo_set(_, query: CallbackQuery):
     user_id = query.from_user.id
-    BOT_NAME = (await bot.get_me()).first_name
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    BOT_NAME = me["first_name"]
     if user_id not in SUDO_USERS:
         await query.answer("⚠️ You don't have permissions to click this button\n\n» This button is reserved for sudo members of this bot.", show_alert=True)
         return
@@ -240,12 +221,10 @@ async def sudo_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("owner_command"))
+@check_blacklist()
 async def owner_set(_, query: CallbackQuery):
     user_id = query.from_user.id
-    BOT_NAME = (await bot.get_me()).first_name
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
+    BOT_NAME = me["first_name"]
     if user_id not in OWNER_ID:
         await query.answer("⚠️ You don't have permissions to click this button\n\n» This button is reserved for owner of this bot.", show_alert=True)
         return
@@ -270,11 +249,9 @@ async def owner_set(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("stream_menu_panel"))
+@check_blacklist()
 async def at_set_markup_menu(_, query: CallbackQuery):
     user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
@@ -289,11 +266,8 @@ async def at_set_markup_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("stream_home_panel"))
+@check_blacklist()
 async def is_set_home_menu(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
@@ -304,11 +278,8 @@ async def is_set_home_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("set_close"))
+@check_blacklist()
 async def on_close_menu(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 Only admin with manage video chat permission that can tap this button !", show_alert=True)
@@ -316,9 +287,6 @@ async def on_close_menu(_, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("close_panel"))
+@check_blacklist()
 async def in_close_panel(_, query: CallbackQuery):
-    user_id = query.from_user.id
-    if await is_gbanned_user(user_id):
-        await query.answer("❗️ You've blocked from using this bot!", show_alert=True)
-        return
     await query.message.delete()

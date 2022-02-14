@@ -21,17 +21,15 @@ from youtubesearchpython import VideosSearch
 from yt_dlp import YoutubeDL
 
 from config import BOT_USERNAME as bn
+from driver.decorators import check_blacklist
 from driver.filters import command, other_filters
 from driver.database.dbpunish import is_gbanned_user
 from driver.utils import remove_if_exists
 
 
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
+@check_blacklist()
 async def song_downloader(_, message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply("❗️ **You've blocked from using this bot!**")
-        return
     await message.delete()
     query = " ".join(message.command[1:])
     m = await message.reply("🔎 finding song...")
@@ -94,11 +92,8 @@ async def song_downloader(_, message):
 @Client.on_message(
     command(["vsong", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
 )
+@check_blacklist()
 async def video_downloader(_, message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
     await message.delete()
     ydl_opts = {
         "format": "best",
@@ -147,11 +142,8 @@ async def video_downloader(_, message):
 
 
 @Client.on_message(command(["lyric", f"lyric@{bn}", "lyrics"]))
+@check_blacklist()
 async def get_lyric_genius(_, message: Message):
-    user_id = message.from_user.id
-    if await is_gbanned_user(user_id):
-        await message.reply_text("❗️ **You've blocked from using this bot!**")
-        return
     if len(message.command) < 2:
         return await message.reply_text("**usage:**\n\n/lyrics (song name)")
     m = await message.reply_text("🔍 Searching lyrics...")
