@@ -117,9 +117,9 @@ async def play(c: Client, m: Message):
             try:
                 if replied.audio:
                     if replied.audio.title:
-                        songname = replied.audio.title[:70]
+                        songname = replied.audio.title[:80]
                     else:
-                        songname = replied.audio.file_name[:70]
+                        songname = replied.audio.file_name[:80]
                     if replied.audio.thumbs:
                         thumbnail = await c.download_media(replied.audio.thumbs[0].file_id)
                     duration = convert_seconds(replied.audio.duration)
