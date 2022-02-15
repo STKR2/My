@@ -77,7 +77,7 @@ async def quick_set(_, query: CallbackQuery):
 
 ❓ Have questions? Contact us in [Support Group](https://t.me/{GROUP_SUPPORT}).""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="command_list")]]
+            [[InlineKeyboardButton("🔙 Go Back", callback_data="user_guide")]]
         ),
         disable_web_page_preview=True,
     )
@@ -103,7 +103,13 @@ async def guide_set(_, query: CallbackQuery):
 
 💡 If you have a follow-up questions about this bot, you can tell it on my support chat here: @{GROUP_SUPPORT}.""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="home_start")]]
+            [
+                [
+                    InlineKeyboardButton("» Quick use Guide «", callback_data="quick_use")
+                ],[
+                    InlineKeyboardButton("🔙 Go Back", callback_data="home_start")
+                ],
+            ]
         ),
     )
 
@@ -122,8 +128,6 @@ All commands can be used with (`! / .`) handler""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("» Quick use Guide «", callback_data="quick_use"),
-                ],[
                     InlineKeyboardButton("👮🏻‍♀️ Admins Commands", callback_data="admin_command"),
                 ],[
                     InlineKeyboardButton("👩🏻‍💼 Users Commands", callback_data="user_command"),
