@@ -20,7 +20,7 @@ from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
-from driver.core import calls, user, bot
+from driver.core import calls, user, bot, me_user
 from driver.utils import bash, remove_if_exists
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dblockchat import blacklisted_chats
@@ -74,7 +74,7 @@ async def play(c: Client, m: Message):
             "you're an __Anonymous__ user !\n\n» revert back to your real user account to use this bot."
         )
     try:
-        ubot = (await user.get_me()).id
+        ubot = me_user.id
         b = await c.get_chat_member(chat_id, ubot)
         if b.status == "kicked":
             await c.unban_chat_member(chat_id, ubot)

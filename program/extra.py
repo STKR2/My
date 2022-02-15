@@ -8,6 +8,8 @@ from pyrogram.types import Message
 from pyrogram import Client, filters, __version__ as pyrover
 
 from pytgcalls import (__version__ as pytgver)
+
+from driver.core import me_bot
 from program import __version__ as ver
 from program.start import __python_version__ as pyver
 
@@ -126,9 +128,8 @@ async def broadcast_message_pin(c: Client, message: Message):
 @Client.on_message(command(["stats", f"stats@{uname}"]) & ~filters.edited)
 @sudo_users_only
 async def bot_statistic(c: Client, message: Message):
-    name = (await c.get_me()).first_name
+    name = me_bot.first_name
     chat_id = message.chat.id
-    user_id = message.from_user.id
     msg = await c.send_message(
         chat_id, "❖ Collecting Stats..."
     )

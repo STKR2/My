@@ -2,7 +2,7 @@ import asyncio
 
 from config import BOT_USERNAME, SUDO_USERS
 
-from driver.core import user
+from driver.core import user, me_bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from driver.database.dbqueue import remove_active_chat
@@ -91,7 +91,7 @@ async def leave_all(client, message):
 
 @Client.on_message(filters.left_chat_member)
 async def bot_kicked(c: Client, m: Message):
-    bot_id = (await c.get_me()).id
+    bot_id = me_bot.id
     chat_id = m.chat.id
     left_member = m.left_chat_member
     if left_member.id == bot_id:
