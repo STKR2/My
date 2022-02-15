@@ -4,7 +4,7 @@ from typing import Callable, Union, Optional
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 from config import SUDO_USERS, OWNER_ID
-from driver.core import bot, me
+from driver.core import bot, me_bot
 from driver.admins import get_administrators
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbpunish import is_gbanned_user
@@ -129,7 +129,7 @@ def require_admin(
         async def wrapper(
             client: Client, message: Union[CallbackQuery, Message], *args, **kwargs
         ):
-            has_perms = await check_perms(message, permissions, notice, me["id"] if self else None)
+            has_perms = await check_perms(message, permissions, notice, me_bot.id if self else None)
             if has_perms:
                 return await func(client, message, *args, *kwargs)
 

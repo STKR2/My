@@ -6,6 +6,7 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
+from driver.core import me_bot
 from driver.filters import command, other_filters
 from driver.decorators import bot_creator
 from driver.database.dbchat import get_served_chats
@@ -17,7 +18,7 @@ from config import SUDO_USERS, BOT_USERNAME as bn
 @Client.on_message(command(["gban", f"gban@{bn}"]) & other_filters)
 @bot_creator
 async def global_banned(c: Client, message: Message):
-    BOT_NAME = (await c.get_me()).first_name
+    BOT_NAME = me_bot.first_name
     if not message.reply_to_message:
         if len(message.command) < 2:
             await message.reply_text("**usage:**\n\n/gban [username | user_id]")
@@ -27,7 +28,7 @@ async def global_banned(c: Client, message: Message):
             user = user.replace("@", "")
         user = await c.get_users(user)
         from_user = message.from_user
-        BOT_ID = await c.get_me()
+        BOT_ID = me_bot.id
         if user.id == from_user.id:
             return await message.reply_text(
                 "You can't gban yourself !"
@@ -76,7 +77,7 @@ async def global_banned(c: Client, message: Message):
     from_user_mention = message.from_user.mention
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
-    BOT_ID = await c.get_me()
+    BOT_ID = me_bot.id
     if user_id == from_user_id:
         await message.reply_text("You can't gban yourself !")
     elif user_id == BOT_ID:
@@ -140,7 +141,7 @@ async def ungban_global(c: Client, message: Message):
             user = user.replace("@", "")
         user = await c.get_users(user)
         from_user = message.from_user
-        BOT_ID = await c.get_me()
+        BOT_ID = me_bot.id
         if user.id == from_user.id:
             await message.reply_text("You can't ungban yourself because you can't be gbanned !")
         elif user.id == BOT_ID:
@@ -159,7 +160,7 @@ async def ungban_global(c: Client, message: Message):
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
-    BOT_ID = await c.get_me()
+    BOT_ID = me_bot.id
     if user_id == from_user_id:
         await message.reply_text("You can't ungban yourself because you can't be gbanned !")
     elif user_id == BOT_ID:

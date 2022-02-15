@@ -14,7 +14,7 @@ from config import (
 )
 from driver.decorators import check_blacklist
 from program import __version__
-from driver.core import user, bot, me
+from driver.core import bot, me_bot, me_user
 from driver.filters import command, other_filters
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
@@ -59,7 +59,7 @@ async def _human_time_duration(seconds):
 )
 @check_blacklist()
 async def start_(c: Client, message: Message):
-    BOT_NAME = me["first_name"]
+    BOT_NAME = me_bot.first_name
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
@@ -109,7 +109,7 @@ async def alive(c: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
-    BOT_NAME = (await c.get_me()).first_name
+    BOT_NAME = me_bot.first_name
     
     keyboard = InlineKeyboardMarkup(
         [
@@ -172,8 +172,8 @@ async def new_chat(c: Client, m: Message):
         pass
     else:
         await add_served_chat(chat_id)
-    ass_uname = (await user.get_me()).username
-    bot_id = (await c.get_me()).id
+    ass_uname = me_user.username
+    bot_id = me_bot.id
     for member in m.new_chat_members:
         if chat_id in await blacklisted_chats():
             await m.reply(
