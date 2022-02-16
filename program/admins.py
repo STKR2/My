@@ -124,7 +124,6 @@ async def resume(client, m: Message):
 @authorized_users_only
 @check_blacklist()
 async def skip(c: Client, m: Message):
-    await m.delete()
     user_id = m.from_user.id
     chat_id = m.chat.id
     if len(m.command) < 2:
