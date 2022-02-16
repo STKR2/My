@@ -99,6 +99,9 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 duration = convert_seconds(replied.voice.duration)
         except BaseException:
             pass
+        # recheck
+        if not thumbnail:
+            thumbnail = f"{IMG_5}"
 
         if chat_id in QUEUE:
             await suhu.edit("🔄 Queueing Track...")
