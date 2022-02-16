@@ -54,9 +54,10 @@ def ytsearch(query: str):
 async def ytdl(link):
     proc = await asyncio.create_subprocess_exec(
         "yt-dlp",
+        "--geo-bypass",
         "-g",
         "-f",
-        "best[height<=?720][width<=?1280]",
+        "best[height<=?720][width<=?1280]/best",
         f"{link}",
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
