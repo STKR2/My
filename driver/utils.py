@@ -1,6 +1,8 @@
 import asyncio
 import os
-from driver.core import bot, calls
+
+from config import IMG_5
+from driver.core import bot, calls, user
 from driver.database.dbqueue import remove_active_chat
 from driver.queues import (
     QUEUE,
@@ -158,3 +160,14 @@ async def bash(cmd):
 def remove_if_exists(path):
     if os.path.exists(path):
         os.remove(path)
+
+
+async def from_tg_get_msg(url: str):
+    data = url.split('/')[-2:]
+    if len(data) == 2:
+        cid = data[0]
+        if cid.isdigit():
+            cid = int('-100' + cid)
+        mid = int(data[1])
+        return await user.get_messages(cid, message_ids=mid)
+    return None

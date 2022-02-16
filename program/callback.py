@@ -3,7 +3,6 @@
 from driver.core import me_bot
 from driver.decorators import check_blacklist
 from driver.queues import QUEUE
-from driver.database.dbpunish import is_gbanned_user
 from pyrogram import Client, filters
 from program.utils.inline import menu_markup, stream_markup
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
