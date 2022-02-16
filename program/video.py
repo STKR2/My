@@ -89,19 +89,21 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             "» reply to an **audio file** or **give something to search.**"
         )
     if replied.video or replied.document:
-        loser = await replied.reply("📥 downloading video...")
+        if not link:
+            loser = await replied.reply("📥 downloading video...")
+        else:
+            loser = await m.reply("📥 downloading video...")
         dl = await replied.download()
         link = replied.link
         songname = "video"
         duration = "00:00"
-        if len(m.command) < 2:
-            Q = 720
-        else:
-            pq = m.text.split(None, 1)[1]
-            if pq == "720" or "480" or "360":
+        Q = 720
+        pq = m.text.split(None, 1)
+        if ("t.me" not in m.text) and len(pq) > 1:
+            pq = pq[1]
+            if pq == "720" or pq == "480" or pq == "360":
                 Q = int(pq)
             else:
-                Q = 720
                 await loser.edit(
                     "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
                 )
