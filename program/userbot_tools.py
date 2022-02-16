@@ -6,7 +6,6 @@ from driver.core import user, me_bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from driver.database.dbqueue import remove_active_chat
-from driver.database.dbpunish import is_gbanned_user
 from driver.decorators import authorized_users_only, bot_creator, check_blacklist
 
 from pyrogram.types import Message
