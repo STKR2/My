@@ -14,6 +14,7 @@ from driver.decorators import check_blacklist
 from driver.queues import QUEUE, get_queue
 from driver.filters import command, other_filters
 
+
 keyboard = InlineKeyboardMarkup(
     [[InlineKeyboardButton("🗑 Close", callback_data="set_close")]]
 )
@@ -28,11 +29,11 @@ async def playlist(client, m: Message):
         if len(chat_queue) == 1:
             await m.reply(
                 f"💡 **Currently Streaming**`:`\n\n"
-                f"*️⃣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}`",
+                f"➣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}`",
                 reply_markup=keyboard, disable_web_page_preview=True)
         else:
             QUE = f"💡 **Currently Streaming**`:`\n\n" \
-                  f"*️⃣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}` \n\n" \
+                  f"➣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}` \n\n" \
                   f"**📖 Queue song list**`:`\n"
             l = len(chat_queue)
             for x in range(1, l):
