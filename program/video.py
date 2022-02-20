@@ -506,7 +506,7 @@ async def vstream(c: Client, m: Message):
                     )
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
-                        photo=image",
+                        photo=image,
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({url}) | `live video`\n🧸 **Requested by:** {requester}",
                     )
