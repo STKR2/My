@@ -44,7 +44,12 @@ def ytsearch(query: str):
 
 async def ytdl(link: str):
     stdout, stderr = await bash(
-        f'yt-dlp --geo-bypass -g -f "best[height<=?720][width<=?1280]/best" {link}'
+        'yt-dlp',
+        '--geo-bypass',
+        '-g',
+        '-f',
+        'best[height<=?720][width<=?1280]/best',
+        f'{link}',
     )
     if stdout:
         return 1, stdout
@@ -99,7 +104,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 duration = convert_seconds(replied.voice.duration)
         except BaseException:
             pass
-        # recheck
+
         if not thumbnail:
             thumbnail = f"{IMG_5}"
 
@@ -301,7 +306,7 @@ async def play(c: Client, m: Message):
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
-                await suhu.edit("❌ **no results found.**")
+                await suhu.edit("❌ **no results found**")
             else:
                 songname = search[0]
                 title = search[0]
