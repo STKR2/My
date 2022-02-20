@@ -36,7 +36,7 @@ async def run_speedtest(_, message: Message):
         img = Image.open(path)
         c = img.crop((17, 11, 727, 389))
         c.save(path)
-    except:
+    except BaseException:
         pass
 
     output = f"""💡 **SpeedTest Results**
