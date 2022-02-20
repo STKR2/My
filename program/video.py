@@ -113,7 +113,6 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 duration = convert_seconds(replied.video.duration)
             elif replied.document:
                 songname = replied.document.file_name[:80]
-                duration = convert_seconds(replied.document.duration)
         except BaseException:
             songname = "Video"
 
