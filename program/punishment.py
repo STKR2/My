@@ -12,7 +12,7 @@ from driver.decorators import bot_creator
 from driver.database.dbchat import get_served_chats
 from driver.database.dbpunish import add_gban_user, is_gbanned_user, remove_gban_user
 
-from config import SUDO_USERS, BOT_USERNAME as bn
+from config import OWNER_ID, SUDO_USERS, BOT_USERNAME as bn
 
 
 @Client.on_message(command(["gban", f"gban@{bn}"]) & other_filters)
@@ -30,13 +30,13 @@ async def global_banned(c: Client, message: Message):
         from_user = message.from_user
         BOT_ID = me_bot.id
         if user.id == from_user.id:
-            return await message.reply_text(
-                "You can't gban yourself !"
-            )
+            await message.reply_text("You can't gban yourself !")
         elif user.id == BOT_ID:
             await message.reply_text("I can't gban myself !")
         elif user.id in SUDO_USERS:
             await message.reply_text("You can't gban sudo user !")
+        elif user.id in OWNER_ID:
+            await message.reply_text("You can't gban my creator !")
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -84,6 +84,8 @@ async def global_banned(c: Client, message: Message):
         await message.reply_text("I can't gban myself !")
     elif user_id in SUDO_USERS:
         await message.reply_text("You can't gban sudo user !")
+    elif user_id in OWNER_ID:
+        await message.reply_text("You can't gban my creator !")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
@@ -148,10 +150,12 @@ async def ungban_global(c: Client, message: Message):
             await message.reply_text("I can't ungban myself because i can't be gbanned !")
         elif user.id in SUDO_USERS:
             await message.reply_text("Sudo users can't be gbanned/ungbanned !")
+        elif user.id in OWNER_ID:
+            await message.reply_text("Bot creator can't be gbanned/ungbanned !")
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("This user not ungbanned !")
+                await message.reply_text("This user is not gbanned !")
             else:
                 await c.unban_chat_member(chat_id, user.id)
                 await remove_gban_user(user.id)
@@ -164,15 +168,15 @@ async def ungban_global(c: Client, message: Message):
     if user_id == from_user_id:
         await message.reply_text("You can't ungban yourself because you can't be gbanned !")
     elif user_id == BOT_ID:
-        await message.reply_text(
-            "I can't ungban myself because i can't be gbanned !"
-        )
+        await message.reply_text("I can't ungban myself because i can't be gbanned !")
     elif user_id in SUDO_USERS:
         await message.reply_text("Sudo users can't be gbanned/ungbanned !")
+    elif user_id in OWNER_ID:
+        await message.reply_text("Bot creator can't be gbanned/ungbanned !")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("This user not gbanned !")
+            await message.reply_text("This user is not gbanned !")
         else:
             await c.unban_chat_member(chat_id, user_id)
             await remove_gban_user(user_id)
