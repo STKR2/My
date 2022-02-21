@@ -461,20 +461,17 @@ async def vstream(c: Client, m: Message):
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
             songname = search[0]
-            thumbnail = search[3]
-            image = thumbnail
             if chat_id in QUEUE:
                 await loser.edit("🔄 Queueing Track...")
-                pos = add_to_queue(chat_id, "live stream", livelink, url, "video", Q)
+                pos = add_to_queue(chat_id, songname, livelink, url, "live", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
-                    photo=image,
+                    photo=f"{IMG_1}",
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                 )
-                remove_if_exists(image)
             else:
                 if Q == 720:
                     amaze = HighQualityVideo()
@@ -495,19 +492,18 @@ async def vstream(c: Client, m: Message):
                         ),
                         stream_type=StreamType().live_stream,
                     )
-                    add_to_queue(chat_id, "live stream", livelink, url, "video", Q)
+                    add_to_queue(chat_id, songname, livelink, url, "live", Q)
                     await loser.delete()
                     requester = (
                         f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                     )
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
-                        photo=image,
+                        photo=f"{IMG_2}",
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
                     await idle()
-                    remove_if_exists(image)
                 except Exception as ep:
                     await loser.delete()
                     await remove_active_chat(chat_id)
