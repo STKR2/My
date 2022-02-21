@@ -12,7 +12,7 @@ from pyrogram.types import Message
 from pyrogram import Client, filters
 from pyrogram.raw.types import InputPeerChannel
 from pyrogram.raw.functions.phone import CreateGroupCall
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
+from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 
 
 
@@ -95,6 +95,7 @@ async def leave_all(client, message):
 @authorized_users_only
 async def start_group_call(c: Client, m: Message):
     chat_id = m.chat.id
+    msg = await c.send_message(chat_id, "`starting...`")
     try:
         peer = await user.resolve_peer(chat_id)
         await user.send(
@@ -106,11 +107,11 @@ async def start_group_call(c: Client, m: Message):
                 random_id=user.rnd_id() // 9000000000,
             )
         )
-        msg = await c.send_message(
-            chat_id, "✅ Group call started !"
+        await msg.edit_text("✅ Group call started !")
+    except ChatAdminRequired:
+        await msg.edit_text(
+            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
         )
-    except Exception as e:
-        await msg.edit(f"🚫 error: `{e}`")
 
 
 @Client.on_message(filters.left_chat_member)
