@@ -58,7 +58,7 @@ async def leave_chat(_, m: Message):
         )
 
 
-@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]))
+@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
 async def leave_all(client, message):
     if message.from_user.id not in SUDO_USERS:
@@ -86,6 +86,29 @@ async def leave_all(client, message):
     await client.send_message(
         message.chat.id, f"✅ Left from: {left} chats.\n❌ Failed in: {failed} chats."
     )
+
+
+@Client.on_message(command(["startvc", f"startvc@{BOT_USERNAME}"]) & other_filters)
+@check_blacklist()
+@authorized_users_only
+async def start_group_call(c: Client, m: Message):
+    chat_id = m.chat.id
+    try:
+        peer = await user.resolve_peer(chat_id)
+        await user.send(
+            CreateGroupCall(
+                peer=InputPeerChannel(
+                    channel_id=peer.channel_id,
+                    access_hash=peer.access_hash,
+                ),
+                random_id=user.rnd_id() // 9000000000,
+            )
+        )
+        msg = await c.send_message(
+            chat_id, "✅ Group call started !"
+        )
+    except Exception as e:
+        await msg.edit(f"🚫 error: `{e}`")
 
 
 @Client.on_message(filters.left_chat_member)
