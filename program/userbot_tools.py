@@ -10,6 +10,8 @@ from driver.decorators import authorized_users_only, bot_creator, check_blacklis
 
 from pyrogram.types import Message
 from pyrogram import Client, filters
+from pyrogram.raw.types import InputPeerChannel
+from pyrogram.raw.functions.phone import CreateGroupCall
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 
 
