@@ -44,7 +44,7 @@ def ytsearch(query: str):
 
 async def ytdl(link: str):
     stdout, stderr = await bash(
-        f'yt-dlp --geo-bypass -g -f "best[height<=?720][width<=?1280]/best" {link}',
+        f'yt-dlp --geo-bypass -g -f "best[height<=?720][width<=?1280]/best" {link}'
     )
     if stdout:
         return 1, stdout
