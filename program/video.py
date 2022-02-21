@@ -463,7 +463,7 @@ async def vstream(c: Client, m: Message):
             songname = search[0]
             if chat_id in QUEUE:
                 await loser.edit("🔄 Queueing Track...")
-                pos = add_to_queue(chat_id, songname, livelink, url, "live", Q)
+                pos = add_to_queue(chat_id, songname, livelink, url, "video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
@@ -492,7 +492,7 @@ async def vstream(c: Client, m: Message):
                         ),
                         stream_type=StreamType().live_stream,
                     )
-                    add_to_queue(chat_id, songname, livelink, url, "live", Q)
+                    add_to_queue(chat_id, songname, livelink, url, "video", Q)
                     await loser.delete()
                     requester = (
                         f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
