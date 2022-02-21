@@ -51,7 +51,7 @@ async def skip_current_song(chat_id):
                 link = chat_queue[1][2]
                 type = chat_queue[1][3]
                 Q = chat_queue[1][4]
-                if type == "Audio":
+                if type == "music":
                     await calls.change_stream(
                         chat_id,
                         AudioPiped(
@@ -59,7 +59,7 @@ async def skip_current_song(chat_id):
                             HighQualityAudio(),
                         ),
                     )
-                elif type == "Video":
+                elif type == "video":
                     if Q == 720:
                         hm = HighQualityVideo()
                     elif Q == 480:
