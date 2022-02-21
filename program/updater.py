@@ -1,9 +1,4 @@
-import os
-import re
 import sys
-import asyncio
-import subprocess
-from asyncio import sleep
 
 from git import Repo
 from os import system, execle, environ
@@ -13,10 +8,8 @@ from pyrogram.types import Message
 from pyrogram import Client, filters
 from config import UPSTREAM_REPO, BOT_USERNAME
 
-from driver.core import bot
 from driver.filters import command
 from driver.decorators import bot_creator
-from driver.database.dbqueue import get_active_chats, remove_active_chat
 
 
 def gen_chlog(repo, diff):
