@@ -75,7 +75,8 @@ async def skip_current_song(chat_id):
                     )
                 pop_an_item(chat_id)
                 return [songname, link, type]
-            except:
+            except BaseException as error:
+                print(error)
                 await calls.leave_group_call(chat_id)
                 await remove_active_chat(chat_id)
                 clear_queue(chat_id)
