@@ -460,13 +460,7 @@ async def vstream(c: Client, m: Message):
         if veez == 0:
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
-            title = search[0]
             songname = search[0]
-            thumbnail = search[1]
-            userid = m.from_user.id
-            gcname = m.chat.title
-            ctitle = await CHAT_TITLE(gcname)
-            image = await thumb(thumbnail, title, userid, ctitle)
             if chat_id in QUEUE:
                 await loser.edit("🔄 Queueing Track...")
                 pos = add_to_queue(chat_id, "Live Stream", livelink, url, "Video", Q)
@@ -474,7 +468,7 @@ async def vstream(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
-                    photo=image,
+                    photo=f"{IMG_1}",
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live video`\n🧸 **Requested by:** {requester}",
                 )
@@ -506,7 +500,7 @@ async def vstream(c: Client, m: Message):
                     )
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
-                        photo=image,
+                        photo=f"{IMG_2}",
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({url}) | `live video`\n🧸 **Requested by:** {requester}",
                     )
