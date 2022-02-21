@@ -124,8 +124,8 @@ async def stop_group_call(c: Client, m: Message):
     if not (
         group_call := (
             await get_calls(m, err_msg)
-            await msg.edit_text("❌ The group call already ended")
         )
+        await msg.edit_text("❌ The group call already ended")
     ):
         return
     await user.send(
