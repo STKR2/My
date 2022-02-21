@@ -79,7 +79,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             suhu = await m.reply("📥 downloading audio...")
         dl = await replied.download()
         link = replied.link
-        songname = "Audio"
+        songname = "music"
         thumbnail = f"{IMG_5}"
         duration = "00:00"
         try:
@@ -95,11 +95,11 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                         thumbnail = await user.download_media(replied.audio.thumbs[0].file_id)
                 duration = convert_seconds(replied.audio.duration)
             elif replied.voice:
-                songname = "Voice Note"
+                songname = "voice note"
                 duration = convert_seconds(replied.voice.duration)
         except BaseException:
             pass
-        # recheck
+
         if not thumbnail:
             thumbnail = f"{IMG_5}"
 
@@ -110,7 +110,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             title = songname
             userid = m.from_user.id
             image = await thumb(thumbnail, title, userid, ctitle)
-            pos = add_to_queue(chat_id, songname, dl, link, "Audio", 0)
+            pos = add_to_queue(chat_id, songname, dl, link, "music", 0)
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             buttons = stream_markup(user_id)
             await suhu.delete()
@@ -141,7 +141,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                     ),
                     stream_type=StreamType().pulse_stream,
                 )
-                add_to_queue(chat_id, songname, dl, link, "Audio", 0)
+                add_to_queue(chat_id, songname, dl, link, "music", 0)
                 await suhu.delete()
                 buttons = stream_markup(user_id)
                 requester = (
@@ -226,7 +226,7 @@ async def play(c: Client, m: Message):
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 if search == 0:
-                    await suhu.edit("❌ **no results found.**")
+                    await suhu.edit("❌ **no results found**")
                 else:
                     songname = search[0]
                     title = search[0]
@@ -244,7 +244,7 @@ async def play(c: Client, m: Message):
                         if chat_id in QUEUE:
                             await suhu.edit("🔄 Queueing Track...")
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, "Audio", 0
+                                chat_id, songname, ytlink, url, "music", 0
                             )
                             await suhu.delete()
                             buttons = stream_markup(user_id)
@@ -268,7 +268,7 @@ async def play(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
+                                add_to_queue(chat_id, songname, ytlink, url, "music", 0)
                                 await suhu.delete()
                                 buttons = stream_markup(user_id)
                                 requester = (
@@ -301,7 +301,7 @@ async def play(c: Client, m: Message):
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             if search == 0:
-                await suhu.edit("❌ **no results found.**")
+                await suhu.edit("❌ **no results found**")
             else:
                 songname = search[0]
                 title = search[0]
@@ -318,7 +318,7 @@ async def play(c: Client, m: Message):
                 else:
                     if chat_id in QUEUE:
                         await suhu.edit("🔄 Queueing Track...")
-                        pos = add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
+                        pos = add_to_queue(chat_id, songname, ytlink, url, "music", 0)
                         await suhu.delete()
                         requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                         buttons = stream_markup(user_id)
@@ -341,7 +341,7 @@ async def play(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, "Audio", 0)
+                            add_to_queue(chat_id, songname, ytlink, url, "music", 0)
                             await suhu.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             buttons = stream_markup(user_id)

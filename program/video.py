@@ -105,7 +105,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 Q = int(pq)
             else:
                 await loser.edit(
-                    "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
+                    "Streaming the local video in 720p quality"
                 )
         try:
             if replied.video:
@@ -114,7 +114,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             elif replied.document:
                 songname = replied.document.file_name[:80]
         except BaseException:
-            songname = "Video"
+            songname = "video"
 
         if chat_id in QUEUE:
             await loser.edit("🔄 Queueing Track...")
@@ -124,7 +124,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             userid = m.from_user.id
             thumbnail = f"{IMG_5}"
             image = await thumb(thumbnail, title, userid, ctitle)
-            pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
+            pos = add_to_queue(chat_id, songname, dl, link, "video", Q)
             await loser.delete()
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             buttons = stream_markup(user_id)
@@ -162,7 +162,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 ),
                 stream_type=StreamType().pulse_stream,
             )
-            add_to_queue(chat_id, songname, dl, link, "Video", Q)
+            add_to_queue(chat_id, songname, dl, link, "video", Q)
             await loser.delete()
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             buttons = stream_markup(user_id)
@@ -260,7 +260,7 @@ async def vplay(c: Client, m: Message):
                         if chat_id in QUEUE:
                             await loser.edit("🔄 Queueing Track...")
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, "Video", Q
+                                chat_id, songname, ytlink, url, "video", Q
                             )
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -285,7 +285,7 @@ async def vplay(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                                add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                                 await loser.delete()
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 buttons = stream_markup(user_id)
@@ -335,7 +335,7 @@ async def vplay(c: Client, m: Message):
                 else:
                     if chat_id in QUEUE:
                         await loser.edit("🔄 Queueing Track...")
-                        pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                        pos = add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                         await loser.delete()
                         requester = (
                             f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -361,7 +361,7 @@ async def vplay(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                            add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             buttons = stream_markup(user_id)
@@ -425,48 +425,52 @@ async def vstream(c: Client, m: Message):
             )
 
     if len(m.command) < 2:
-        await m.reply("» give me a live-link/m3u8 url/youtube link to stream.")
+        await m.reply("» Give me a youtube live url/m3u8 url to stream.")
     else:
         if len(m.command) == 2:
-            link = m.text.split(None, 1)[1]
             Q = 720
+            url = m.text.split(None, 1)[1]
+            search = ytsearch(url)
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
         elif len(m.command) == 3:
             op = m.text.split(None, 1)[1]
-            link = op.split(None, 1)[0]
+            url = op.split(None, 1)[0]
             quality = op.split(None, 1)[1]
+            search = ytsearch(op)
             if quality == "720" or "480" or "360":
                 Q = int(quality)
             else:
                 Q = 720
                 await m.reply(
-                    "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
+                    "» Streaming the live video in 720p quality"
                 )
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
         else:
-            await m.reply("`/vstream` {link} {720/480/360}")
+            await m.reply(f"`/vstream` {url} (720/480/360)")
 
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
-        match = re.match(regex, link)
+        match = re.match(regex, url)
+
         if match:
-            veez, livelink = await ytdl(link)
+            veez, livelink = await ytdl(url)
         else:
-            livelink = link
+            livelink = url
             veez = 1
 
         if veez == 0:
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
+            songname = search[0]
             if chat_id in QUEUE:
                 await loser.edit("🔄 Queueing Track...")
-                pos = add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
+                pos = add_to_queue(chat_id, songname, livelink, url, "video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
                     photo=f"{IMG_1}",
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                 )
             else:
                 if Q == 720:
@@ -488,7 +492,7 @@ async def vstream(c: Client, m: Message):
                         ),
                         stream_type=StreamType().live_stream,
                     )
-                    add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
+                    add_to_queue(chat_id, songname, livelink, url, "video", Q)
                     await loser.delete()
                     requester = (
                         f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -497,8 +501,9 @@ async def vstream(c: Client, m: Message):
                     await m.reply_photo(
                         photo=f"{IMG_2}",
                         reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=f"💡 **[Video Live]({link}) stream started.**\n\n💭 **Chat:** `{chat_id}`\n🧸 **Request by:** {requester}",
+                        caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
+                    await idle()
                 except Exception as ep:
                     await loser.delete()
                     await remove_active_chat(chat_id)

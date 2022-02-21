@@ -10,7 +10,9 @@ from driver.decorators import authorized_users_only, bot_creator, check_blacklis
 
 from pyrogram.types import Message
 from pyrogram import Client, filters
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
+from pyrogram.raw.types import InputPeerChannel
+from pyrogram.raw.functions.phone import CreateGroupCall
+from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 
 
 
@@ -58,7 +60,7 @@ async def leave_chat(_, m: Message):
         )
 
 
-@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]))
+@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
 async def leave_all(client, message):
     if message.from_user.id not in SUDO_USERS:
@@ -86,6 +88,30 @@ async def leave_all(client, message):
     await client.send_message(
         message.chat.id, f"✅ Left from: {left} chats.\n❌ Failed in: {failed} chats."
     )
+
+
+@Client.on_message(command(["startvc", f"startvc@{BOT_USERNAME}"]) & other_filters)
+@check_blacklist()
+@authorized_users_only
+async def start_group_call(c: Client, m: Message):
+    chat_id = m.chat.id
+    msg = await c.send_message(chat_id, "`starting...`")
+    try:
+        peer = await user.resolve_peer(chat_id)
+        await user.send(
+            CreateGroupCall(
+                peer=InputPeerChannel(
+                    channel_id=peer.channel_id,
+                    access_hash=peer.access_hash,
+                ),
+                random_id=user.rnd_id() // 9000000000,
+            )
+        )
+        await msg.edit_text("✅ Group call started !")
+    except ChatAdminRequired:
+        await msg.edit_text(
+            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
+        )
 
 
 @Client.on_message(filters.left_chat_member)
