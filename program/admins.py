@@ -1,7 +1,7 @@
 import traceback
 
 from cache.admins import admins
-from driver.core import calls, bot
+from driver.core import calls
 from pyrogram import Client, filters
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
@@ -9,6 +9,7 @@ from driver.queues import QUEUE, clear_queue
 from driver.filters import command, other_filters
 from driver.decorators import authorized_users_only, check_blacklist
 from driver.utils import skip_current_song, skip_item, remove_if_exists
+from config import BOT_USERNAME, IMG_5
 
 from driver.database.dbqueue import (
     is_music_playing,
@@ -16,20 +17,9 @@ from driver.database.dbqueue import (
     music_off,
     music_on,
 )
-from program.utils.inline import (
-    stream_markup,
-    close_mark,
-    back_mark,
-)
-from config import (
-    BOT_USERNAME,
-    GROUP_SUPPORT,
-    IMG_5,
-    UPDATES_CHANNEL,
-)
+from program.utils.inline import stream_markup, close_mark
 from pyrogram.types import (
     CallbackQuery,
-    InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
 )
@@ -163,7 +153,7 @@ async def skip(c: Client, m: Message):
                     if data == 0:
                         pass
                     else:
-                        track = track + "\n" + f"**#{x}** - {hm}"
+                        track = track + "\n" + f"**#{x}** - {data}"
             await m.reply(track)
 
 
