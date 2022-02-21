@@ -105,7 +105,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 Q = int(pq)
             else:
                 await loser.edit(
-                    "» only 720, 480, 360 allowed\n\n💡 now streaming video in **720p**"
+                    "Streaming the local video in 720p quality"
                 )
         try:
             if replied.video:
@@ -114,7 +114,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             elif replied.document:
                 songname = replied.document.file_name[:80]
         except BaseException:
-            songname = "Video"
+            songname = "video"
 
         if chat_id in QUEUE:
             await loser.edit("🔄 Queueing Track...")
@@ -124,7 +124,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             userid = m.from_user.id
             thumbnail = f"{IMG_5}"
             image = await thumb(thumbnail, title, userid, ctitle)
-            pos = add_to_queue(chat_id, songname, dl, link, "Video", Q)
+            pos = add_to_queue(chat_id, songname, dl, link, "video", Q)
             await loser.delete()
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             buttons = stream_markup(user_id)
@@ -162,7 +162,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 ),
                 stream_type=StreamType().pulse_stream,
             )
-            add_to_queue(chat_id, songname, dl, link, "Video", Q)
+            add_to_queue(chat_id, songname, dl, link, "video", Q)
             await loser.delete()
             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             buttons = stream_markup(user_id)
@@ -260,7 +260,7 @@ async def vplay(c: Client, m: Message):
                         if chat_id in QUEUE:
                             await loser.edit("🔄 Queueing Track...")
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, "Video", Q
+                                chat_id, songname, ytlink, url, "video", Q
                             )
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -285,7 +285,7 @@ async def vplay(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                                add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                                 await loser.delete()
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 buttons = stream_markup(user_id)
@@ -335,7 +335,7 @@ async def vplay(c: Client, m: Message):
                 else:
                     if chat_id in QUEUE:
                         await loser.edit("🔄 Queueing Track...")
-                        pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                        pos = add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                         await loser.delete()
                         requester = (
                             f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
@@ -361,7 +361,7 @@ async def vplay(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
+                            add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             buttons = stream_markup(user_id)
@@ -442,7 +442,7 @@ async def vstream(c: Client, m: Message):
             else:
                 Q = 720
                 await m.reply(
-                    "» Streaming the video in 720p quality"
+                    "» Streaming the live video in 720p quality"
                 )
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
         else:
@@ -461,16 +461,18 @@ async def vstream(c: Client, m: Message):
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
             songname = search[0]
+            thumbnail = search[3]
+            image = thumbnail
             if chat_id in QUEUE:
                 await loser.edit("🔄 Queueing Track...")
-                pos = add_to_queue(chat_id, "Live Stream", livelink, url, "Video", Q)
+                pos = add_to_queue(chat_id, "live stream", livelink, url, "video", Q)
                 await loser.delete()
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 buttons = stream_markup(user_id)
                 await m.reply_photo(
-                    photo=f"{IMG_1}",
+                    photo=image,
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live video`\n🧸 **Requested by:** {requester}",
+                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                 )
                 remove_if_exists(image)
             else:
@@ -493,16 +495,16 @@ async def vstream(c: Client, m: Message):
                         ),
                         stream_type=StreamType().live_stream,
                     )
-                    add_to_queue(chat_id, "Live Stream", livelink, url, "Video", Q)
+                    add_to_queue(chat_id, "live stream", livelink, url, "video", Q)
                     await loser.delete()
                     requester = (
                         f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                     )
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
-                        photo=f"{IMG_2}",
+                        photo=image,
                         reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=f"🗂 **Name:** [{songname}]({url}) | `live video`\n🧸 **Requested by:** {requester}",
+                        caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
                     await idle()
                     remove_if_exists(image)
