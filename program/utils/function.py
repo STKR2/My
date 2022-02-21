@@ -22,7 +22,7 @@ async def get_calls(m: Message, err_msg: str = "") -> Optional[InputGroupCall]:
             ).full_chat
         if full_chat is not None:
             return full_chat.call
-    await message.err(f"❌ no group calls found\n\n» `{err_msg}`")
+    await c.send_message(m.chat.id, f"❌ no group calls found\n\n» `{err_msg}`")
     return False
 
 
