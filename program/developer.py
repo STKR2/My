@@ -1,3 +1,22 @@
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
+
 import re
 import sys
 import subprocess
@@ -10,10 +29,11 @@ from inspect import getfullargspec
 from config import BOT_USERNAME as bname
 from driver.core import bot
 from driver.filters import command
-from pyrogram import Client, filters
 from driver.database.dbchat import remove_served_chat
 from driver.decorators import bot_creator, sudo_users_only, errors
 from driver.utils import remove_if_exists
+
+from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
 
@@ -174,7 +194,7 @@ async def shellrunner(client, message):
 async def bot_leave_group(_, message):
     if len(message.command) != 2:
         await message.reply_text(
-            "**usage:**\n\n» /leavebot [chat id]"
+            "**usage:**\n\n» /leavebot (`chat_id`)"
         )
         return
     chat = message.text.split(None, 2)[1]
