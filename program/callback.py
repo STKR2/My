@@ -1,10 +1,28 @@
-# Copyright (C) 2021 By VeezMusicProject
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
 
 from driver.core import me_bot
-from driver.decorators import check_blacklist
 from driver.queues import QUEUE
-from pyrogram import Client, filters
+from driver.decorators import check_blacklist
 from program.utils.inline import menu_markup, stream_markup
+
+from pyrogram import Client, filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import (
