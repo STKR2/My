@@ -1,4 +1,21 @@
-# Copyright (C) 2021 By Veez Music-Project
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
 
 import wget
 import yt_dlp
@@ -89,8 +106,6 @@ async def video_downloader(_, message):
     await message.delete()
     ydl_opts = {
         "format": "best",
-        "keepvideo": True,
-        "prefer-ffmpeg": False,
         "geo-bypass": True,
         "noprogress": True,
         "user-agent": "Mozilla/5.0 (Linux; Android 7.0; k960n_mt6580_32_n) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36",
@@ -144,17 +159,18 @@ async def get_lyric_genius(_, message: Message):
         return await message.reply_text("**usage:**\n\n/lyrics (song name)")
     m = await message.reply_text("🔍 Searching lyrics...")
     query = message.text.split(None, 1)[1]
-    x = "OXaVabSRKQLqwpiYOn-E4Y7k3wj-TNdL5RfDPXlnXhCErbcqVvdCF-WnMR5TBctI"
-    y = lyricsgenius.Genius(x)
-    y.verbose = False
-    S = y.search_song(query, get_full_info=False)
-    if S is None:
+    api = "OXaVabSRKQLqwpiYOn-E4Y7k3wj-TNdL5RfDPXlnXhCErbcqVvdCF-WnMR5TBctI"
+    data = lyricsgenius.Genius(api)
+    data.verbose = False
+    result = data.search_song(query, get_full_info=False)
+    if result is None:
         return await m.edit("❌ `404` lyrics not found")
     xxx = f"""
-**Song Name:** __{query}__
-**Artist Name:** {S.artist}
-**__Lyrics:__**
-{S.lyrics}"""
+**Title song:** {query}
+**Artist name:** {result.artist}
+**Lyrics:**
+
+{result.lyrics}"""
     if len(xxx) > 4096:
         await m.delete()
         filename = "lyrics.txt"
