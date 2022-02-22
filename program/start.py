@@ -1,3 +1,22 @@
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
+
 import asyncio
 
 from datetime import datetime
@@ -20,6 +39,7 @@ from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dbusers import add_served_user
 from driver.database.dblockchat import blacklisted_chats
+
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait
 from pytgcalls import (__version__ as pytover)
