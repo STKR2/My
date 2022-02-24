@@ -174,8 +174,21 @@ async def ungban_global(c: Client, message: Message):
             if not is_gbanned:
                 await message.reply_text("This user is not gbanned !")
             else:
-                await c.unban_chat_member(chat_id, user.id)
                 await remove_gban_user(user.id)
+                served_chats = []
+                chats = await get_served_chats()
+                for chat in chats:
+                    served_chats.append(int(chat["chat_id"]))
+                number_of_chats = 0
+                for num in served_chats:
+                    try:
+                        await c.unban_chat_member(num, user.id)
+                        number_of_chats += 1
+                        await asyncio.sleep(1)
+                    except FloodWait as e:
+                        await asyncio.sleep(int(e.x))
+                    except BaseException:
+                        pass
                 await message.reply_text("✅ This user has ungbanned")
         return
     from_user_id = message.from_user.id
@@ -195,6 +208,19 @@ async def ungban_global(c: Client, message: Message):
         if not is_gbanned:
             await message.reply_text("This user is not gbanned !")
         else:
-            await c.unban_chat_member(chat_id, user_id)
             await remove_gban_user(user_id)
-            await message.reply_text("✅ This user has ungbanned")
+            served_chats = []
+            chats = await get_served_chats()
+            for chat in chats:
+                served_chats.append(int(chat["chat_id"]))
+            number_of_chats = 0
+            for num in served_chats:
+                try:
+                    await c.unban_chat_member(num, user_id)
+                    number_of_chats += 1
+                    await asyncio.sleep(1)
+                except FloodWait as e:
+                    await asyncio.sleep(int(e.x))
+                except BaseException:
+                    pass
+                await message.reply_text("✅ This user has ungbanned")
