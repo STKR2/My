@@ -1,4 +1,20 @@
-""" global banned and un-global banned module """
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
 
 
 import asyncio
@@ -6,6 +22,7 @@ import asyncio
 from pyrogram import Client
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
+
 from driver.core import me_bot
 from driver.filters import command, other_filters
 from driver.decorators import bot_creator
@@ -157,9 +174,23 @@ async def ungban_global(c: Client, message: Message):
             if not is_gbanned:
                 await message.reply_text("This user is not gbanned !")
             else:
-                await c.unban_chat_member(chat_id, user.id)
+                msg = await message.reply_text("» ungbanning user...")
                 await remove_gban_user(user.id)
-                await message.reply_text("✅ This user has ungbanned")
+                served_chats = []
+                chats = await get_served_chats()
+                for chat in chats:
+                    served_chats.append(int(chat["chat_id"]))
+                number_of_chats = 0
+                for num in served_chats:
+                    try:
+                        await c.unban_chat_member(num, user.id)
+                        number_of_chats += 1
+                        await asyncio.sleep(1)
+                    except FloodWait as e:
+                        await asyncio.sleep(int(e.x))
+                    except BaseException:
+                        pass
+                await msg.edit_text("✅ This user has ungbanned")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
@@ -178,6 +209,20 @@ async def ungban_global(c: Client, message: Message):
         if not is_gbanned:
             await message.reply_text("This user is not gbanned !")
         else:
-            await c.unban_chat_member(chat_id, user_id)
+            msg = await message.reply_text("» ungbanning user...")
             await remove_gban_user(user_id)
-            await message.reply_text("✅ This user has ungbanned")
+            served_chats = []
+            chats = await get_served_chats()
+            for chat in chats:
+                served_chats.append(int(chat["chat_id"]))
+            number_of_chats = 0
+            for num in served_chats:
+                try:
+                    await c.unban_chat_member(num, user_id)
+                    number_of_chats += 1
+                    await asyncio.sleep(1)
+                except FloodWait as e:
+                    await asyncio.sleep(int(e.x))
+                except BaseException:
+                    pass
+                await msg.edit_text("✅ This user has ungbanned")

@@ -1,3 +1,22 @@
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
+
 import asyncio
 
 from datetime import datetime
@@ -20,6 +39,7 @@ from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
 from driver.database.dbusers import add_served_user
 from driver.database.dblockchat import blacklisted_chats
+
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait
 from pytgcalls import (__version__ as pytover)
@@ -59,10 +79,9 @@ async def _human_time_duration(seconds):
 )
 @check_blacklist()
 async def start_(c: Client, message: Message):
-    BOT_NAME = me_bot.first_name
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
-💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
+💭 [{me_bot.first_name}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
 
 💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
@@ -109,7 +128,6 @@ async def alive(c: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
-    BOT_NAME = me_bot.first_name
     
     keyboard = InlineKeyboardMarkup(
         [
@@ -122,7 +140,7 @@ async def alive(c: Client, message: Message):
         ]
     )
 
-    alive = f"**Hello {message.from_user.mention()}, i'm {BOT_NAME}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
+    alive = f"**Hello {message.from_user.mention()}, I'm {me_bot.first_name}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
 
     await c.send_photo(
         chat_id,
@@ -172,15 +190,13 @@ async def new_chat(c: Client, m: Message):
         pass
     else:
         await add_served_chat(chat_id)
-    ass_uname = me_user.username
-    bot_id = me_bot.id
     for member in m.new_chat_members:
         if chat_id in await blacklisted_chats():
             await m.reply(
                 "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
             )
             return await bot.leave_chat(chat_id)
-        if member.id == bot_id:
+        if member.id == me_bot.id:
             return await m.reply(
                 "❤️ Thanks for adding me to the **Group** !\n\n"
                 "Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.\n\n"
@@ -192,7 +208,7 @@ async def new_chat(c: Client, m: Message):
                             InlineKeyboardButton("💭 Support", url=f"https://t.me/{GROUP_SUPPORT}")
                         ],
                         [
-                            InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{ass_uname}")
+                            InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{me_user.username}")
                         ]
                     ]
                 )

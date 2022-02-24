@@ -1,12 +1,26 @@
-# Copyright (C) 2021 By Veez Music-Project
-# Commit Start Date 20/10/2021
-# Finished On 28/10/2021
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
 
 
 import re
 import asyncio
 import traceback
-# repository stuff
+
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
 from driver.decorators import require_admin, check_blacklist
 from program.utils.inline import stream_markup
@@ -17,12 +31,11 @@ from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, me_user
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 from driver.utils import remove_if_exists, from_tg_get_msg
-# pyrogram stuff
+
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
-# py-tgcalls stuff
-from pytgcalls import idle
+
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioVideoPiped
 from pytgcalls.types.input_stream.quality import (
@@ -31,7 +44,8 @@ from pytgcalls.types.input_stream.quality import (
     LowQualityVideo,
     MediumQualityVideo,
 )
-# youtube-dl stuff
+from pytgcalls.exceptions import NoVideoSourceFound, NoActiveGroupCall, GroupCallNotFound
+
 from youtubesearchpython import VideosSearch
 
 
@@ -138,6 +152,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             )
             remove_if_exists(image)
         else:
+         try:
             await loser.edit("🔄 Joining Group Call...")
             gcname = m.chat.title
             ctitle = await CHAT_TITLE(gcname)
@@ -173,8 +188,14 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                         f"⏱️ **Duration:** `{duration}`\n"
                         f"🧸 **Request by:** {requester}",
             )
-            await idle()
             remove_if_exists(image)
+         except (NoActiveGroupCall, GroupCallNotFound):
+            await suhu.delete()
+            await remove_active_chat(chat_id)
+            traceback.print_exc()
+            await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+         except BaseException as err:
+            print(err)
     else:
         await m.reply(
             "» reply to an **video file** or **give something to search.**"
@@ -196,18 +217,21 @@ async def vplay(c: Client, m: Message):
     try:
         ubot = me_user.id
         b = await c.get_chat_member(chat_id, ubot) 
-        if b.status == "kicked":
-            await c.unban_chat_member(chat_id, ubot)
+        if b.status == "banned":
+            await m.reply_text("❌ The userbot is banned in this chat, unban the userbot first to be able to play music !")
+            return
+        invitelink = (await c.get_chat(chat_id)).invite_link
+        if not invitelink:
+            await c.export_chat_invite_link(chat_id)
             invitelink = (await c.get_chat(chat_id)).invite_link
-            if not invitelink:
-                await c.export_chat_invite_link(chat_id)
-                invitelink = (await c.get_chat(chat_id)).invite_link
-            if invitelink.startswith("https://t.me/+"):
-                invitelink = invitelink.replace(
-                    "https://t.me/+", "https://t.me/joinchat/"
-                )
+        if invitelink.startswith("https://t.me/+"):
+            invitelink = invitelink.replace(
+                "https://t.me/+", "https://t.me/joinchat/"
+            )
             await user.join_chat(invitelink)
             await remove_active_chat(chat_id)
+    except UserAlreadyParticipant:
+        pass
     except UserNotParticipant:
         try:
             invitelink = (await c.get_chat(chat_id)).invite_link
@@ -294,12 +318,21 @@ async def vplay(c: Client, m: Message):
                                     reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
-                                await idle()
                                 remove_if_exists(image)
-                            except Exception as ep:
+                            except (NoActiveGroupCall, GroupCallNotFound):
                                 await loser.delete()
                                 await remove_active_chat(chat_id)
-                                await m.reply_text(f"🚫 error: `{ep}`")
+                                await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                            except NoVideoSourceFound:
+                                await suhu.delete()
+                                await remove_active_chat(chat_id)
+                                await m.reply_text("❌ The content you provide to play has no video source")
+                            except NoAudioSourceFound:
+                                await suhu.delete()
+                                await remove_active_chat(chat_id)
+                                await m.reply_text("❌ The content you provide to play has no audio source")
+                            except BaseException as err:
+                                print(err)
 
     else:
         if len(m.command) < 2:
@@ -370,12 +403,21 @@ async def vplay(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `video`\n⏱ **Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            await idle()
                             remove_if_exists(image)
-                        except Exception as ep:
+                        except (NoActiveGroupCall, GroupCallNotFound):
                             await loser.delete()
                             await remove_active_chat(chat_id)
-                            await m.reply_text(f"🚫 error: `{ep}`")
+                            await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                        except NoVideoSourceFound:
+                            await suhu.delete()
+                            await remove_active_chat(chat_id)
+                            await m.reply_text("❌ The content you provide to play has no video source")
+                        except NoAudioSourceFound:
+                            await suhu.delete()
+                            await remove_active_chat(chat_id)
+                            await m.reply_text("❌ The content you provide to play has no audio source")
+                        except BaseException as err:
+                            print(err)
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
@@ -392,16 +434,17 @@ async def vstream(c: Client, m: Message):
     try:
         ubot = me_user.id
         b = await c.get_chat_member(chat_id, ubot)
-        if b.status == "kicked":
-            await c.unban_chat_member(chat_id, ubot)
+        if b.status == "banned":
+            await m.reply_text("❌ The userbot is banned in this chat, unban the userbot first to be able to play music !")
+            return
+        invitelink = (await c.get_chat(chat_id)).invite_link
+        if not invitelink:
+            await c.export_chat_invite_link(chat_id)
             invitelink = (await c.get_chat(chat_id)).invite_link
-            if not invitelink:
-                await c.export_chat_invite_link(chat_id)
-                invitelink = (await c.get_chat(chat_id)).invite_link
-            if invitelink.startswith("https://t.me/+"):
-                invitelink = invitelink.replace(
-                    "https://t.me/+", "https://t.me/joinchat/"
-                )
+        if invitelink.startswith("https://t.me/+"):
+            invitelink = invitelink.replace(
+                "https://t.me/+", "https://t.me/joinchat/"
+            )
             await user.join_chat(invitelink)
             await remove_active_chat(chat_id)
     except UserNotParticipant:
@@ -503,8 +546,9 @@ async def vstream(c: Client, m: Message):
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
-                    await idle()
-                except Exception as ep:
+                except (NoActiveGroupCall, GroupCallNotFound):
                     await loser.delete()
                     await remove_active_chat(chat_id)
-                    await m.reply_text(f"🚫 error: `{ep}`")
+                    await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                except BaseException as err:
+                    print(err)
