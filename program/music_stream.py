@@ -27,6 +27,7 @@ from pytgcalls import idle
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio
+from pytgcalls.exceptions import NoAudioSourceFound, NoActiveGroupCall, GroupCallNotFound
 
 from driver.decorators import require_admin, check_blacklist
 from program.utils.inline import stream_markup
@@ -170,11 +171,11 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 )
                 await idle()
                 remove_if_exists(image)
-            except Exception as e:
+            except (NoActiveGroupCall, GroupCallNotFound):
                 await suhu.delete()
                 await remove_active_chat(chat_id)
                 traceback.print_exc()
-                await m.reply_text(f"🚫 error:\n\n» {e}")
+                await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
     else:
         await m.reply(
             "» reply to an **audio file** or **give something to search.**"
@@ -196,8 +197,10 @@ async def play(c: Client, m: Message):
     try:
         ubot = me_user.id
         b = await c.get_chat_member(chat_id, ubot)
-        if b.status == "kicked":
-            await c.unban_chat_member(chat_id, ubot)
+        if b.status == "banned":
+            try:
+                await m.reply_text("❌ The userbot is banned in this chat, unban the userbot first to be able to play music !")
+                return
             invitelink = (await c.get_chat(chat_id)).invite_link
             if not invitelink:
                 await c.export_chat_invite_link(chat_id)
@@ -295,10 +298,14 @@ async def play(c: Client, m: Message):
                                 )
                                 await idle()
                                 remove_if_exists(image)
-                            except Exception as ep:
+                            except (NoActiveGroupCall, GroupCallNotFound):
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
-                                await m.reply_text(f"🚫 error: `{ep}`")
+                                await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                            except NoAudioSourceFound:
+                                await suhu.delete()
+                                await remove_active_chat(chat_id)
+                                await m.reply_text("❌ The content you provide to play has no audio source")
 
     else:
         if len(m.command) < 2:
@@ -366,7 +373,11 @@ async def play(c: Client, m: Message):
                             )
                             await idle()
                             remove_if_exists(image)
-                        except Exception as ep:
+                        except (NoActiveGroupCall, GroupCallNotFound):
                             await suhu.delete()
                             await remove_active_chat(chat_id)
-                            await m.reply_text(f"🚫 error: `{ep}`")
+                            await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                        except NoAudioSourceFound:
+                            await suhu.delete()
+                            await remove_active_chat(chat_id)
+                            await m.reply_text("❌ The content you provide to play has no audio source.\n\n» Try to play another song or try again later !")
