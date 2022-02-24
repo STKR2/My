@@ -23,6 +23,7 @@ from config import BOT_USERNAME, SUDO_USERS
 
 from program.utils.function import get_calls
 
+from driver.queues import QUEUE
 from driver.core import user, me_bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
@@ -161,6 +162,11 @@ async def bot_kicked(c: Client, m: Message):
     chat_id = m.chat.id
     left_member = m.left_chat_member
     if left_member.id == bot_id:
-        await user.leave_chat(chat_id)
-        await remove_served_chat(chat_id)
-        await remove_active_chat(chat_id)
+        if chat_id in QUEUE:
+            await remove_active_chat(chat_id)
+            return
+        try:
+            await user.leave_chat(chat_id)
+            await remove_served_chat(chat_id)
+        except BaseException as err:
+            print(err)
