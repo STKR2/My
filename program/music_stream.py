@@ -23,7 +23,6 @@ from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
 
-from pytgcalls import idle
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import AudioPiped
 from pytgcalls.types.input_stream.quality import HighQualityAudio
@@ -55,7 +54,6 @@ def ytsearch(query: str):
     except Exception as e:
         print(e)
         return 0
-
 
 async def ytdl(link: str):
     stdout, stderr = await bash(
@@ -169,7 +167,6 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                             f"⏱️ **Duration:** `{duration}`\n"
                             f"🧸 **Request by:** {requester}",
                 )
-                await idle()
                 remove_if_exists(image)
             except (NoActiveGroupCall, GroupCallNotFound):
                 await suhu.delete()
@@ -296,7 +293,6 @@ async def play(c: Client, m: Message):
                                     reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
-                                await idle()
                                 remove_if_exists(image)
                             except (NoActiveGroupCall, GroupCallNotFound):
                                 await suhu.delete()
@@ -371,7 +367,6 @@ async def play(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            await idle()
                             remove_if_exists(image)
                         except (NoActiveGroupCall, GroupCallNotFound):
                             await suhu.delete()
