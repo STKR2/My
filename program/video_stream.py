@@ -190,7 +190,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             )
             remove_if_exists(image)
          except (NoActiveGroupCall, GroupCallNotFound):
-            await suhu.delete()
+            await loser.delete()
             await remove_active_chat(chat_id)
             traceback.print_exc()
             await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
@@ -324,11 +324,11 @@ async def vplay(c: Client, m: Message):
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
                             except NoVideoSourceFound:
-                                await suhu.delete()
+                                await loser.delete()
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The content you provide to play has no video source")
                             except NoAudioSourceFound:
-                                await suhu.delete()
+                                await loser.delete()
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The content you provide to play has no audio source")
                             except BaseException as err:
@@ -409,11 +409,11 @@ async def vplay(c: Client, m: Message):
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
                         except NoVideoSourceFound:
-                            await suhu.delete()
+                            await loser.delete()
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The content you provide to play has no video source")
                         except NoAudioSourceFound:
-                            await suhu.delete()
+                            await loser.delete()
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The content you provide to play has no audio source")
                         except BaseException as err:
