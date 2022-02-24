@@ -209,6 +209,8 @@ async def play(c: Client, m: Message):
             )
             await user.join_chat(invitelink)
             await remove_active_chat(chat_id)
+    except UserAlreadyParticipant:
+        pass
     except UserNotParticipant:
         try:
             invitelink = (await c.get_chat(chat_id)).invite_link
