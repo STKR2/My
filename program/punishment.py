@@ -174,6 +174,7 @@ async def ungban_global(c: Client, message: Message):
             if not is_gbanned:
                 await message.reply_text("This user is not gbanned !")
             else:
+                msg = await message.reply_text("» ungbanning user...")
                 await remove_gban_user(user.id)
                 served_chats = []
                 chats = await get_served_chats()
@@ -189,7 +190,7 @@ async def ungban_global(c: Client, message: Message):
                         await asyncio.sleep(int(e.x))
                     except BaseException:
                         pass
-                await message.reply_text("✅ This user has ungbanned")
+                await msg.edit_text("✅ This user has ungbanned")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
@@ -208,6 +209,7 @@ async def ungban_global(c: Client, message: Message):
         if not is_gbanned:
             await message.reply_text("This user is not gbanned !")
         else:
+            msg = await message.reply_text("» ungbanning user...")
             await remove_gban_user(user_id)
             served_chats = []
             chats = await get_served_chats()
@@ -223,4 +225,4 @@ async def ungban_global(c: Client, message: Message):
                     await asyncio.sleep(int(e.x))
                 except BaseException:
                     pass
-                await message.reply_text("✅ This user has ungbanned")
+                await msg.edit_text("✅ This user has ungbanned")
