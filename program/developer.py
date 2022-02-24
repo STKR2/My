@@ -28,6 +28,7 @@ from inspect import getfullargspec
 
 from config import BOT_USERNAME as bname
 from driver.core import bot
+from driver.queues import QUEUE
 from driver.filters import command
 from driver.database.dbchat import remove_served_chat
 from driver.decorators import bot_creator, sudo_users_only, errors
@@ -198,11 +199,14 @@ async def bot_leave_group(_, message):
         )
         return
     chat = message.text.split(None, 2)[1]
+    if chat in QUEUE:
+        await remove_active_chat(chat)
+        return
     try:
         await bot.leave_chat(chat)
+        await user.leave_chat(chat)
         await remove_served_chat(chat)
     except Exception as e:
         await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
-        print(e)
         return
     await message.reply_text(f"✅ Bot successfully left from the Group:\n\n💭 » `{chat}`")
