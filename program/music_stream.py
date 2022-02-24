@@ -173,6 +173,8 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 await remove_active_chat(chat_id)
                 traceback.print_exc()
                 await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+            except BaseException as err:
+                print(err)
     else:
         await m.reply(
             "» reply to an **audio file** or **give something to search.**"
@@ -301,6 +303,8 @@ async def play(c: Client, m: Message):
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The content you provide to play has no audio source")
+                            except BaseException as err:
+                                print(err)
 
     else:
         if len(m.command) < 2:
@@ -375,3 +379,5 @@ async def play(c: Client, m: Message):
                             await suhu.delete()
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The content you provide to play has no audio source.\n\n» Try to play another song or try again later !")
+                        except BaseException as err:
+                            print(err)
