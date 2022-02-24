@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/licenses.html
 """
 
 
-from driver.core import me_bot
+from driver.core import me_bot, me_user
 from driver.queues import QUEUE
 from driver.decorators import check_blacklist
 from program.utils.inline import menu_markup, stream_markup
@@ -38,11 +38,10 @@ from config import (
 @Client.on_callback_query(filters.regex("home_start"))
 @check_blacklist()
 async def start_set(_, query: CallbackQuery):
-    BOT_NAME = me_bot.first_name
     await query.answer("home start")
     await query.edit_message_text(
         f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
-💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
+💭 [{me_bot.first_name}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
 
 💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
 
@@ -103,7 +102,6 @@ async def quick_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("user_guide"))
 @check_blacklist()
 async def guide_set(_, query: CallbackQuery):
-    ass_uname = me_bot.first_name
     await query.answer("user guide")
     await query.edit_message_text(
         f"""❓ How to use this Bot ?, read the Guide below !
@@ -111,7 +109,7 @@ async def guide_set(_, query: CallbackQuery):
 1.) First, add this bot to your Group.
 2.) Then, promote this bot as administrator on the Group also give all permissions except Anonymous admin.
 3.) After promoting this bot, type /reload in Group to update the admin data.
-3.) Invite @{ass_uname} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
+3.) Invite @{me_user.username} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
 4.) Turn on/Start the video chat first before start to play video/music.
 
 `- END, EVERYTHING HAS BEEN SETUP -`
