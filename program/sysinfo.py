@@ -78,8 +78,7 @@ async def give_sysinfo(c: Client, message: Message):
 @Client.on_message(command(["logs", f"logs@{BOT_USERNAME}"]) & ~filters.edited)
 @sudo_users_only
 async def get_bot_logs(c: Client, m: Message):
-    id = me_bot.id
-    bot_log_path = f'streambot-logs-{id}.txt'
+    bot_log_path = f'streambot-logs-{me_bot.id}.txt'
     if os.path.exists(bot_log_path):
         try:
             await m.reply_document(
