@@ -6,10 +6,8 @@ import logging
 
 from driver.core import me_bot
 
-id = me_bot.id
-
 logging.basicConfig(
-  filename=f'streambot-logs-{id}.txt',
+  filename=f'streambot-logs-{me_bot.id}.txt',
   level=logging.INFO,
   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
