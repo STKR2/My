@@ -25,7 +25,11 @@ import psutil
 import platform
 
 from config import BOT_USERNAME
+
+from program import LOGS
+from driver.core import me_bot
 from driver.filters import command
+from driver.utils import remove_if_exists
 from driver.decorators import sudo_users_only, humanbytes
 
 from pyrogram import Client, filters
@@ -74,7 +78,8 @@ async def give_sysinfo(c: Client, message: Message):
 @Client.on_message(command(["logs", f"logs@{BOT_USERNAME}"]) & ~filters.edited)
 @sudo_users_only
 async def get_bot_logs(c: Client, m: Message):
-    bot_log_path = 'bot.logs'
+    id = me_bot.id
+    bot_log_path = f'streambot-logs-{id}.txt'
     if os.path.exists(bot_log_path):
         try:
             await m.reply_document(
@@ -82,7 +87,8 @@ async def get_bot_logs(c: Client, m: Message):
                 quote=True,
                 caption='📄 This is the bot logs',
             )
-        except BaseException:
-            os.remove(bot_log_path)
+            remove_if_exists(bot_log_path)
+        except BaseException as err:
+            LOGS.info(f'[ERROR]: {err}')
     if not os.path.exists(bot_log_path):
         await m.reply_text('❌ no logs found !')
