@@ -4,8 +4,12 @@ __version__ = "0.6.5"
 import time
 import logging
 
+from driver.core import me_bot
+
+id = me_bot.id
+
 logging.basicConfig(
-  filename='bot.logs',
+  filename=f'streambot-logs-{id}.txt',
   level=logging.INFO,
   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
