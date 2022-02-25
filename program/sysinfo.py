@@ -25,16 +25,16 @@ import psutil
 import platform
 
 from config import BOT_USERNAME
-
 from driver.filters import command
 from driver.decorators import sudo_users_only, humanbytes
 
 from pyrogram import Client, filters
+from pyrogram.types import Message
 
 
 @Client.on_message(command(["sysinfo", f"sysinfo@{BOT_USERNAME}"]) & ~filters.edited)
 @sudo_users_only
-async def give_sysinfo(client, message):
+async def give_sysinfo(c: Client, message: Message):
     splatform = platform.system()
     platform_release = platform.release()
     platform_version = platform.version()
