@@ -231,6 +231,7 @@ async def sudo_set(_, query: CallbackQuery):
 » /blocklist - show you the list of all blacklisted chat
 » /speedtest - run the bot server speedtest
 » /sysinfo - show the system information
+» /logs - generate the current bot logs
 » /eval - execute any code (`developer stuff`)
 » /sh - run any command (`developer stuff`)
 
