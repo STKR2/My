@@ -17,6 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/licenses.html
 """
 
 
+import os
 import re
 import uuid
 import socket
@@ -68,3 +69,20 @@ async def give_sysinfo(client, message):
 **DISK :** `{disk}`
     """
     await message.reply(somsg)
+
+
+@Client.on_message(command(["logs", f"logs@{BOT_USERNAME}"]) & ~filters.edited)
+@sudo_users_only
+async def get_bot_logs(c: Client, m: Message):
+    bot_log_path = 'bot.logs'
+    if os.path.exists(bot_log_path):
+        try:
+            await m.reply_document(
+                bot_log_path,
+                quote=True,
+                caption='📄 This is the bot logs',
+            )
+        except BaseException:
+            os.remove(bot_log_path)
+    if not os.path.exists(bot_log_path):
+        await m.reply_text('❌ no logs found !')
