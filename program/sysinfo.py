@@ -84,7 +84,7 @@ async def get_bot_logs(c: Client, m: Message):
             await m.reply_document(
                 bot_log_path,
                 quote=True,
-                caption='📄 This is the bot logs',
+                caption='📁 this is the bot logs',
             )
             remove_if_exists(bot_log_path)
         except BaseException as err:
