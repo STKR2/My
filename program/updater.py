@@ -1,3 +1,23 @@
+"""
+Video + Music Stream Telegram Bot
+Copyright (c) 2022-present levina=lab <https://github.com/levina-lab>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
+"""
+
+
+import os
 import sys
 
 from git import Repo
@@ -6,6 +26,8 @@ from git.exc import InvalidGitRepositoryError
 
 from pyrogram.types import Message
 from pyrogram import Client, filters
+
+from program import LOGS
 from config import UPSTREAM_REPO, BOT_USERNAME
 
 from driver.filters import command
@@ -68,8 +90,11 @@ async def update_bot(_, message: Message):
 @Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
 async def restart_bot(_, message: Message):
-    msg = await message.reply("❖ Restarting bot...")
-    args = [sys.executable, "main.py"]
-    await msg.edit("✅ Bot restarted !\n\n• wait until 1 minutes after bot Rebooted.")
-    execle(sys.executable, *args, environ)
-    return
+    try:
+        msg = await message.reply_text("❖ Restarting bot...")
+        LOGS.info("[INFO]: BOT SERVER RESTARTED !!")
+    except BaseException as err:
+        LOGS.info(f"[ERROR]: {err}")
+        return
+    await msg.edit_text("✅ Bot has restarted !\n\n» back active again in 5-10 seconds.")
+    os.system(f"kill -9 {os.getpid()} && python3 main.py")
