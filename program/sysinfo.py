@@ -38,7 +38,7 @@ from pyrogram.types import Message
 
 @Client.on_message(command(["sysinfo", f"sysinfo@{BOT_USERNAME}"]) & ~filters.edited)
 @sudo_users_only
-async def give_sysinfo(c: Client, message: Message):
+async def fetch_system_information(client, message):
     splatform = platform.system()
     platform_release = platform.release()
     platform_version = platform.version()
@@ -72,6 +72,7 @@ async def give_sysinfo(c: Client, message: Message):
 **CPU FREQ :** `{cpu_freq}`
 **DISK :** `{disk}`
     """
+    
     await message.reply(somsg)
 
 
