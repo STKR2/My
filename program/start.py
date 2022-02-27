@@ -32,7 +32,7 @@ from config import (
     UPDATES_CHANNEL,
 )
 from driver.decorators import check_blacklist
-from program import __version__
+from program import __version__, LOGS
 from driver.core import bot, me_bot, me_user
 from driver.filters import command
 from driver.database.dbchat import add_served_chat, is_served_chat
