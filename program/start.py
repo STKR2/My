@@ -197,30 +197,32 @@ async def new_chat(c: Client, m: Message):
     else:
         await add_served_chat(chat_id)
     for member in m.new_chat_members:
-        if member.id == me_bot.id:
-            try:
+        try:
+            if member.id == me_bot.id:
                 if chat_id in await blacklisted_chats():
                     await m.reply_text(
                         "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
                     )
                     return await bot.leave_chat(chat_id)
-        if member.id == me_bot.id:
-            return await m.reply(
-                "❤️ Thanks for adding me to the **Group** !\n\n"
-                "Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.\n\n"
-                "Once done, then type `/reload`",
-                reply_markup=InlineKeyboardMarkup(
-                    [
+            if member.id == me_bot.id:
+                return await m.reply(
+                    "❤️ Thanks for adding me to the **Group** !\n\n"
+                    "Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.\n\n"
+                    "Once done, then type `/reload`",
+                    reply_markup=InlineKeyboardMarkup(
                         [
-                            InlineKeyboardButton("📣 Channel", url=f"https://t.me/{UPDATES_CHANNEL}"),
-                            InlineKeyboardButton("💭 Support", url=f"https://t.me/{GROUP_SUPPORT}")
-                        ],
-                        [
-                            InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{me_user.username}")
+                            [
+                                InlineKeyboardButton("📣 Channel", url=f"https://t.me/{UPDATES_CHANNEL}"),
+                                InlineKeyboardButton("💭 Support", url=f"https://t.me/{GROUP_SUPPORT}")
+                            ],[
+                                InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{me_user.username}")
+                            ]
                         ]
-                    ]
+                    )
                 )
-            )
+            return
+        except BaseException:
+            return
 
 
 chat_watcher_group = 5
