@@ -37,11 +37,11 @@ from driver.core import bot, me_bot, me_user
 from driver.filters import command
 from driver.database.dbchat import add_served_chat, is_served_chat
 from driver.database.dbpunish import is_gbanned_user
-from driver.database.dbusers import add_served_user
+from driver.database.dbusers import add_served_user, is_served_user
 from driver.database.dblockchat import blacklisted_chats
 
 from pyrogram import Client, filters, __version__ as pyrover
-from pyrogram.errors import FloodWait
+from pyrogram.errors import FloodWait, ChatAdminRequired
 from pytgcalls import (__version__ as pytover)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
 
@@ -79,6 +79,12 @@ async def _human_time_duration(seconds):
 )
 @check_blacklist()
 async def start_(c: Client, message: Message):
+    user_id = message.from_user.id
+    if await is_served_user(user_id):
+        pass
+    else:
+        await add_served_user(user_id)
+        return
     await message.reply_text(
         f"""✨ **Welcome {message.from_user.mention()} !**\n
 💭 [{me_bot.first_name}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
@@ -215,23 +221,17 @@ async def new_chat(c: Client, m: Message):
             )
 
 
-chat_watcher_group = 10
+chat_watcher_group = 5
 
 @Client.on_message(group=chat_watcher_group)
 async def chat_watcher_func(_, message: Message):
-    if message.from_user:
-        user_id = message.from_user.id
-        await add_served_user(user_id)
-        return
-    try:
-        userid = message.from_user.id
-    except Exception:
-        return
+    userid = message.from_user.id
     suspect = f"[{message.from_user.first_name}](tg://user?id={message.from_user.id})"
     if await is_gbanned_user(userid):
         try:
             await message.chat.ban_member(userid)
-        except Exception:
+        except ChatAdminRequired:
+            LOGS.info(f"can't remove gbanned user from chat: {message.chat.id}")
             return
         await message.reply_text(
             f"👮🏼 (> {suspect} <)\n\n**Gbanned** user detected, that user has been gbanned by sudo user and was blocked from this Chat !\n\n🚫 **Reason:** potential spammer and abuser."
