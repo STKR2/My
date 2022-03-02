@@ -19,7 +19,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/licenses.html
 
 import re
 import asyncio
-import traceback
 
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
 from driver.decorators import require_admin, check_blacklist
@@ -59,7 +58,7 @@ def ytsearch(query: str):
         thumbnail = data["thumbnails"][0]["url"]
         return [songname, url, duration, thumbnail]
     except Exception as e:
-        print(e)
+        LOGS.info(f"[ERROR]: {e}")
         return 0
 
 
@@ -96,7 +95,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
         try:
             replied = await from_tg_get_msg(link)
         except Exception as e:
-            traceback.print_exc()
+            LOGS.info(f"[ERROR]: {e}")
             return await m.reply_text(f"🚫 error:\n\n» {e}")
     if not replied:
         return await m.reply(
@@ -192,10 +191,9 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
          except (NoActiveGroupCall, GroupCallNotFound):
             await loser.delete()
             await remove_active_chat(chat_id)
-            traceback.print_exc()
             await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-         except BaseException as err:
-            print(err)
+         except BaseException as e:
+            LOGS.info(f"[ERROR]: {e}")
     else:
         await m.reply(
             "» reply to an **video file** or **give something to search.**"
@@ -248,7 +246,7 @@ async def vplay(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
-            traceback.print_exc()
+            LOGS.info(f"[ERROR]: {e}")
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
@@ -332,8 +330,8 @@ async def vplay(c: Client, m: Message):
                                 await loser.delete()
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The content you provide to play has no audio source")
-                            except BaseException as err:
-                                print(err)
+                            except BaseException as e:
+                                LOGS.info(f"[ERROR]: {e}")
 
     else:
         if len(m.command) < 2:
@@ -417,8 +415,8 @@ async def vplay(c: Client, m: Message):
                             await loser.delete()
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The content you provide to play has no audio source")
-                        except BaseException as err:
-                            print(err)
+                        except BaseException as e:
+                            LOGS.info(f"[ERROR]: {e}")
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
@@ -436,20 +434,21 @@ async def vstream(c: Client, m: Message):
         ubot = me_user.id
         b = await c.get_chat_member(chat_id, ubot)
         if b.status == "banned":
-            await m.reply_text("❌ The userbot is banned in this chat, unban the userbot first to be able to play music !")
-            return
-        invitelink = (await c.get_chat(chat_id)).invite_link
-        if not invitelink:
-            await c.export_chat_invite_link(chat_id)
+            try:
+                await m.reply_text("❌ The userbot is banned in this chat, unban the userbot first to be able to play music !")
+                await remove_active_chat(chat_id)
+            except BaseException:
+                pass
             invitelink = (await c.get_chat(chat_id)).invite_link
-        if invitelink.startswith("https://t.me/+"):
-            invitelink = invitelink.replace(
-                "https://t.me/+", "https://t.me/joinchat/"
-            )
+            if not invitelink:
+                await c.export_chat_invite_link(chat_id)
+                invitelink = (await c.get_chat(chat_id)).invite_link
+            if invitelink.startswith("https://t.me/+"):
+                invitelink = invitelink.replace(
+                    "https://t.me/+", "https://t.me/joinchat/"
+                )
             await user.join_chat(invitelink)
             await remove_active_chat(chat_id)
-    except UserAlreadyParticipant:
-        pass
     except UserNotParticipant:
         try:
             invitelink = (await c.get_chat(chat_id)).invite_link
@@ -465,7 +464,7 @@ async def vstream(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
-            traceback.print_exc()
+            LOGS.info(f"[ERROR]: {e}")
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
@@ -492,7 +491,7 @@ async def vstream(c: Client, m: Message):
                 )
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
         else:
-            await m.reply(f"`/vstream` {url} (720/480/360)")
+            pass
 
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
         match = re.match(regex, url)
@@ -553,5 +552,5 @@ async def vstream(c: Client, m: Message):
                     await loser.delete()
                     await remove_active_chat(chat_id)
                     await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-                except BaseException as err:
-                    print(err)
+                except BaseException as e:
+                    LOGS.info(f"[ERROR]: {e}")
