@@ -468,7 +468,6 @@ async def vstream(c: Client, m: Message):
             return await m.reply_text(
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
-
     if len(m.command) < 2:
         await m.reply("» Give me a youtube live url/m3u8 url to stream.")
     else:
@@ -487,7 +486,7 @@ async def vstream(c: Client, m: Message):
             else:
                 Q = 720
                 await m.reply(
-                    "» Streaming the live video in 720p quality"
+                    "» started streaming the live video in 720p quality"
                 )
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
         else:
@@ -497,60 +496,117 @@ async def vstream(c: Client, m: Message):
         match = re.match(regex, url)
 
         if match:
-            veez, livelink = await ytdl(url)
+            api, livelink = await ytdl(url)
         else:
             livelink = url
-            veez = 1
+            api = 1
 
-        if veez == 0:
+        if api == 0:
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
         else:
-            songname = search[0]
-            if chat_id in QUEUE:
-                await loser.edit("🔄 Queueing Track...")
-                pos = add_to_queue(chat_id, songname, livelink, url, "video", Q)
-                await loser.delete()
-                requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                buttons = stream_markup(user_id)
-                await m.reply_photo(
-                    photo=f"{IMG_1}",
-                    reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
-                )
-            else:
-                if Q == 720:
-                    amaze = HighQualityVideo()
-                elif Q == 480:
-                    amaze = MediumQualityVideo()
-                elif Q == 360:
-                    amaze = LowQualityVideo()
-                try:
-                    await loser.edit("🔄 Joining Group Call...")
-                    await music_on(chat_id)
-                    await add_active_chat(chat_id)
-                    await calls.join_group_call(
-                        chat_id,
-                        AudioVideoPiped(
-                            livelink,
-                            HighQualityAudio(),
-                            amaze,
-                        ),
-                        stream_type=StreamType().live_stream,
-                    )
-                    add_to_queue(chat_id, songname, livelink, url, "video", Q)
+            search = ytsearch(url)
+            if "m3u8" in url:
+                if chat_id in QUEUE:
+                    await loser.edit("🔄 Queueing Track...")
+                    pos = add_to_queue(chat_id, "m3u8 video", livelink, url, "video", Q)
                     await loser.delete()
-                    requester = (
-                        f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                    )
+                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                     buttons = stream_markup(user_id)
                     await m.reply_photo(
-                        photo=f"{IMG_2}",
+                        photo=f"{IMG_1}",
                         reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                        caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [m3u8 video]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
-                except (NoActiveGroupCall, GroupCallNotFound):
+                else:
+                    if Q == 720:
+                        amaze = HighQualityVideo()
+                    elif Q == 480:
+                        amaze = MediumQualityVideo()
+                    elif Q == 360:
+                        amaze = LowQualityVideo
+                    try:
+                        await loser.edit("🔄 Joining Group Call...")
+                        await music_on(chat_id)
+                        await add_active_chat(chat_id)
+                        await calls.join_group_call(
+                            chat_id,
+                            AudioVideoPiped(
+                                livelink,
+                                HighQualityAudio(),
+                                amaze,
+                            ),
+                            stream_type=StreamType().live_stream,
+                        )
+                        add_to_queue(chat_id, "m3u8 video", livelink, url, "video", Q)
+                        await loser.delete()
+                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        buttons = stream_markup(user_id)
+                        await m.reply_photo(
+                            photo=f"{IMG_2}",
+                            reply_markup=InlineKeyboardMarkup(buttons),
+                            caption=f"🗂 **Name:** [m3u8 video]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                        )
+                    except (NoActiveGroupCall, GroupCallNotFound):
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                    except BaseException as e:
+                        LOGS.info(f"[ERROR]: {e}")
+            else:
+                title = search[0]
+                songname = search[0]
+                thumbnail = search[3]
+                userid = m.from_user.id
+                gcname = m.chat.title
+                ctitle = await CHAT_TITLE(gcname)
+                image = await thumb(thumbnail, title, userid, ctitle)
+                if chat_id in QUEUE:
+                    await loser.edit("🔄 Queueing Track...")
+                    pos = add_to_queue(chat_id, songname, livelink, url, "video", Q)
                     await loser.delete()
-                    await remove_active_chat(chat_id)
-                    await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-                except BaseException as e:
-                    LOGS.info(f"[ERROR]: {e}")
+                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    buttons = stream_markup(user_id)
+                    await m.reply_photo(
+                        photo=image,
+                        reply_markup=InlineKeyboardMarkup(buttons),
+                        caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                    )
+                    remove_if_exists(image)
+                else:
+                    if Q == 720:
+                        amaze = HighQualityVideo()
+                    elif Q == 480:
+                        amaze = MediumQualityVideo()
+                    elif Q == 360:
+                        amaze = LowQualityVideo()
+                    try:
+                        await loser.edit("🔄 Joining Group Call...")
+                        await music_on(chat_id)
+                        await add_active_chat(chat_id)
+                        await calls.join_group_call(
+                            chat_id,
+                            AudioVideoPiped(
+                                livelink,
+                                HighQualityAudio(),
+                                amaze,
+                            ),
+                            stream_type=StreamType().live_stream,
+                        )
+                        add_to_queue(chat_id, songname, livelink, url, "video", Q)
+                        await loser.delete()
+                        requester = (
+                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        )
+                        buttons = stream_markup(user_id)
+                        await m.reply_photo(
+                            photo=image,
+                            reply_markup=InlineKeyboardMarkup(buttons),
+                            caption=f"🗂 **Name:** [{songname}]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                        )
+                        remove_if_exists(image)
+                    except (NoActiveGroupCall, GroupCallNotFound):
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+                    except BaseException as e:
+                        LOGS.info(f"[ERROR]: {e}")
