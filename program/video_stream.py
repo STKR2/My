@@ -44,7 +44,12 @@ from pytgcalls.types.input_stream.quality import (
     LowQualityVideo,
     MediumQualityVideo,
 )
-from pytgcalls.exceptions import NoVideoSourceFound, NoActiveGroupCall, GroupCallNotFound
+from pytgcalls.exceptions import (
+    NoAudioSourceFound,
+    NoVideoSourceFound,
+    NoActiveGroupCall,
+    GroupCallNotFound,
+)
 from youtubesearchpython import VideosSearch
 
 
@@ -550,8 +555,14 @@ async def vstream(c: Client, m: Message):
                         await loser.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-                    except BaseException as e:
-                        LOGS.info(f"[ERROR]: {e}")
+                    except NoVideoSourceFound:
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The content you provide to play has no video source")
+                    except NoAudioSourceFound:
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The content you provide to play has no audio source")
             else:
                 title = search[0]
                 songname = search[0]
@@ -608,5 +619,11 @@ async def vstream(c: Client, m: Message):
                         await loser.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-                    except BaseException as e:
-                        LOGS.info(f"[ERROR]: {e}")
+                    except NoVideoSourceFound:
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The content you provide to play has no video source")
+                    except NoAudioSourceFound:
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("❌ The content you provide to play has no audio source")
