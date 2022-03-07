@@ -166,6 +166,7 @@ async def user_set(_, query: CallbackQuery):
         f"""✏️ Command list for all user.
 
 » /play (song name/link) - play music on video chat
+» /stream (m3u8/yt live link) - play live stream music
 » /vplay (video name/link) - play video on video chat
 » /vstream (m3u8/yt live link) - play live stream video
 » /playlist - see the current playing song
