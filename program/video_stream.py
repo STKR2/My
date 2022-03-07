@@ -21,16 +21,17 @@ import re
 import asyncio
 
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
-from driver.decorators import require_admin, check_blacklist
-from program.utils.inline import stream_markup
+
 from program import LOGS
+from program.utils.inline import stream_markup
 from driver.design.thumbnail import thumb
 from driver.design.chatname import CHAT_TITLE
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.core import calls, user, me_user
-from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 from driver.utils import remove_if_exists, from_tg_get_msg
+from driver.decorators import require_admin, check_blacklist
+from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -63,9 +64,8 @@ def ytsearch(query: str):
         thumbnail = data["thumbnails"][0]["url"]
         return [songname, url, duration, thumbnail]
     except Exception as e:
-        LOGS.info(f"[ERROR]: {e}")
+        print(e)
         return 0
-
 
 async def ytdl(link):
     proc = await asyncio.create_subprocess_exec(
@@ -73,7 +73,7 @@ async def ytdl(link):
         "--geo-bypass",
         "-g",
         "-f",
-        "best[height<=?720][width<=?1280]/best",
+        "[height<=?720][width<=?1280]",
         f"{link}",
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
@@ -83,7 +83,6 @@ async def ytdl(link):
         return 1, stdout.decode().split("\n")[0]
     else:
         return 0, stderr.decode()
-
 
 def convert_seconds(seconds):
     seconds = seconds % (24 * 3600)
@@ -208,7 +207,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
 @Client.on_message(command(["vplay", f"vplay@{BOT_USERNAME}"]) & other_filters)
 @check_blacklist()
 @require_admin(permissions=["can_manage_voice_chats", "can_delete_messages", "can_invite_users"], self=True)
-async def vplay(c: Client, m: Message):
+async def video_stream(c: Client, m: Message):
     await m.delete()
     replied = m.reply_to_message
     chat_id = m.chat.id
@@ -264,13 +263,13 @@ async def vplay(c: Client, m: Message):
                     "» reply to an **video file** or **give something to search.**"
                 )
             else:
+                Q = 720
                 loser = await c.send_message(chat_id, "🔍 **Loading...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
-                Q = 720
                 amaze = HighQualityVideo()
                 if search == 0:
-                    await loser.edit("❌ **no results found.**")
+                    await loser.edit("❌ **no results found**")
                 else:
                     songname = search[0]
                     title = search[0]
@@ -281,15 +280,13 @@ async def vplay(c: Client, m: Message):
                     gcname = m.chat.title
                     ctitle = await CHAT_TITLE(gcname)
                     image = await thumb(thumbnail, title, userid, ctitle)
-                    veez, ytlink = await ytdl(url)
-                    if veez == 0:
+                    data, ytlink = await ytdl(url)
+                    if data == 0:
                         await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
                             await loser.edit("🔄 Queueing Track...")
-                            pos = add_to_queue(
-                                chat_id, songname, ytlink, url, "video", Q
-                            )
+                            pos = add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                             await loser.delete()
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             buttons = stream_markup(user_id)
@@ -335,27 +332,23 @@ async def vplay(c: Client, m: Message):
                                 await loser.delete()
                                 await remove_active_chat(chat_id)
                                 await m.reply_text("❌ The content you provide to play has no audio source")
-                            except BaseException as e:
-                                LOGS.info(f"[ERROR]: {e}")
 
     else:
         if len(m.command) < 2:
-            await m.reply(
-                "» reply to an **video file** or **give something to search.**"
-            )
+            await m.reply_text("» reply to an **video file** or **give something to search.**")
         elif "t.me" in m.command[1]:
             for i in m.command[1:]:
                 if "t.me" in i:
                     await play_tg_file(c, m, link=i)
                 continue
         else:
+            Q = 720
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
-            Q = 720
             amaze = HighQualityVideo()
             if search == 0:
-                await loser.edit("❌ **no results found.**")
+                await loser.edit("❌ **no results found**")
             else:
                 songname = search[0]
                 title = search[0]
@@ -366,17 +359,15 @@ async def vplay(c: Client, m: Message):
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
                 image = await thumb(thumbnail, title, userid, ctitle)
-                veez, ytlink = await ytdl(url)
-                if veez == 0:
+                data, ytlink = await ytdl(url)
+                if data == 0:
                     await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         await loser.edit("🔄 Queueing Track...")
                         pos = add_to_queue(chat_id, songname, ytlink, url, "video", Q)
                         await loser.delete()
-                        requester = (
-                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        )
+                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                         buttons = stream_markup(user_id)
                         await m.reply_photo(
                             photo=image,
@@ -420,14 +411,12 @@ async def vplay(c: Client, m: Message):
                             await loser.delete()
                             await remove_active_chat(chat_id)
                             await m.reply_text("❌ The content you provide to play has no audio source")
-                        except BaseException as e:
-                            LOGS.info(f"[ERROR]: {e}")
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
 @check_blacklist()
 @require_admin(permissions=["can_manage_voice_chats", "can_delete_messages", "can_invite_users"], self=True)
-async def vstream(c: Client, m: Message):
+async def live_video_stream(c: Client, m: Message):
     await m.delete()
     chat_id = m.chat.id
     user_id = m.from_user.id
@@ -490,7 +479,7 @@ async def vstream(c: Client, m: Message):
                 Q = int(quality)
             else:
                 Q = 720
-                await m.reply(
+                await m.reply_text(
                     "» started streaming the live video in 720p quality"
                 )
             loser = await c.send_message(chat_id, "🔍 **Loading...**")
@@ -499,17 +488,15 @@ async def vstream(c: Client, m: Message):
 
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
         match = re.match(regex, url)
-
         if match:
-            api, livelink = await ytdl(url)
+            coda, livelink = await ytdl(url)
         else:
             livelink = url
-            api = 1
-
-        if api == 0:
+            coda = 1
+        if coda == 0:
             await loser.edit(f"❌ yt-dl issues detected\n\n» `{livelink}`")
+
         else:
-            search = ytsearch(url)
             if "m3u8" in url:
                 if chat_id in QUEUE:
                     await loser.edit("🔄 Queueing Track...")
@@ -520,7 +507,7 @@ async def vstream(c: Client, m: Message):
                     await m.reply_photo(
                         photo=f"{IMG_1}",
                         reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [m3u8 video]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                        caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [m3u8 video stream]({url}) | `live`\n🧸 **Requested by:** {requester}",
                     )
                 else:
                     if Q == 720:
@@ -549,7 +536,7 @@ async def vstream(c: Client, m: Message):
                         await m.reply_photo(
                             photo=f"{IMG_2}",
                             reply_markup=InlineKeyboardMarkup(buttons),
-                            caption=f"🗂 **Name:** [m3u8 video]({url}) | `live`\n🧸 **Requested by:** {requester}",
+                            caption=f"🗂 **Name:** [m3u8 video stream]({url}) | `live`\n🧸 **Requested by:** {requester}",
                         )
                     except (NoActiveGroupCall, GroupCallNotFound):
                         await loser.delete()
@@ -564,6 +551,7 @@ async def vstream(c: Client, m: Message):
                         await remove_active_chat(chat_id)
                         await m.reply_text("❌ The content you provide to play has no audio source")
             else:
+                search = ytsearch(url)
                 title = search[0]
                 songname = search[0]
                 thumbnail = search[3]
@@ -605,9 +593,7 @@ async def vstream(c: Client, m: Message):
                         )
                         add_to_queue(chat_id, songname, livelink, url, "video", Q)
                         await loser.delete()
-                        requester = (
-                            f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        )
+                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                         buttons = stream_markup(user_id)
                         await m.reply_photo(
                             photo=image,
