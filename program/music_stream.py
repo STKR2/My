@@ -430,7 +430,7 @@ async def live_music_stream(c: Client, m: Message):
                 f"❌ **userbot failed to join**\n\n**reason**: `{e}`"
             )
     if len(m.command) < 2:
-        await m.reply_text("» Give me a youtube live url/m3u8 url/m3u url to stream.")
+        await m.reply_text("» Give me a youtube live url/m3u8 url to stream.")
     else:
         url = m.text.split(None, 1)[1]
         msg = await m.reply_text("🔍 **Loading...**")
