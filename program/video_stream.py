@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/licenses.html
 import re
 import asyncio
 
+from asyncio.exceptions import TimeoutError
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
 
 from program import LOGS
@@ -122,7 +123,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                 Q = int(pq)
             else:
                 await loser.edit(
-                    "Streaming the local video in 720p quality"
+                    "start streaming the local video in 720p quality"
                 )
         try:
             if replied.video:
@@ -155,51 +156,51 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             )
             remove_if_exists(image)
         else:
-         try:
-            await loser.edit("🔄 Joining Group Call...")
-            gcname = m.chat.title
-            ctitle = await CHAT_TITLE(gcname)
-            title = songname
-            userid = m.from_user.id
-            thumbnail = f"{IMG_5}"
-            image = await thumb(thumbnail, title, userid, ctitle)
-            if Q == 720:
-                amaze = HighQualityVideo()
-            elif Q == 480:
-                amaze = MediumQualityVideo()
-            elif Q == 360:
-                amaze = LowQualityVideo()
-            await music_on(chat_id)
-            await add_active_chat(chat_id)
-            await calls.join_group_call(
-                chat_id,
-                AudioVideoPiped(
-                    dl,
-                    HighQualityAudio(),
-                    amaze,
-                ),
-                stream_type=StreamType().pulse_stream,
-            )
-            add_to_queue(chat_id, songname, dl, link, "video", Q)
-            await loser.delete()
-            requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-            buttons = stream_markup(user_id)
-            await m.reply_photo(
-                photo=image,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n"
-                        f"⏱️ **Duration:** `{duration}`\n"
-                        f"🧸 **Request by:** {requester}",
-            )
-            remove_if_exists(image)
-         except (NoActiveGroupCall, GroupCallNotFound):
-            await loser.delete()
-            await remove_active_chat(chat_id)
-            await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
-         except BaseException as e:
-            LOGS.info(f"[ERROR]: {e}")
+            try:
+                await loser.edit("🔄 Joining Group Call...")
+                gcname = m.chat.title
+                ctitle = await CHAT_TITLE(gcname)
+                title = songname
+                userid = m.from_user.id
+                thumbnail = f"{IMG_5}"
+                image = await thumb(thumbnail, title, userid, ctitle)
+                if Q == 720:
+                    amaze = HighQualityVideo()
+                elif Q == 480:
+                    amaze = MediumQualityVideo()
+                elif Q == 360:
+                    amaze = LowQualityVideo()
+                await music_on(chat_id)
+                await add_active_chat(chat_id)
+                await calls.join_group_call(
+                    chat_id,
+                    AudioVideoPiped(
+                        dl,
+                        HighQualityAudio(),
+                        amaze,
+                    ),
+                    stream_type=StreamType().pulse_stream,
+                )
+                add_to_queue(chat_id, songname, dl, link, "video", Q)
+                await loser.delete()
+                requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                buttons = stream_markup(user_id)
+                await m.reply_photo(
+                    photo=image,
+                    reply_markup=InlineKeyboardMarkup(buttons),
+                    caption=f"🗂 **Name:** [{songname}]({link}) | `video`\n"
+                            f"⏱️ **Duration:** `{duration}`\n"
+                            f"🧸 **Request by:** {requester}",
+                )
+                remove_if_exists(image)
+            except (NoActiveGroupCall, GroupCallNotFound):
+                await loser.delete()
+                await remove_active_chat(chat_id)
+                await m.reply_text("❌ The bot can't find the Group call or it's inactive.\n\n» Use /startvc command to turn on the Group call !")
+            except Exception as e:
+                LOGS.info(f"[ERROR]: {e}")
     else:
-        await m.reply(
+        await m.reply_text(
             "» reply to an **video file** or **give something to search.**"
         )
 
@@ -613,3 +614,7 @@ async def live_video_stream(c: Client, m: Message):
                         await loser.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("❌ The content you provide to play has no audio source")
+                    except TimeoutError:
+                        await loser.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("The process was cancelled, please try again later or use `/stream` command to stream in audio only.")
