@@ -18,6 +18,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/licenses.html
 
 
 import re
+import asyncio
 
 from pyrogram import Client
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
@@ -40,6 +41,7 @@ from driver.database.dbqueue import add_active_chat, remove_active_chat, music_o
 from driver.decorators import require_admin, check_blacklist
 
 from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
+from asyncio.exceptions import TimeoutError
 from youtubesearchpython import VideosSearch
 
 
@@ -175,7 +177,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             except Exception as e:
                 LOGS.info(e)
     else:
-        await m.reply(
+        await m.reply_text(
             "» reply to an **audio file** or **give something to search.**"
         )
 
@@ -538,3 +540,7 @@ async def live_music_stream(c: Client, m: Message):
                         await msg.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("❌ The content you provide to play has no audio source")
+                    except TimeoutError:
+                        await msg.delete()
+                        await remove_active_chat(chat_id)
+                        await m.reply_text("The process was cancelled, please try again later or use `/vstream` command to stream in audio only.")
