@@ -2,6 +2,7 @@ import asyncio
 
 from program import LOGS
 from pytgcalls import idle
+from config import BOT_USERNAME as cli
 from driver.core import calls, bot, user
 
 
@@ -12,6 +13,7 @@ async def start_bot():
     LOGS.info("[INFO]: PY-TGCALLS CLIENT STARTED !!")
     await user.join_chat("VeezSupportGroup")
     await user.join_chat("levinachannel")
+    await user.send_message(f"{cli}", "/start")
     await idle()
     LOGS.info("[INFO]: BOT & USERBOT STOPPED !!")
     await bot.stop()
