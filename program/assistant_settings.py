@@ -21,6 +21,7 @@ import asyncio
 
 from config import BOT_USERNAME, SUDO_USERS
 
+from program import LOGS
 from program.utils.function import get_calls
 
 from driver.queues import QUEUE
@@ -141,19 +142,24 @@ async def start_group_call(c: Client, m: Message):
 async def stop_group_call(c: Client, m: Message):
     chat_id = m.chat.id
     msg = await c.send_message(chat_id, "`stopping...`")
-    if not (
-        group_call := (
-            await get_calls(m, err_msg="group call not active")
+    try:
+        if not (
+            group_call := (
+                await get_calls(m, err_msg="group call not active")
+            )
+        ):
+            await msg.edit_text("❌ The group call already ended")
+            return
+        await user.send(
+            DiscardGroupCall(
+                call=group_call
+            )
         )
-    ):
-        await msg.edit_text("❌ The group call already ended")
-        return
-    await user.send(
-        DiscardGroupCall(
-            call=group_call
+        await msg.edit_text("✅ Group call has ended !")
+    except ChatAdminRequired:
+        await msg.edit_text(
+            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
         )
-    )
-    await msg.edit_text("✅ Group call has ended !")
 
 
 @Client.on_message(filters.left_chat_member)
@@ -168,5 +174,5 @@ async def bot_kicked(c: Client, m: Message):
         try:
             await user.leave_chat(chat_id)
             await remove_served_chat(chat_id)
-        except BaseException as err:
-            print(err)
+        except Exception as e:
+            LOGS.info(e)
