@@ -56,9 +56,9 @@ async def join_chat(c: Client, m: Message):
             )
         await user.join_chat(invitelink)
         await remove_active_chat(chat_id)
-        return await user.send_message(chat_id, "✅ userbot joined chat")
+        return await user.send_message(chat_id, "✅ userbot joined this chat")
     except UserAlreadyParticipant:
-        return await user.send_message(chat_id, "✅ userbot already in chat")
+        return await user.send_message(chat_id, "✅ userbot already in this chat")
 
 
 @Client.on_message(
@@ -66,49 +66,45 @@ async def join_chat(c: Client, m: Message):
 )
 @check_blacklist()
 @authorized_users_only
-async def leave_chat(_, m: Message):
+async def leave_chat(c :Client, m: Message):
     chat_id = m.chat.id
     try:
-        await user.leave_chat(chat_id)
-        await remove_active_chat(chat_id)
-        return await _.send_message(
-            chat_id,
-            "✅ userbot leaved chat",
-        )
+        if chat_id in QUEUE:
+            await remove_active_chat(chat_id)
+            await user.leave_chat(chat_id)
+            return await c.send_message(chat_id, "✅ userbot has left from chat")
+        else:
+            await user.leave_chat(chat_id)
+            return await c.send_message(chat_id, "✅ userbot has left from chat")
     except UserNotParticipant:
-        return await _.send_message(
-            chat_id,
-            "❌ userbot already leave chat",
-        )
+        return await c.send_message(chat_id, "❌ userbot already leave chat")
 
 
 @Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
-async def leave_all(client, message):
+async def leave_all(c: Client, message: Message):
     if message.from_user.id not in SUDO_USERS:
         return
-
-    left = 0
-    failed = 0
-    
-    msg = await message.reply("🔄 Userbot leaving all Group !")
+    run_1 = 0
+    run_2 = 0
+    msg = await message.reply("🔄 Userbot started leaving all groups")
     async for dialog in user.iter_dialogs():
         try:
             await user.leave_chat(dialog.chat.id)
             await remove_active_chat(dialog.chat.id)
-            left += 1
+            run_1 += 1
             await msg.edit(
-                f"Userbot leaving all Group...\n\nLeft: {left} chats.\nFailed: {failed} chats."
+                f"Userbot leaving...\n\nLeft from: {run_1} chats.\nFailed in: {run_2} chats."
             )
-        except BaseException:
-            failed += 1
+        except Exception:
+            run_2 += 1
             await msg.edit(
-                f"Userbot leaving...\n\nLeft: {left} chats.\nFailed: {failed} chats."
+                f"Userbot leaving...\n\nLeft from: {run_1} chats.\nFailed in: {run_2} chats."
             )
         await asyncio.sleep(0.7)
     await msg.delete()
     await client.send_message(
-        message.chat.id, f"✅ Left from: {left} chats.\n❌ Failed in: {failed} chats."
+        message.chat.id, f"✅ Left from: {run_2} chats.\n❌ Failed in: {run_2} chats."
     )
 
 
@@ -156,10 +152,11 @@ async def stop_group_call(c: Client, m: Message):
             )
         )
         await msg.edit_text("✅ Group call has ended !")
-    except ChatAdminRequired:
-        await msg.edit_text(
-            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
-        )
+    except Exception as e:
+        if "GROUPCALL_FORBIDDEN" in str(e):
+            await msg.edit_text(
+                "The userbot is not admin in this chat. To stop the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
+            )
 
 
 @Client.on_message(filters.left_chat_member)
