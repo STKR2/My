@@ -24,7 +24,6 @@ from program.utils.inline import menu_markup, stream_markup
 
 from pyrogram import Client, filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
-
 from config import (
     BOT_USERNAME,
     GROUP_SUPPORT,
@@ -40,37 +39,27 @@ from config import (
 async def start_set(_, query: CallbackQuery):
     await query.answer("home start")
     await query.edit_message_text(
-        f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
-💭 [{me_bot.first_name}](https://t.me/{me_bot.username}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
+        f"""Hi [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) 👋🏻\n
+💭 [{me_bot.first_name}](https://t.me/{me_bot.username}) is a bot to play music and video in groups, through the new Telegram video chats.
 
-💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
+🕵🏻 Check out all the **Bot's commands** and how they work by clicking on the » 📚 **Commands** button!
 
-🔖 **To know how to use this bot, please click on the » ❓ Basic Guide button!**""",
+🧑🏻‍💻 To know how to use this bot, please click on the » ❓ **Basic Guide** button!
+""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(
-                        "➕ Add me to your Group ➕",
-                        url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
-                    )
-                ],
-                [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
-                [
+                    InlineKeyboardButton("➕ Add me to a Group ➕", url=f"https://t.me/{me_bot.username}?startgroup=true")
+                ],[
+                    InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")
+                ],[
                     InlineKeyboardButton("📚 Commands", callback_data="command_list"),
-                    InlineKeyboardButton("❤ Donate", url=f"https://t.me/{OWNER_USERNAME}"),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "👥 Official Group", url=f"https://t.me/{GROUP_SUPPORT}"
-                    ),
-                    InlineKeyboardButton(
-                        "📣 Official Channel", url=f"https://t.me/{UPDATES_CHANNEL}"
-                    ),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "🌐 Source Code", url="https://github.com/levina-lab/video-stream"
-                    )
+                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}")
+                ],[
+                    InlineKeyboardButton("👥 Support Group", url=f"https://t.me/{GROUP_SUPPORT}"),
+                    InlineKeyboardButton("📣 Support Channel", url=f"https://t.me/{UPDATES_CHANNEL}")
+                ],[
+                    InlineKeyboardButton("🌐 Source Code", url="https://github.com/levina-lab/video-stream")
                 ],
             ]
         ),

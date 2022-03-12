@@ -31,18 +31,20 @@ from config import (
     OWNER_USERNAME,
     UPDATES_CHANNEL,
 )
-from driver.decorators import check_blacklist
+
 from program import __version__, LOGS
-from driver.core import bot, me_bot, me_user
+from pytgcalls import (__version__ as pytover)
+
 from driver.filters import command
+from driver.core import bot, me_bot, me_user
+from driver.database.dbusers import add_served_user
 from driver.database.dbchat import add_served_chat, is_served_chat
-from driver.database.dbpunish import is_gbanned_user
-from driver.database.dbusers import add_served_user, is_served_user
 from driver.database.dblockchat import blacklisted_chats
+from driver.database.dbpunish import is_gbanned_user
+from driver.decorators import check_blacklist
 
 from pyrogram import Client, filters, __version__ as pyrover
 from pyrogram.errors import FloodWait, ChatAdminRequired
-from pytgcalls import (__version__ as pytover)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, ChatJoinRequest
 
 __major__ = 0
@@ -80,44 +82,29 @@ async def _human_time_duration(seconds):
 @check_blacklist()
 async def start_(c: Client, message: Message):
     user_id = message.from_user.id
-    if await is_served_user(user_id):
-        pass
-    else:
-        await add_served_user(user_id)
-        return
+    await add_served_user(user_id)
     await message.reply_text(
-        f"""✨ **Welcome {message.from_user.mention()} !**\n
-💭 [{me_bot.first_name}](https://t.me/{BOT_USERNAME}) **Is a bot to play music and video in groups, through the Telegram Group video chat!**
+        f"""Hi {message.from_user.mention()} 👋🏻\n
+💭 [{me_bot.first_name}](https://t.me/{me_bot.username}) is a bot to play music and video in groups, through the new Telegram video chats.
 
-💡 **Find out all the Bot's commands and how they work by clicking on the » 📚 Commands button!**
+🕵🏻 Check out all the **Bot's commands** and how they work by clicking on the » 📚 **Commands** button!
 
-🔖 **To know how to use this bot, please click on the » ❓ Basic Guide button!**
+🧑🏻‍💻 To know how to use this bot, please click on the » ❓ **Basic Guide** button!
 """,
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(
-                        "➕ Add me to your Group ➕",
-                        url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
-                    )
-                ],
-                [InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")],
-                [
+                    InlineKeyboardButton("➕ Add me to a Group ➕", url=f"https://t.me/{me_bot.username}?startgroup=true")
+                ],[
+                    InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")
+                ],[
                     InlineKeyboardButton("📚 Commands", callback_data="command_list"),
-                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}"),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "👥 Official Group", url=f"https://t.me/{GROUP_SUPPORT}"
-                    ),
-                    InlineKeyboardButton(
-                        "📣 Official Channel", url=f"https://t.me/{UPDATES_CHANNEL}"
-                    ),
-                ],
-                [
-                    InlineKeyboardButton(
-                        "🌐 Source Code", url="https://github.com/levina-lab/video-stream"
-                    )
+                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}")
+                ],[
+                    InlineKeyboardButton("👥 Support Group", url=f"https://t.me/{GROUP_SUPPORT}"),
+                    InlineKeyboardButton("📣 Support Channel", url=f"https://t.me/{UPDATES_CHANNEL}")
+                ],[
+                    InlineKeyboardButton("🌐 Source Code", url="https://github.com/levina-lab/video-stream")
                 ],
             ]
         ),
@@ -134,8 +121,7 @@ async def alive(c: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
-    
-    keyboard = InlineKeyboardMarkup(
+    buttons = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton("✨ Group", url=f"https://t.me/{GROUP_SUPPORT}"),
@@ -145,14 +131,12 @@ async def alive(c: Client, message: Message):
             ]
         ]
     )
-
-    alive = f"**Hello {message.from_user.mention()}, I'm {me_bot.first_name}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
-
+    text = f"**Hello {message.from_user.mention()}, I'm {me_bot.first_name}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
     await c.send_photo(
         chat_id,
         photo=f"{ALIVE_IMG}",
-        caption=alive,
-        reply_markup=keyboard,
+        caption=text,
+        reply_markup=buttons,
     )
 
 
@@ -162,7 +146,7 @@ async def ping_pong(c: Client, message: Message):
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
-    await m_reply.edit_text("🏓 `PONG!!`\n" f"⚡️ `{delta_ping * 1000:.3f} ms`")
+    await m_reply.edit_text("🏓 PONG !\n" f"⏱ `{delta_ping * 1000:.3f} ms`")
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
@@ -172,7 +156,6 @@ async def get_uptime(c: Client, message: Message):
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
     await message.reply_text(
-        "🤖 bot status:\n"
         f"• **uptime:** `{uptime}`\n"
         f"• **start time:** `{START_TIME_ISO}`"
     )
@@ -221,7 +204,7 @@ async def new_chat(c: Client, m: Message):
                     )
                 )
             return
-        except BaseException:
+        except Exception:
             return
 
 
