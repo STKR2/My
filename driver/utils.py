@@ -1,5 +1,5 @@
-import asyncio
 import os
+import asyncio
 
 from driver.core import bot, calls, user
 from driver.database.dbqueue import remove_active_chat
@@ -10,9 +10,7 @@ from driver.queues import (
     pop_an_item,
     clean_trash,
 )
-
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.types.input_stream.quality import (
     HighQualityAudio,
@@ -20,7 +18,8 @@ from pytgcalls.types.input_stream.quality import (
     LowQualityVideo,
     MediumQualityVideo,
 )
-from pytgcalls.types.stream import StreamAudioEnded
+from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
+from pytgcalls.types import Update
 
 
 keyboard = InlineKeyboardMarkup(
@@ -49,7 +48,7 @@ async def skip_current_song(chat_id):
                 url = chat_queue[1][1]
                 link = chat_queue[1][2]
                 type = chat_queue[1][3]
-                Q = chat_queue[1][4]
+                sets = chat_queue[1][4]
                 if type == "music":
                     await calls.change_stream(
                         chat_id,
@@ -59,19 +58,19 @@ async def skip_current_song(chat_id):
                         ),
                     )
                 elif type == "video":
-                    if Q == 720:
-                        hm = HighQualityVideo()
-                    elif Q == 480:
-                        hm = MediumQualityVideo()
-                    elif Q == 360:
-                        hm = LowQualityVideo()
+                    if sets == 720:
+                        qual = HighQualityVideo()
+                    elif sets == 480:
+                        qual = MediumQualityVideo()
+                    elif sets == 360:
+                        qual = LowQualityVideo()
                     await calls.change_stream(
                         chat_id,
                         AudioVideoPiped(
                             url,
                             HighQualityAudio(),
-                            hm
-                        )
+                            qual,
+                        ),
                     )
                 pop_an_item(chat_id)
                 return [songname, link, type]
@@ -123,14 +122,13 @@ async def left_handler(_, chat_id: int):
 
 @calls.on_stream_end()
 async def stream_end_handler(_, u: Update):
-    if isinstance(u, StreamAudioEnded):
+    if isinstance(u, StreamAudioEnded) or isinstance(u, StreamVideoEnded):
         chat_id = u.chat_id
-        print(chat_id)
-        op = await skip_current_song(chat_id)
-        if op == 1:
+        queue = await skip_current_song(chat_id)
+        if queue == 1:
             await remove_active_chat(chat_id)
             return
-        elif op == 2:
+        elif queue == 2:
             await bot.send_message(
                 chat_id,
                 "❌ an error occurred\n\n» **Clearing** Queues and leaving video chat.",
@@ -138,7 +136,7 @@ async def stream_end_handler(_, u: Update):
         else:
             await bot.send_message(
                 chat_id,
-                f"💡 **Streaming next track**\n\n🗂 **Name:** [{op[0]}]({op[1]}) | `{op[2]}`\n💭 **Chat:** `{chat_id}`",
+                f"💡 **Streaming next track**\n\n🗂 **Name:** [{queue[0]}]({queue[1]}) | `{queue[2]}`\n💭 **Chat:** `{chat_id}`",
                 disable_web_page_preview=True,
                 reply_markup=keyboard,
             )

@@ -1,5 +1,6 @@
 """ inline section button """
 
+
 from pyrogram.types import (
   InlineKeyboardButton,
   InlineKeyboardMarkup,
@@ -22,6 +23,7 @@ def menu_markup(user_id):
       InlineKeyboardButton(text="⏹", callback_data=f'set_stop | {user_id}'),
       InlineKeyboardButton(text="⏸", callback_data=f'set_pause | {user_id}'),
       InlineKeyboardButton(text="▶️", callback_data=f'set_resume | {user_id}'),
+      InlineKeyboardButton(text="⏭", callback_data=f'set_skip | {user_id}'),
     ],
     [
       InlineKeyboardButton(text="🔇", callback_data=f'set_mute | {user_id}'),
