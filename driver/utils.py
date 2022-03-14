@@ -153,7 +153,7 @@ async def bash(cmd):
     stdout, stderr = await process.communicate()
     err = stderr.decode().strip()
     out = stdout.decode().strip()
-    return err, out
+    return out, err
 
 
 def remove_if_exists(path):
