@@ -29,57 +29,50 @@ from driver.database.dblockchat import (
   blacklisted_chats,
   whitelist_chat,
 )
+from driver.utils import R
 
 
 @Client.on_message(command(["block", f"block@{BOT_USERNAME}", "blacklist"]) & ~filters.edited)
 @sudo_users_only
 async def blacklist_chat_func(_, message: Message):
     if len(message.command) != 2:
-        return await message.reply_text(
-            "**usage:**\n\n» /block (`chat_id`)"
-        )
+        return await message.reply_text(f"{R('block_help')}")
     chat_id = int(message.text.strip().split()[1])
     if chat_id in await blacklisted_chats():
-        return await message.reply_text("This chat already blacklisted.")
+        return await message.reply_text(f"{R('chat_blocked')}")
     blacklisted = await blacklist_chat(chat_id)
     if blacklisted:
-        return await message.reply_text(
-            "✅ This chat has blacklisted!"
-        )
-    await message.reply_text("❗️ something wrong happened, check logs!")
+        return await message.reply_text(f"✅ {R('chat_block')}")
+    await message.reply_text(f"❗️ {R('block_error')}")
 
 
 @Client.on_message(command(["unblock", f"unblock@{BOT_USERNAME}", "whitelist"]) & ~filters.edited)
 @sudo_users_only
 async def whitelist_chat_func(_, message: Message):
     if len(message.command) != 2:
-        return await message.reply_text(
-            "**usage:**\n\n» /unblock (`chat_id`)"
-        )
+        return await message.reply_text(f"{R('unblock_help')}")
     chat_id = int(message.text.strip().split()[1])
     if chat_id not in await blacklisted_chats():
-        return await message.reply_text("This chat already whitelisted.")
+        return await message.reply_text(f"{R('chat_unblocked')}")
     whitelisted = await whitelist_chat(chat_id)
     if whitelisted:
-        return await message.reply_text(
-            "✅ This chat has whitelisted!"
-        )
-    await message.reply_text("❗️ something wrong happened, check logs!")
+        return await message.reply_text(f"✅ {R('chat_unblock')}")
+    await message.reply_text(f"❗️ {R('block_error')}")
 
 
 @Client.on_message(command(["blocklist", f"blocklist@{BOT_USERNAME}", "blacklisted"]) & ~filters.edited)
 @sudo_users_only
 async def blacklisted_chats_func(_, message: Message):
-    text = "📵 » Blocked Chat list:\n\n"
+    text = f"📵 » {R('block_list')}\n\n"
     j = 0
     for count, chat_id in enumerate(await blacklisted_chats(), 1):
         try:
             title = (await bot.get_chat(chat_id)).title
         except Exception:
-            title = "Private"
+            title = f"{R('chat_private')}"
         j = 1
         text += f"**{count}. {title}** [`{chat_id}`]\n"
     if j == 0:
-        await message.reply_text("❌ no blacklisted chat.")
+        await message.reply_text(f"❌ {R('block_no_list')}")
     else:
         await message.reply_text(text)

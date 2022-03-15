@@ -26,7 +26,7 @@ from config import BOT_USERNAME as bname
 from driver.filters import command
 from driver.decorators import sudo_users_only
 from driver.core import bot as app
-from driver.utils import remove_if_exists
+from driver.utils import remove_if_exists, R
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -35,20 +35,20 @@ from pyrogram.types import Message
 @Client.on_message(command(["speedtest", f"speedtest@{bname}"]) & ~filters.edited)
 @sudo_users_only
 async def run_speedtest(_, message: Message):
-    m = await message.reply_text("⚡️ running server speedtest")
+    m = await message.reply_text(f"⚡️ {R('speedtest_server')}")
     try:
         test = speedtest.Speedtest()
         test.get_best_server()
-        m = await m.edit("⚡️ running download speedtest..")
+        m = await m.edit(f"⚡️ {R('speedtest_download')}")
         test.download()
-        m = await m.edit("⚡️ running upload speedtest...")
+        m = await m.edit(f"⚡️ {R('speedtest_upload')}")
         test.upload()
         test.results.share()
         result = test.results.dict()
     except Exception as e:
         await m.edit(e)
         return
-    m = await m.edit("🔄 sharing speedtest results")
+    m = await m.edit(f"🔄 {R('speedtest_share')}")
     path = wget.download(result["share"])
     try:
         img = Image.open(path)
@@ -57,19 +57,13 @@ async def run_speedtest(_, message: Message):
     except BaseException:
         pass
 
-    output = f"""💡 **SpeedTest Results**
-    
-<u>**Client:**</u>
-**ISP:** {result['client']['isp']}
-**Country:** {result['client']['country']}
-  
-<u>**Server:**</u>
-**Name:** {result['server']['name']}
-**Country:** {result['server']['country']}, {result['server']['cc']}
-**Sponsor:** {result['server']['sponsor']}
-**Latency:** {result['server']['latency']}
-
-⚡️ **Ping:** {result['ping']}"""
+    output = R("speedtest_text").format(result['client']['isp'],
+                                        result['client']['country'],
+                                        result['server']['name'],
+                                        result['server']['country'], result['server']['cc'],
+                                        result['server']['sponsor'],
+                                        result['server']['latency'],
+                                        result['ping'])
     msg = await app.send_photo(
         chat_id=message.chat.id, photo=path, caption=output
     )

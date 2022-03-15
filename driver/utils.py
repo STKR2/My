@@ -1,7 +1,7 @@
 import os
 import asyncio
 
-from driver.core import bot, calls, user
+from driver.core import bot, calls, user, lang_
 from driver.database.dbqueue import remove_active_chat
 from driver.queues import (
     QUEUE,
@@ -22,11 +22,15 @@ from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
 from pytgcalls.types import Update
 
 
+def R(key: str) -> str:
+    return lang_.get(key)
+
+
 keyboard = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton(text="• Mᴇɴᴜ", callback_data="stream_menu_panel"),
-            InlineKeyboardButton(text="• Cʟᴏsᴇ", callback_data="set_close"),
+            InlineKeyboardButton(text=f"• {R('inline_menu')}", callback_data="stream_menu_panel"),
+            InlineKeyboardButton(text=f"• {R('inline_close')}", callback_data="set_close"),
         ]
     ]
 )
@@ -49,7 +53,7 @@ async def skip_current_song(chat_id):
                 link = chat_queue[1][2]
                 type = chat_queue[1][3]
                 sets = chat_queue[1][4]
-                if type == "music":
+                if type == R("music"):
                     await calls.change_stream(
                         chat_id,
                         AudioPiped(
@@ -57,7 +61,7 @@ async def skip_current_song(chat_id):
                             HighQualityAudio(),
                         ),
                     )
-                elif type == "video":
+                elif type == R("video"):
                     if sets == 720:
                         qual = HighQualityVideo()
                     elif sets == 480:
@@ -131,12 +135,12 @@ async def stream_end_handler(_, u: Update):
         elif queue == 2:
             await bot.send_message(
                 chat_id,
-                "❌ an error occurred\n\n» **Clearing** Queues and leaving video chat.",
+                R("skip_error"),
             )
         else:
             await bot.send_message(
                 chat_id,
-                f"💡 **Streaming next track**\n\n🗂 **Name:** [{queue[0]}]({queue[1]}) | `{queue[2]}`\n💭 **Chat:** `{chat_id}`",
+                R("skip_msg").format(queue[0], queue[1], queue[2], chat_id),
                 disable_web_page_preview=True,
                 reply_markup=keyboard,
             )

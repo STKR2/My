@@ -33,3 +33,6 @@ IMG_3 = getenv("IMG_3", "https://telegra.ph/file/f02efde766160d3ff52d6.png")
 IMG_4 = getenv("IMG_4", "https://telegra.ph/file/be5f551acb116292d15ec.png")
 IMG_5 = getenv("IMG_5", "https://telegra.ph/file/63300139d232dc12452ab.png")
 ALIVE_IMG = getenv("ALIVE_IMG", "https://telegra.ph/file/c83b000f004f01897fe18.png")
+
+# language
+LANGUAGE = getenv("BOT_LANGUAGE", "en")

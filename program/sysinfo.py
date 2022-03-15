@@ -29,7 +29,7 @@ from config import BOT_USERNAME
 from program import LOGS
 from driver.core import me_bot
 from driver.filters import command
-from driver.utils import remove_if_exists
+from driver.utils import remove_if_exists, R
 from driver.decorators import sudo_users_only, humanbytes
 
 from pyrogram import Client, filters
@@ -57,22 +57,8 @@ async def fetch_system_information(client, message):
     psutil.disk_io_counters()
     disk = f"{humanbytes(du.used)} / {humanbytes(du.total)} " f"({du.percent}%)"
     cpu_len = len(psutil.Process().cpu_affinity())
-    somsg = f"""🖥 **System Information**
-    
-**PlatForm :** `{splatform}`
-**PlatForm - Release :** `{platform_release}`
-**PlatForm - Version :** `{platform_version}`
-**Architecture :** `{architecture}`
-**HostName :** `{hostname}`
-**IP :** `{ip_address}`
-**Mac :** `{mac_address}`
-**Processor :** `{processor}`
-**Ram : ** `{ram}`
-**CPU :** `{cpu_len}`
-**CPU FREQ :** `{cpu_freq}`
-**DISK :** `{disk}`
-    """
-    
+    somsg = R("sysinfo_msg").format(splatform, platform_release, platform_version, architecture, hostname,
+                                    ip_address, mac_address, processor, ram, cpu_len, cpu_freq, disk)
     await message.reply(somsg)
 
 
@@ -85,11 +71,11 @@ async def get_bot_logs(c: Client, m: Message):
             await m.reply_document(
                 bot_log_path,
                 quote=True,
-                caption='📁 this is the bot logs',
+                caption=f'📁 {R("logs")}',
             )
         except Exception as e:
             remove_if_exists(bot_log_path)
-            print(f'[ERROR]: {e}')
+            print(f'❌ {R("error")} {e}')
     else:
         if not os.path.exists(bot_log_path):
-            await m.reply_text('❌ no logs found !')
+            await m.reply_text(f'❌ {R("logs_no")}')

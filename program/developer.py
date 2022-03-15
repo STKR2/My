@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
 """
 
-
 import re
 import sys
 import subprocess
@@ -27,12 +26,13 @@ from io import StringIO
 from inspect import getfullargspec
 
 from config import BOT_USERNAME as bname
-from driver.core import bot
+from driver.core import bot, me_user
+from driver.database.dbqueue import remove_active_chat
 from driver.queues import QUEUE
 from driver.filters import command
 from driver.database.dbchat import remove_served_chat
 from driver.decorators import bot_creator, sudo_users_only, errors
-from driver.utils import remove_if_exists
+from driver.utils import remove_if_exists, R
 
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -45,6 +45,7 @@ async def aexec(code, client, message):
     )
     return await locals()["__aexec"](client, message)
 
+
 async def edit_or_reply(msg: Message, **kwargs):
     func = msg.edit_text if msg.from_user.is_self else msg.reply
     spec = getfullargspec(func.__wrapped__).args
@@ -55,7 +56,7 @@ async def edit_or_reply(msg: Message, **kwargs):
 @sudo_users_only
 async def executor(client, message):
     if len(message.command) < 2:
-        return await edit_or_reply(message, text="» Give a command to execute")
+        return await edit_or_reply(message, text=f"» {R('exec_need_argument')}")
     try:
         cmd = message.text.split(" ", maxsplit=1)[1]
     except IndexError:
@@ -93,7 +94,7 @@ async def executor(client, message):
             [
                 [
                     InlineKeyboardButton(
-                        text="⏳", callback_data=f"runtime {t2-t1} seconds"
+                        text="⏳", callback_data=R("exec_time").format(str(t2 - t1)),
                     )
                 ]
             ]
@@ -113,7 +114,7 @@ async def executor(client, message):
                 [
                     InlineKeyboardButton(
                         text="⏳",
-                        callback_data=f"runtime {round(t2-t1, 3)} seconds",
+                        callback_data=R("exec_time").format(str(round(t2 - t1, 3))),
                     )
                 ]
             ]
@@ -131,7 +132,7 @@ async def runtime_func_cq(_, cq):
 @sudo_users_only
 async def shellrunner(client, message):
     if len(message.command) < 2:
-        return await edit_or_reply(message, text="**usage:**\n\n» /sh echo hello world")
+        return await edit_or_reply(message, text=R("sh_help"))
     text = message.text.split(None, 1)[1]
     if "\n" in text:
         code = text.split("\n")
@@ -194,9 +195,7 @@ async def shellrunner(client, message):
 @bot_creator
 async def bot_leave_group(_, message):
     if len(message.command) != 2:
-        await message.reply_text(
-            "**usage:**\n\n» /leavebot (`chat_id`)"
-        )
+        await message.reply_text(R("leave_bot_help"))
         return
     chat = message.text.split(None, 2)[1]
     if chat in QUEUE:
@@ -204,9 +203,9 @@ async def bot_leave_group(_, message):
         return
     try:
         await bot.leave_chat(chat)
-        await user.leave_chat(chat)
+        await me_user.leave_chat(chat)
         await remove_served_chat(chat)
     except Exception as e:
-        await message.reply_text(f"❌ procces failed\n\nreason: `{e}`")
+        await message.reply_text(f"❌ {R('leave_error')} `{e}`")
         return
-    await message.reply_text(f"✅ Bot successfully left from the Group:\n\n💭 » `{chat}`")
+    await message.reply_text(f"✅ {R('leave_success')}\n\n💭 » `{chat}`")

@@ -29,10 +29,10 @@ from pyrogram.types import (
 from driver.decorators import check_blacklist
 from driver.queues import QUEUE, get_queue
 from driver.filters import command, other_filters
-
+from driver.utils import R
 
 keyboard = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("🗑 Close", callback_data="set_close")]]
+    [[InlineKeyboardButton(f"🗑 {R('close')}", callback_data="set_close")]]
 )
 
 
@@ -44,13 +44,13 @@ async def playlist(client, m: Message):
         chat_queue = get_queue(chat_id)
         if len(chat_queue) == 1:
             await m.reply(
-                f"💡 **Currently Streaming**`:`\n\n"
+                f"💡 **{R('currently_streaming')}**`:`\n\n"
                 f"➣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}`",
                 reply_markup=keyboard, disable_web_page_preview=True)
         else:
-            QUE = f"💡 **Currently Streaming**`:`\n\n" \
+            QUE = f"💡 **{R('currently_streaming')}**`:`\n\n" \
                   f"➣ [{chat_queue[0][0]}]({chat_queue[0][2]}) | `{chat_queue[0][3]}` \n\n" \
-                  f"**📖 Queue song list**`:`\n"
+                  f"**📖 {R('queue_song_list')}**`:`\n"
             l = len(chat_queue)
             for x in range(1, l):
                 han = chat_queue[x][0]
@@ -59,4 +59,4 @@ async def playlist(client, m: Message):
                 QUE = QUE + "\n" + f"`#{x}` - [{han}]({hok}) | `{hap}`"
             await m.reply(QUE, reply_markup=keyboard, disable_web_page_preview=True)
     else:
-        await m.reply("❌ **nothing is currently streaming.**")
+        await m.reply(f"❌ **{R('queue_no')}**")

@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/licenses.html>
 """
 
-
 import asyncio
 
 from datetime import datetime
@@ -31,6 +30,7 @@ from config import (
     OWNER_USERNAME,
     UPDATES_CHANNEL,
 )
+from driver.utils import R
 
 from program import __version__, LOGS
 from pytgcalls import (__version__ as pytover)
@@ -52,7 +52,6 @@ __minor__ = 2
 __micro__ = 1
 
 __python_version__ = f"{version_info[0]}.{version_info[1]}.{version_info[2]}"
-
 
 START_TIME = datetime.utcnow()
 START_TIME_ISO = START_TIME.replace(microsecond=0).isoformat()
@@ -84,28 +83,24 @@ async def start_(c: Client, message: Message):
     user_id = message.from_user.id
     await add_served_user(user_id)
     await message.reply_text(
-        f"""Hi {message.from_user.mention()} 👋🏻\n
-💭 [{me_bot.first_name}](https://t.me/{me_bot.username}) is a bot to play music and video in groups, through the new Telegram video chats.
-
-🕵🏻 Check out all the **Bot's commands** and how they work by clicking on the » 📚 **Commands** button!
-
-🧑🏻‍💻 To know how to use this bot, please click on the » ❓ **Basic Guide** button!
-""",
+        R("home_start").format(message.from_user.first_name, message.from_user.id,
+                               me_bot.first_name, me_bot.username),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("➕ Add me to a Group ➕", url=f"https://t.me/{me_bot.username}?startgroup=true")
-                ],[
-                    InlineKeyboardButton("❓ Basic Guide", callback_data="user_guide")
-                ],[
-                    InlineKeyboardButton("📚 Commands", callback_data="command_list"),
-                    InlineKeyboardButton("❤️ Donate", url=f"https://t.me/{OWNER_USERNAME}")
-                ],[
-                    InlineKeyboardButton("👥 Support Group", url=f"https://t.me/{GROUP_SUPPORT}"),
-                    InlineKeyboardButton("📣 Support Channel", url=f"https://t.me/{UPDATES_CHANNEL}")
-                ],[
-                    InlineKeyboardButton("🌐 Source Code", url="https://github.com/levina-lab/video-stream")
-                ],
+                    InlineKeyboardButton(f"➕ {R('add_me_to_group')} ➕",
+                                         url=f"https://t.me/{me_bot.username}?startgroup=true")
+                ], [
+                InlineKeyboardButton(f"❓ {R('basic_guide')}", callback_data="user_guide")
+            ], [
+                InlineKeyboardButton(f"📚 {R('commands')}", callback_data="command_list"),
+                InlineKeyboardButton(f"❤️ {R('donate')}", url=f"https://t.me/{OWNER_USERNAME}")
+            ], [
+                InlineKeyboardButton(f"👥 {R('support_group')}", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton(f"📣 {R('support_channel')}", url=f"https://t.me/{UPDATES_CHANNEL}")
+            ], [
+                InlineKeyboardButton(f"🌐 {R('source_code')}", url="https://github.com/levina-lab/video-stream")
+            ],
             ]
         ),
         disable_web_page_preview=True,
@@ -124,14 +119,20 @@ async def alive(c: Client, message: Message):
     buttons = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("✨ Group", url=f"https://t.me/{GROUP_SUPPORT}"),
+                InlineKeyboardButton(f"✨ {R('support_group')}", url=f"https://t.me/{GROUP_SUPPORT}"),
                 InlineKeyboardButton(
-                    "📣 Channel", url=f"https://t.me/{UPDATES_CHANNEL}"
+                    f"📣 {R('support_channel')}", url=f"https://t.me/{UPDATES_CHANNEL}"
                 ),
             ]
         ]
     )
-    text = f"**Hello {message.from_user.mention()}, I'm {me_bot.first_name}**\n\n🧑🏼‍💻 My Master: [{ALIVE_NAME}](https://t.me/{OWNER_USERNAME})\n👾 Bot Version: `v{__version__}`\n🔥 Pyrogram Version: `{pyrover}`\n🐍 Python Version: `{__python_version__}`\n✨ PyTgCalls Version: `{pytover.__version__}`\n🆙 Uptime Status: `{uptime}`\n\n❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**"
+    text = R("alive_msg").format(message.from_user.mention(), me_bot.first_name,
+                                 ALIVE_NAME, OWNER_USERNAME,
+                                 __version__,
+                                 pyrover,
+                                 __python_version__,
+                                 pytover.__version__,
+                                 uptime)
     await c.send_photo(
         chat_id,
         photo=f"{ALIVE_IMG}",
@@ -146,7 +147,7 @@ async def ping_pong(c: Client, message: Message):
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
-    await m_reply.edit_text("🏓 PONG !\n" f"⏱ `{delta_ping * 1000:.3f} ms`")
+    await m_reply.edit_text(R("pong").format(f"{delta_ping * 1000:.3f}"))
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
@@ -155,10 +156,7 @@ async def get_uptime(c: Client, message: Message):
     current_time = datetime.utcnow()
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
-    await message.reply_text(
-        f"• Uptime: `{uptime}`\n"
-        f"• Start Time: `{START_TIME_ISO}`"
-    )
+    await message.reply_text(R("uptime_msg").format(uptime, START_TIME_ISO))
 
 
 @Client.on_chat_join_request()
@@ -183,23 +181,21 @@ async def new_chat(c: Client, m: Message):
         try:
             if member.id == me_bot.id:
                 if chat_id in await blacklisted_chats():
-                    await m.reply_text(
-                        "❗️ This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
-                    )
+                    await m.reply_text(f"❗️ {R('group_block')}")
                     return await bot.leave_chat(chat_id)
             if member.id == me_bot.id:
                 return await m.reply(
-                    "❤️ Thanks for adding me to the **Group** !\n\n"
-                    "Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.\n\n"
-                    "Once done, then type `/reload`",
+                    R("group_welcome"),
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton("📣 Channel", url=f"https://t.me/{UPDATES_CHANNEL}"),
-                                InlineKeyboardButton("💭 Support", url=f"https://t.me/{GROUP_SUPPORT}")
-                            ],[
-                                InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{me_user.username}")
-                            ]
+                                InlineKeyboardButton(f"📣 {R('support_group')}",
+                                                     url=f"https://t.me/{UPDATES_CHANNEL}"),
+                                InlineKeyboardButton(f"💭 {R('support_channel')}",
+                                                     url=f"https://t.me/{GROUP_SUPPORT}")
+                            ], [
+                            InlineKeyboardButton(f"👤 {R('assistant')}", url=f"https://t.me/{me_user.username}")
+                        ]
                         ]
                     )
                 )
@@ -210,6 +206,7 @@ async def new_chat(c: Client, m: Message):
 
 chat_watcher_group = 5
 
+
 @Client.on_message(group=chat_watcher_group)
 async def chat_watcher_func(_, message: Message):
     userid = message.from_user.id
@@ -218,8 +215,6 @@ async def chat_watcher_func(_, message: Message):
         try:
             await message.chat.ban_member(userid)
         except ChatAdminRequired:
-            LOGS.info(f"can't remove gbanned user from chat: {message.chat.id}")
+            LOGS.info(f"{R('ban_failed')} {message.chat.id}")
             return
-        await message.reply_text(
-            f"👮🏼 (> {suspect} <)\n\n**Gbanned** user detected, that user has been gbanned by sudo user and was blocked from this Chat !\n\n🚫 **Reason:** potential spammer and abuser."
-        )
+        await message.reply_text(R("ban_success").format(suspect))

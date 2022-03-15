@@ -18,3 +18,4 @@ pillow
 motor
 psutil
 wget
+PyYAML

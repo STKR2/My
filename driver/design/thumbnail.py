@@ -7,6 +7,8 @@ from PIL import (
     ImageFont,
 )
 
+from driver.utils import R
+
 
 def changeImageSize(maxWidth, maxHeight, image):
     if image.size[0] == image.size[1]:
@@ -26,7 +28,7 @@ def changeImageSize(maxWidth, maxHeight, image):
 
 
 async def thumb(thumbnail, title, userid, ctitle):
-    img_path = f"search/thumb{userid}.png"
+    img_path = f"search{os.sep}thumb{userid}.png"
     if 'http' in thumbnail:
         async with aiohttp.ClientSession() as session:
             async with session.get(thumbnail) as resp:
@@ -37,16 +39,16 @@ async def thumb(thumbnail, title, userid, ctitle):
     else:
         img_path = thumbnail
     image1 = Image.open(img_path)
-    image2 = Image.open("driver/source/LightGreen.png")
+    image2 = Image.open(f"driver{os.sep}source{os.sep}LightGreen.png")
     image3 = changeImageSize(1280, 720, image1)
     image4 = changeImageSize(1280, 720, image2)
     image5 = image3.convert("RGBA")
     image6 = image4.convert("RGBA")
-    Image.alpha_composite(image5, image6).save(f"search/temp{userid}.png")
-    img = Image.open(f"search/temp{userid}.png")
+    Image.alpha_composite(image5, image6).save(f"search{os.sep}temp{userid}.png")
+    img = Image.open(f"search{os.sep}temp{userid}.png")
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("driver/source/regular.ttf", 50)
-    font2 = ImageFont.truetype("driver/source/medium.ttf", 72)
+    font = ImageFont.truetype(f"driver{os.sep}source{os.sep}regular.ttf", 50)
+    font2 = ImageFont.truetype(f"driver{os.sep}source{os.sep}medium.ttf", 72)
     draw.text(
         (25, 615),
         f"{title[:20]}...",
@@ -55,12 +57,12 @@ async def thumb(thumbnail, title, userid, ctitle):
     )
     draw.text(
         (27, 543),
-        f"Playing on {ctitle[:12]}",
+        R("play").format(ctitle[:12]),
         fill="black",
         font=font,
     )
-    img.save(f"search/final{userid}.png")
-    os.remove(f"search/temp{userid}.png")
+    img.save(f"search{os.sep}final{userid}.png")
+    os.remove(f"search{os.sep}temp{userid}.png")
     os.remove(img_path)
-    final = f"search/final{userid}.png"
+    final = f"search{os.sep}final{userid}.png"
     return final

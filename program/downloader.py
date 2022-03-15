@@ -31,7 +31,7 @@ from yt_dlp import YoutubeDL
 from config import BOT_USERNAME as bn
 from driver.decorators import check_blacklist
 from driver.filters import command
-from driver.utils import remove_if_exists
+from driver.utils import remove_if_exists, R
 
 
 @Client.on_message(command(["song", f"song@{bn}"]) & ~filters.edited)
@@ -39,7 +39,7 @@ from driver.utils import remove_if_exists
 async def song_downloader(_, message):
     await message.delete()
     query = " ".join(message.command[1:])
-    m = await message.reply("🔎 finding song...")
+    m = await message.reply(f"🔎 {R('song_find')}")
     ydl_ops = {
         'format': 'bestaudio[ext=m4a]',
         'geo-bypass': True,
@@ -61,22 +61,22 @@ async def song_downloader(_, message):
         duration = results[0]["duration"]
 
     except Exception as e:
-        await m.edit("❌ song not found.\n\n» Give me a valid song name !")
+        await m.edit(f"❌ {R('song_error')}")
         print(str(e))
         return
-    await m.edit("📥 downloading song...")
+    await m.edit(f"📥 {R('song_download')}")
     try:
         with yt_dlp.YoutubeDL(ydl_ops) as ydl:
             info_dict = ydl.extract_info(link, download=False)
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
-        rep = f"• uploader @{bn}"
+        rep = R("song_uploader").format(bn)
         host = str(info_dict["uploader"])
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(float(dur_arr[i])) * secmul
             secmul *= 60
-        await m.edit("📤 uploading song...")
+        await m.edit(f"📤 {R('song_upload')}")
         await message.reply_audio(
             audio_file,
             caption=rep,
@@ -89,7 +89,7 @@ async def song_downloader(_, message):
         await m.delete()
 
     except Exception as e:
-        await m.edit("❌ error, wait for bot owner to fix")
+        await m.edit(f"❌ {R('song_need_fix')}")
         print(e)
     try:
         remove_if_exists(audio_file)
@@ -123,22 +123,18 @@ async def video_downloader(_, message):
         thumb_name = f"{title}.jpg"
         thumb = requests.get(thumbnail, allow_redirects=True)
         open(thumb_name, "wb").write(thumb.content)
-        results[0]["duration"]
-        results[0]["url_suffix"]
-        results[0]["views"]
-        message.from_user.mention
     except Exception as e:
         print(e)
     try:
-        msg = await message.reply("📥 downloading video...")
+        msg = await message.reply(f"📥 {R('video_download')}")
         with YoutubeDL(ydl_opts) as ytdl:
             ytdl_data = ytdl.extract_info(link, download=True)
             file_name = ytdl.prepare_filename(ytdl_data)
     except Exception as e:
         traceback.print_exc()
-        return await msg.edit(f"🚫 error: `{e}`")
+        return await msg.edit(f"🚫 {R('error')} `{e}`")
     preview = wget.download(thumbnail)
-    await msg.edit("📤 uploading video...")
+    await msg.edit(f"📤 {R('video_upload')}")
     await message.reply_video(
         file_name,
         duration=int(ytdl_data["duration"]),
@@ -156,21 +152,16 @@ async def video_downloader(_, message):
 @check_blacklist()
 async def get_lyric_genius(_, message: Message):
     if len(message.command) < 2:
-        return await message.reply_text("**usage:**\n\n/lyrics (song name)")
-    m = await message.reply_text("🔍 Searching lyrics...")
+        return await message.reply_text(R("lyric_help"))
+    m = await message.reply_text(f"🔍 {R('lyric_find')}")
     query = message.text.split(None, 1)[1]
     api = "OXaVabSRKQLqwpiYOn-E4Y7k3wj-TNdL5RfDPXlnXhCErbcqVvdCF-WnMR5TBctI"
     data = lyricsgenius.Genius(api)
     data.verbose = False
     result = data.search_song(query, get_full_info=False)
     if result is None:
-        return await m.edit("❌ `404` lyrics not found")
-    xxx = f"""
-**Title song:** {query}
-**Artist name:** {result.artist}
-**Lyrics:**
-
-{result.lyrics}"""
+        return await m.edit(f"❌ {R('lyric_not_find')}")
+    xxx = R("lyric_format").format(query, result.artist, result.lyrics)
     if len(xxx) > 4096:
         await m.delete()
         filename = "lyrics.txt"

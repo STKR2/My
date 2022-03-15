@@ -1,6 +1,7 @@
 from pyrogram import Client
 from pytgcalls import PyTgCalls
-from config import API_HASH, API_ID, BOT_TOKEN, SESSION_NAME
+from languages.languages import Lang
+from config import API_HASH, API_ID, BOT_TOKEN, SESSION_NAME, LANGUAGE
 
 
 bot = Client(
@@ -22,6 +23,8 @@ calls = PyTgCalls(
     cache_duration=100,
     overload_quiet_mode=True,
 )
+# language
+lang_ = Lang(LANGUAGE)
 
 
 with Client(":veez:", API_ID, API_HASH, bot_token=BOT_TOKEN) as app:

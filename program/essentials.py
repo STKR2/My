@@ -24,6 +24,7 @@ from pyrogram.types import Message
 from pyrogram import Client, filters, __version__ as pyrover
 from pytgcalls import (__version__ as pytgver)
 
+from driver.utils import R
 from program import __version__ as ver
 from program.start import __python_version__ as pyver
 
@@ -58,13 +59,9 @@ async def broadcast_message_nopin(c: Client, message: Message):
                 sent += 1
             except Exception:
                 pass
-        await message.reply_text(f"✅ Broadcast complete in {sent} Group.")
-        return
+        return await message.reply_text(f"✅ {R('broadcast_success').format(sent)}")
     if len(message.command) < 2:
-        await message.reply_text(
-            "**usage**:\n\n/broadcast (`message`) or (`reply to message`)"
-        )
-        return
+        return await message.reply_text(R("broadcast_help"))
     text = message.text.split(None, 1)[1]
     sent = 0
     chats = []
@@ -78,7 +75,7 @@ async def broadcast_message_nopin(c: Client, message: Message):
             sent += 1
         except Exception:
             pass
-    await message.reply_text(f"✅ Broadcast complete in {sent} Group.")
+    await message.reply_text(f"✅ {R('broadcast_success').format(sent)}")
 
 
 @Client.on_message(command(["broadcast_pin", f"broadcast_pin@{uname}"]) & ~filters.edited)
@@ -107,15 +104,12 @@ async def broadcast_message_pin(c: Client, message: Message):
                 sent += 1
             except Exception:
                 pass
-        await message.reply_text(
-            f"✅ Broadcast complete in {sent} Group.\n📌 Sent with {pin} chat pins."
+        return await message.reply_text(
+            f"✅ {R('broadcast_success').format(sent)}\n"
+            f"📌 {R('broadcast_pin').format(pin)}"
         )
-        return
     if len(message.command) < 2:
-        await message.reply_text(
-            "**usage**:\n\n/broadcast_pin (`message`) or (`reply to message`)"
-        )
-        return
+        return await message.reply_text(R("broadcast_pin_help"))
     text = message.text.split(None, 1)[1]
     sent = 0
     pin = 0
@@ -136,7 +130,8 @@ async def broadcast_message_pin(c: Client, message: Message):
         except Exception:
             pass
     await message.reply_text(
-        f"✅ Broadcast complete in {sent} Group.\n📌 Sent with {pin} chat pins."
+        f"✅ {R('broadcast_success').format(sent)}\n"
+        f"📌 {R('broadcast_pin').format(pin)}"
     )
 
 
@@ -146,23 +141,13 @@ async def bot_statistic(c: Client, message: Message):
     name = me_bot.first_name
     chat_id = message.chat.id
     msg = await c.send_message(
-        chat_id, "❖ Collecting Stats..."
+        chat_id, R("stats")
     )
     served_chats = len(await get_served_chats())
     served_users = len(await get_served_users())
     gbans_usertl = await get_gbans_count()
-    tgm = f"""
-📊 Current Statistic of [{name}](https://t.me/{uname})`:`
-
-➥ **Groups Chat** : `{served_chats}`
-➥ **Users Dialog** : `{served_users}`
-➥ **Gbanned Users** : `{gbans_usertl}`
-
-➛ **Python Version** : `{pyver}`
-➛ **PyTgCalls Version** : `{pytgver.__version__}`
-➛ **Pyrogram Version** : `{pyrover}`
-
-🤖 bot version: `{ver}`"""
+    tgm = R("stats_msg").format(name, uname, served_chats, served_users, gbans_usertl,
+                                pyver, pytgver.__version__, pyrover, ver)
     await msg.edit(tgm, disable_web_page_preview=True)
 
 
@@ -175,14 +160,14 @@ async def active_group_calls(c: Client, message: Message):
         for chat in chats:
             served_chats.append(int(chat["chat_id"]))
     except Exception as e:
-        await message.reply_text(f"🚫 error: `{e}`")
+        await message.reply_text(f"🚫 {R('error')} `{e}`")
     text = ""
     j = 0
     for x in served_chats:
         try:
             title = (await c.get_chat(x)).title
         except BaseException:
-            title = "Private Group"
+            title = R("chat_private")
         if (await c.get_chat(x)).username:
             data = (await c.get_chat(x)).username
             text += (
@@ -192,9 +177,9 @@ async def active_group_calls(c: Client, message: Message):
             text += f"**{j + 1}.** {title} [`{x}`]\n"
         j += 1
     if not text:
-        await message.reply_text("❌ no active group calls")
+        await message.reply_text(f"❌ {R('calls_no')}")
     else:
         await message.reply_text(
-            f"✏️ **Running Group Call List:**\n\n{text}\n❖ This is the list of all current active group call in my database.",
+            R("calls_msg").format(text),
             disable_web_page_preview=True,
         )
