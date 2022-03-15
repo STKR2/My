@@ -29,7 +29,8 @@ from driver.core import user, me_bot
 from driver.filters import command, other_filters
 from driver.database.dbchat import remove_served_chat
 from driver.database.dbqueue import remove_active_chat
-from driver.decorators import authorized_users_only, bot_creator, check_blacklist
+from driver.decorators import authorized_users_only, bot_creator, check_blacklist, require_admin
+from driver.utils import R
 
 from pyrogram.types import Message
 from pyrogram import Client, filters
@@ -56,9 +57,9 @@ async def join_chat(c: Client, m: Message):
             )
         await user.join_chat(invitelink)
         await remove_active_chat(chat_id)
-        return await user.send_message(chat_id, "✅ userbot joined this chat")
+        return await user.send_message(chat_id, f"✅ {R('userbot_joined')}")
     except UserAlreadyParticipant:
-        return await user.send_message(chat_id, "✅ userbot already in this chat")
+        return await user.send_message(chat_id, f"✅ {R('userbot_already_in')}")
 
 
 @Client.on_message(
@@ -72,12 +73,12 @@ async def leave_chat(c :Client, m: Message):
         if chat_id in QUEUE:
             await remove_active_chat(chat_id)
             await user.leave_chat(chat_id)
-            return await c.send_message(chat_id, "✅ userbot has left from chat")
+            return await c.send_message(chat_id, f"✅ {R('userbot_left')}")
         else:
             await user.leave_chat(chat_id)
-            return await c.send_message(chat_id, "✅ userbot has left from chat")
+            return await c.send_message(chat_id, f"✅ {R('userbot_left')}")
     except UserNotParticipant:
-        return await c.send_message(chat_id, "❌ userbot already leave chat")
+        return await c.send_message(chat_id, f"❌ {R('userbot_already_out')}")
 
 
 @Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]) & ~filters.edited)
@@ -87,76 +88,59 @@ async def leave_all(c: Client, message: Message):
         return
     run_1 = 0
     run_2 = 0
-    msg = await message.reply("🔄 Userbot started leaving all groups")
+    msg = await message.reply(f"🔄 {R('userbot_leave_all')}")
     async for dialog in user.iter_dialogs():
         try:
             await user.leave_chat(dialog.chat.id)
             await remove_active_chat(dialog.chat.id)
             run_1 += 1
-            await msg.edit(
-                f"Userbot leaving...\n\nLeft from: {run_1} chats.\nFailed in: {run_2} chats."
-            )
+            await msg.edit(R("userbot_leave").format(run_1, run_2))
         except Exception:
             run_2 += 1
-            await msg.edit(
-                f"Userbot leaving...\n\nLeft from: {run_1} chats.\nFailed in: {run_2} chats."
-            )
+            await msg.edit(R("userbot_leave").format(run_1, run_2))
         await asyncio.sleep(0.7)
     await msg.delete()
-    await client.send_message(
-        message.chat.id, f"✅ Left from: {run_2} chats.\n❌ Failed in: {run_2} chats."
+    await c.send_message(
+        message.chat.id, R("userbot_leave_final").format(run_1, run_2)
     )
 
 
 @Client.on_message(command(["startvc", f"startvc@{BOT_USERNAME}"]) & other_filters)
 @check_blacklist()
 @authorized_users_only
+@require_admin(permissions=["can_manage_voice_chats"], user_bot=True)
 async def start_group_call(c: Client, m: Message):
     chat_id = m.chat.id
-    msg = await c.send_message(chat_id, "`starting...`")
-    try:
-        peer = await user.resolve_peer(chat_id)
-        await user.send(
-            CreateGroupCall(
-                peer=InputPeerChannel(
-                    channel_id=peer.channel_id,
-                    access_hash=peer.access_hash,
-                ),
-                random_id=user.rnd_id() // 9000000000,
-            )
+    msg = await c.send_message(chat_id, R("userbot_start_vc"))
+    peer = await user.resolve_peer(chat_id)
+    await user.send(
+        CreateGroupCall(
+            peer=InputPeerChannel(
+                channel_id=peer.channel_id,
+                access_hash=peer.access_hash,
+            ),
+            random_id=user.rnd_id() // 9000000000,
         )
-        await msg.edit_text("✅ Group call started !")
-    except ChatAdminRequired:
-        await msg.edit_text(
-            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
-        )
+    )
+    await msg.edit_text(f"✅ {R('userbot_start_vc_success')}")
 
 
 @Client.on_message(command(["stopvc", f"stopvc@{BOT_USERNAME}"]) & other_filters)
 @check_blacklist()
 @authorized_users_only
+@require_admin(permissions=["can_manage_voice_chats"], user_bot=True)
 async def stop_group_call(c: Client, m: Message):
     chat_id = m.chat.id
-    msg = await c.send_message(chat_id, "`stopping...`")
-    try:
-        if not (
-            group_call := (
-                await get_calls(m, err_msg="group call not active")
-            )
-        ):
-            await msg.edit_text("❌ The group call already ended")
-            return
-        await user.send(
-            DiscardGroupCall(
-                call=group_call
-            )
+    msg = await c.send_message(chat_id, R("userbot_stop_vc"))
+    group_call = await get_calls(m, err_msg="group call not active")
+    if not group_call:
+        return await msg.edit_text(f"❌ {R('userbot_already_end')}")
+    await user.send(
+        DiscardGroupCall(
+            call=group_call
         )
-        await msg.edit_text("✅ Group call has ended !")
-    except Exception as e:
-        if "GROUPCALL_FORBIDDEN" in str(e):
-            await msg.edit_text(
-                "The userbot is not admin in this chat. To stop the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
-            )
+    )
+    await msg.edit_text(f"✅ {R('userbot_stop_vc_success')}")
 
 
 @Client.on_message(filters.left_chat_member)

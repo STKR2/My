@@ -1,6 +1,6 @@
 from typing import Optional
 
-from driver.core import user
+from driver.core import user, bot
 from pyrogram.raw.functions.channels import GetFullChannel
 from pyrogram.raw.functions.messages import GetFullChat
 from pyrogram.types import Message
@@ -9,6 +9,8 @@ from pyrogram.raw.types import (
     InputPeerChannel,
     InputPeerChat,
 )
+
+from driver.utils import R
 
 
 async def get_calls(m: Message, err_msg: str = "") -> Optional[InputGroupCall]:
@@ -22,7 +24,7 @@ async def get_calls(m: Message, err_msg: str = "") -> Optional[InputGroupCall]:
             ).full_chat
         if full_chat is not None:
             return full_chat.call
-    await c.send_message(m.chat.id, f"❌ no group calls found\n\n» `{err_msg}`")
+    await bot.send_message(m.chat.id, f"❌ {R('no_group_calls')}\n\n» `{err_msg}`")
     return False
 
 

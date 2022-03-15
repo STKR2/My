@@ -1,0 +1,469 @@
+# main
+client_started: "[INFO]: BOT & UBOT CLIENT STARTED !!"
+pytgcall_started: "[INFO]: PY-TGCALLS CLIENT STARTED !!"
+client_stopped: "[INFO]: STOPPING BOT & USERBOT"
+# admins
+bot_reload: "Bot **reloaded correctly !**"
+admin_update: "**Admin list** has **updated !**"
+bot_disconnect: "The userbot has disconnected from the video chat."
+error: "error:"
+play_nothing: "nothing is streaming"
+play_paused: "The music is already paused."
+play_pause: "Track paused."
+play_to_resume: "To resume the stream, use the"
+command: "command."
+play_resumed: "The music is already resumed."
+play_resume: "Track resumed."
+play_to_pause: "To pause the stream, use the"
+queue_nothing: "There's no more music in queue to skip, userbot leaving video chat."
+clear_queue: "Clearing the **Queues**"
+bot_leave: "**• userbot** leaving video chat."
+skip_to_next: "**Skipped** to the next track."
+name: "Name:"
+chat: "Chat:"
+request: "Request by:"
+queue_removed: "removed song from queue:"
+play_muted: "The stream userbot is already muted."
+play_mute: "Userbot muted."
+play_to_unmute: "To unmute the userbot, use the"
+play_unmuted: "The stream userbot is already unmuted."
+play_unmute: "Userbot unmuted."
+play_to_mute: "To mute the userbot, use the"
+play_button_pause: "The music has paused !"
+play_button_to_resume: "to resume the music click on resume button !"
+play_button_resume: "The music has resumed !"
+play_button_to_pause: "to pause the music click on pause button !"
+play_button_ended: "The streaming has ended !"
+play_button_mute: "The stream userbot is already muted."
+play_button_muted: "The stream userbot has muted !"
+play_button_to_unmute: "to unmute the userbot click on unmute button !"
+play_button_unmute: "The stream userbot is already unmuted."
+play_button_unmuted: "The stream userbot has unmuted !"
+play_button_to_mute: "to mute the userbot click on mute button !"
+play_button_skip: "goes to the next track, processing..."
+volume_help: "usage: `/volume` (`0-200`)"
+volume_set: "volume set to"
+# assistant_settings
+userbot_joined: "userbot joined this chat"
+userbot_already_in: "userbot already in this chat"
+userbot_left: "userbot has left from chat"
+userbot_already_out: "userbot already leave chat"
+userbot_leave_all: "Userbot started leaving all groups"
+userbot_leave: |
+  Userbot leaving...
+  Left from: {} chats.
+  Failed in: {} chats.
+userbot_leave_final: |
+  ✅ Left from: {} chats.
+  ❌ Failed in: {} chats.
+userbot_start_vc: "`starting...`"
+userbot_start_vc_success: "Group call started !"
+userbot_stop_vc: "`stopping...`"
+userbot_already_end: "The group call already ended"
+userbot_stop_vc_success: "Group call has ended !"
+# blockchat
+block_help: "usage: `/block` (`chat_id`)"
+chat_blocked: "This chat already blacklisted."
+chat_block: "This chat has blacklisted!"
+block_error: "something wrong happened, check logs!"
+unblock_help: "usage: `/unblock` (`chat_id`)"
+chat_unblocked: "This chat already whitelisted."
+chat_unblock: "This chat has whitelisted!"
+block_list: "Blocked Chat list:"
+chat_private: "Private"
+block_no_list: "no blacklisted chat."
+# callback
+home_start_notice: "home start"
+home_start: |
+  Hi [{}](tg://user?id={}) 👋🏻
+
+  💭 [{}](https://t.me/{}) is a bot to play music and video in groups, through the new Telegram video chats.
+
+  🕵🏻 Check out all the **Bot's commands** and how they work by clicking on the » 📚 **Commands** button!
+
+  🧑🏻‍💻 To know how to use this bot, please click on the » ❓ **Basic Guide** button!
+add_me_to_group: "Add me to a Group"
+basic_guide: "Basic Guide"
+commands: "Commands"
+donate: "Donate"
+support_group: "Support Group"
+support_channel: "Support Channel"
+source_code: "Source Code"
+quick_use_notice: "quick bot usage"
+quick_use: |
+  ℹ️ Quick use Guide bot, please read fully !
+
+  👩🏻‍💼 » /play - Type this with give the song title or youtube link or audio file to play Music. (Remember to don't play YouTube live stream by using this command!, because it will cause unforeseen problems.)
+
+  👩🏻‍💼 » /vplay - Type this with give the song title or youtube link or video file to play Video. (Remember to don't play YouTube live video by using this command!, because it will cause unforeseen problems.)
+
+  👩🏻‍💼 » /vstream - Type this with give the YouTube live stream video link or m3u8 link to play live Video. (Remember to don't play local audio/video files or non-live YouTube video by using this command!, because it will cause unforeseen problems.)
+
+  ❓ Have questions? Contact us in [Support Group](https://t.me/{}).
+go_back: "Go Back"
+user_guide_notice: "user guide"
+user_guide: |
+  ❓ How to use this Bot ?, read the Guide below !
+
+  1.) First, add this bot to your Group.
+  2.) Then, promote this bot as administrator on the Group also give all permissions except Anonymous admin.
+  3.) After promoting this bot, type /reload in Group to update the admin data.
+  3.) Invite @{} to your group or type /userbotjoin to invite her, unfortunately the userbot will joined by itself when you type `/play (song name)` or `/vplay (song name)`.
+  4.) Turn on/Start the video chat first before start to play video/music.
+
+  `- END, EVERYTHING HAS BEEN SETUP -`
+
+  📌 If the userbot not joined to video chat, make sure if the video chat already turned on and the userbot in the chat.
+
+  💡 If you have a follow-up questions about this bot, you can tell it on my support chat here: @{}.
+user_guide_button: "Quick use Guide"
+commands_menu_notice: "commands menu"
+commands_menu: |
+  ✨ **Hello [{}](tg://user?id={}) !**
+
+  » Check out the menu below to read the module information & see the list of available Commands !
+
+  All commands can be used with (`! / .`) handler
+admins_commands: "Admins Commands"
+users_commands: "Users Commands"
+sudoers_commands: "Sudo Commands"
+owners_commands: "Owner Commands"
+basic_commands_notice: "basic commands"
+basic_commands: |
+  ✏️ Command list for all user.
+
+  » /play (song name/youtube link) - play the music from youtube
+  » /stream (m3u8/youtube live link) - play youtube/m3u8 live stream music
+  » /vplay (video name/youtube link) - play the video from youtube
+  » /vstream (m3u8/youtube live link) - play youtube/m3u8 live stream video
+  » /playlist - view the queue list of songs and current playing song
+  » /lyric (query) - search for song lyrics based on the name of the song
+  » /video (query) - download video from youtube
+  » /song (query) - download song from youtube
+  » /search (query) - search for the youtube video link
+  » /ping - show the bot ping status
+  » /uptime - show the bot uptime status
+  » /alive - show the bot alive info (in Group only)
+admin_commands_notice: "admin commands"
+admin_commands: |
+  ✏️ Command list for group admin.
+
+  » /pause - pause the current track being played
+  » /resume - play the previously paused track
+  » /skip - goes to the next track
+  » /stop - stop playback of the track and clears the queue
+  » /vmute - mute the streamer userbot on group call
+  » /vunmute - unmute the streamer userbot on group call
+  » /volume `1-200` - adjust the volume of music (userbot must be admin)
+  » /reload - reload bot and refresh the admin data
+  » /userbotjoin - invite the userbot to join group
+  » /userbotleave - order userbot to leave from group
+  » /startvc - start/restart the group call
+  » /stopvc - stop/discard the group call
+sudo_no_permission: |
+  You don't have permissions to click this button
+
+  » This button is reserved for sudo members of this bot.
+sudo_commands_notice: "sudo commands"
+sudo_commands: |
+  ✏️ Command list for sudo user.
+
+  » /stats - get the bot current statistic
+  » /calls - show you the list of all active group call in database
+  » /block (`chat_id`) - use this to blacklist any group from using your bot
+  » /unblock (`chat_id`) - use this to whitelist any group from using your bot
+  » /blocklist - show you the list of all blacklisted chat
+  » /speedtest - run the bot server speedtest
+  » /sysinfo - show the system information
+  » /logs - generate the current bot logs
+  » /eval - run an code
+  » /sh - run an code
+owner_no_permission: |
+  You don't have permissions to click this button
+
+  » This button is reserved for owner of this bot.
+owner_commands_notice: "owner commands"
+owner_commands: |
+  ✏️ Command list for bot owner.
+
+  » /gban (`username` or `user_id`) - for global banned people, can be used only in group
+  » /ungban (`username` or `user_id`) - for un-global banned people, can be used only in group
+  » /update - update your bot to latest version
+  » /restart - restart your bot server
+  » /leaveall - order userbot to leave from all group
+  » /leavebot (`chat id`) - order bot to leave from the group you specify
+  » /broadcast (`message`) - send a broadcast message to all groups in bot database
+  » /broadcast_pin (`message`) - send a broadcast message to all groups in bot database with the chat pin
+control_panel_opened: "control panel opened"
+# developer
+exec_need_argument: "Give a command to execute"
+exec_time: "runtime {} seconds"
+sh_help: |
+  **usage:**
+
+  » /sh echo hello world
+leave_bot_help: |
+  **usage:**
+
+  » /leavebot (`chat_id`)
+leave_error: |
+  process failed
+
+  reason:
+leave_success: "Bot successfully left from the Group:"
+# downloader
+song_find: "finding song..."
+song_error: |
+  song not found.
+
+  » Give me a valid song name !
+song_download: "downloading song..."
+song_upload: "uploading song..."
+song_uploader: "• uploader @{}"
+song_need_fix: "error, wait for bot owner to fix"
+video_download: "downloading video..."
+video_upload: "uploading video..."
+lyric_help: |
+  **usage:**
+
+  /lyrics (song name)
+lyric_find: "Searching lyrics..."
+lyric_not_find: "`404` lyrics not found"
+lyric_format: |
+  **Title song:** {}
+  **Artist name:** {}
+  **Lyrics:**
+
+  {}
+# essentials
+broadcast_success: "Broadcast complete in {} Group."
+broadcast_help: |
+  **usage**:
+
+  /broadcast (`message`) or (`reply to message`)
+broadcast_pin: "Sent with {} chat pins."
+broadcast_pin_help: |
+  **usage**:
+
+  /broadcast_pin (`message`) or (`reply to message`)
+stats: "❖ Collecting Stats..."
+stats_msg: |
+  📊 Current Statistic of [{}](https://t.me/{})`:`
+
+  ➥ **Groups Chat** : `{}`
+  ➥ **Users Dialog** : `{}`
+  ➥ **Gbanned Users** : `{}`
+
+  ➛ **Python Version** : `{}`
+  ➛ **PyTgCalls Version** : `{}`
+  ➛ **Pyrogram Version** : `{}`
+
+  🤖 bot version: `{}`
+calls_no: "no active group calls"
+calls_msg: |
+  ✏️ **Running Group Call List:**
+
+  {}
+
+  ❖ This is the list of all current active group call in my database.
+# inline
+inline_no: "Type the YouTube video name to search !"
+inline_views: "views."
+inline_timeout: "error: search timed out"
+# music_stream
+play_reply_file: "» reply to an **audio file** or **give something to search.**"
+audio_download: "downloading audio..."
+music: "music"
+voice_note: "voice note"
+queue_track: "Queueing Track..."
+audio_add_track: "💡 **Track added to queue »** `{}`"
+audio_play: |
+  🗂 **Name:** [{}]({}) | `music`
+  ⏱️ **Duration:** `{}`
+  🧸 **Request by:** {}
+join_group_call: "Joining Group Call..."
+group_no_vc: |
+  ❌ The bot can't find the Group call or it's inactive.
+
+  » Use /startvc command to turn on the Group call !"
+play_no_anony: |
+  you're an __Anonymous__ user !
+
+  » revert back to your real user account to use this bot.
+userbot_banned: "❌ The userbot is banned in this chat, unban the userbot first to be able to play music !"
+userbot_failed: |
+  ❌ **userbot failed to join**
+
+  **reason**: `{}`"
+  loading: "Loading...
+search_no: "no results found"
+yt_dl_issue: "yt-dl issues detected"
+play_no_audio_source: "The content you provide to play has no audio source"
+stream_url: "Give me a youtube live url/m3u8 url to stream."
+stream_play: |
+  🗂 **Name:** [{}]({}) | `live`
+  🧸 **Request by:** {}
+process_cancel: "The process was cancelled, please try again later or use `/vstream` command to stream in audio only."
+# playlist
+close: "Close"
+currently_streaming: "Currently Streaming"
+queue_song_list: "Queue song list"
+queue_no: "nothing is currently streaming."
+# punishment
+gban_help: |
+  **usage:**
+
+  /gban [username | user_id]
+gban_self: "You can't gban yourself !"
+gban_myself: "I can't gban myself !"
+gban_sudo: "You can't gban sudo user !"
+gban_owner: "You can't gban my creator !"
+gban_msg: |
+  🚷 **Globally banning {}**
+  ⏱ Expected time: `{}
+gban_text: |
+  🚷 **New Global ban on [{}](https://t.me/{})
+
+  **Origin:** {} [`{}`]
+  **Sudo User:** {}
+  **Banned User:** {}
+  **Banned User ID:** `{}`
+  **Chats:** `{}`
+gban_already: "This user already gbanned !"
+un_gban_help: |
+  **usage:**
+
+  /ungban [username | user_id]
+un_gban_self: "You can't ungban yourself because you can't be gbanned !"
+un_gban_myself: "I can't ungban myself because i can't be gbanned !"
+un_gban_sudo: "Sudo users can't be gbanned/ungbanned !"
+un_gban_owner: "Bot creator can't be gbanned/ungbanned !"
+un_gban_no: "This user is not gbanned !"
+un_gban_process: "ungbanning user..."
+un_gban: "This user has ungbanned"
+# speedtest
+speedtest_server: "running server speedtest"
+speedtest_upload: "running upload speedtest..."
+speedtest_download: "running download speedtest..."
+speedtest_share: "sharing speedtest results"
+speedtest_text: |
+  💡 **SpeedTest Results**
+
+  <u>**Client:**</u>
+  **ISP:** {}
+  **Country:** {}
+
+  <u>**Server:**</u>
+  **Name:** {}
+  **Country:** {}, {}
+  **Sponsor:** {}
+  **Latency:** {}
+
+  ⚡️ **Ping:** {}
+# start
+alive_msg: |
+  **Hello {}, I'm {}**
+
+  🧑🏼‍💻 My Master: [{}](https://t.me/{})
+  👾 Bot Version: `v{}`
+  🔥 Pyrogram Version: `{}`
+  🐍 Python Version: `{}`
+  ✨ PyTgCalls Version: `{}`
+  🆙 Uptime Status: `{}`
+
+  ❤ **Thanks for Adding me here, for playing video & music on your Group's video chat**
+ping: "pinging..."
+pong: |
+  🏓 PONG !
+  ⏱ `{} ms`
+uptime_msg: |
+  • Uptime: `{}`
+  • Start Time: `{}`
+group_block: "This chat has blacklisted by sudo user and You're not allowed to use me in this chat."
+group_welcome: |
+  ❤️ Thanks for adding me to the **Group** !
+
+
+  Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.
+
+  Once done, then type `/reload`
+assistant: "Assistant"
+ban_failed: "can't remove gbanned user from chat:"
+ban_success: |
+  👮🏼 (> {} <)
+
+  **Gbanned** user detected, that user has been gbanned by sudo user and was blocked from this Chat !
+
+  🚫 **Reason:** potential spammer and abuser.
+# sysinfo
+sysinfo_msg: |
+  🖥 **System Information**
+    
+  **PlatForm :** `{}`
+  **PlatForm - Release :** `{}`
+  **PlatForm - Version :** `{}`
+  **Architecture :** `{}`
+  **HostName :** `{}`
+  **IP :** `{}`
+  **Mac :** `{}`
+  **Processor :** `{}`
+  **Ram : ** `{}`
+  **CPU :** `{}`
+  **CPU FREQ :** `{}`
+  **DISK :** `{}`
+logs: "this is the bot logs"
+logs_no: "no logs found !"
+# updater
+update_check: "Checking updates..."
+update_success: |
+  ✅ Update finished !
+
+  • Bot restarting, back active again in 1 minutes.
+update_no: "bot is **up-to-date** with"
+restart: "Restarting bot..."
+client_restart: "[INFO]: BOT SERVER RESTARTED !!"
+restart_success: |
+  ✅ Bot has restarted !
+
+  » back active again in 5-10 seconds.
+# video_stream
+video: "video"
+video_720p: "start streaming the local video in 720p quality"
+video_play: |
+  🗂 **Name:** [{}]({}) | `video`
+  ⏱️ **Duration:** `{}`
+  🧸 **Request by:** {}
+play_reply_video: "» reply to an **video file** or **give something to search.**"
+play_no_video_source: "The content you provide to play has no video source"
+play_live: "» Give me a youtube live url/m3u8 url to stream."
+live_720p: "» started streaming the live video in 720p quality"
+# ytsearch
+search_help: "/search **needs an argument !**"
+search_name: "Name:"
+search_duration: "Duration:"
+search_views: "Views:"
+search_channel: "Channel:"
+search_link: "Link:"
+# function
+no_group_calls: "no group calls found"
+# inline
+inline_menu: "Mᴇɴᴜ"
+inline_close: "Cʟᴏsᴇ"
+# utils
+skip_error: |
+  ❌ an error occurred
+
+  » **Clearing** Queues and leaving video chat.
+skip_msg: |
+  💡 **Streaming next track**
+
+  🗂 **Name:** [{}]({}) | `{}`
+  💭 **Chat:** `{}`
+# decorators
+give_me_admin: "💡 To use me, Give me the administrator permission."
+you_should_be_admin: "💡 You need to be an administrator to use this command."
+give_me_permissions: "💡 To use me, Give me the following permission below:"
+you_need_permissions: "💡 You need to be an administrator to use this command."
+you_have_blocked: "You've blocked from using this bot!"
+# thumbnail
+play: "Playing on {}"
