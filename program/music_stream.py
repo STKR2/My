@@ -39,7 +39,7 @@ from driver.utils import bash, remove_if_exists, from_tg_get_msg, R
 from driver.database.dbqueue import add_active_chat, remove_active_chat, music_on
 from driver.decorators import require_admin, check_blacklist
 
-from config import BOT_USERNAME, IMG_1, IMG_2, IMG_5
+from config import IMG_1, IMG_2, IMG_5
 from asyncio import TimeoutError
 from youtubesearchpython import VideosSearch
 
@@ -75,23 +75,22 @@ def convert_seconds(seconds):
     return "%02d:%02d" % (minutes, seconds)
 
 
-async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str = None):
+async def stream_audio_file(c: Client, m: Message, replied: Message = None, link: str = None):
     chat_id = m.chat.id
     user_id = m.from_user.id
     if link:
         try:
             replied = await from_tg_get_msg(link)
         except Exception as e:
-            LOGS.info(e)
             return await m.reply_text(f"🚫 {R('error')}\n\n» {e}")
     if not replied:
-        return await m.reply(R("play_reply_file"))
+        return await m.reply_text(R("play_reply_file"))
     if replied.audio or replied.voice:
         if not link:
             suhu = await replied.reply(f"📥 {R('audio_download')}")
         else:
             suhu = await m.reply(f"📥 {R('audio_download')}")
-        dl = await replied.download()
+        file = await replied.download()
         link = replied.link
         songname = R("music")
         thumbnail = f"{IMG_5}"
@@ -111,7 +110,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             elif replied.voice:
                 songname = R("voice_note")
                 duration = convert_seconds(replied.voice.duration)
-        except BaseException:
+        except Exception:
             pass
 
         if not thumbnail:
@@ -121,50 +120,50 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             await suhu.edit(f"🔄 {R('queue_track')}")
             gcname = m.chat.title
             ctitle = await CHAT_TITLE(gcname)
-            title = songname
+            titles = songname
             userid = m.from_user.id
-            image = await thumb(thumbnail, title, userid, ctitle)
-            pos = add_to_queue(chat_id, songname, dl, link, R("music"), 0)
-            requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-            buttons = stream_markup(user_id)
+            images = await thumb(thumbnail, titles, userid, ctitle)
+            tracks = add_to_queue(chat_id, songname, file, link, R("music"), 0)
+            person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+            button = stream_markup(user_id)
             await suhu.delete()
-            await m.reply_photo(
-                photo=image,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                caption=(R("audio_add_track").format(pos) + "\n\n" +
-                         R("audio_play").format(songname, link, duration, requester)),
+            await m.send_photo(
+                chat_id,
+                photo=images,
+                reply_markup=InlineKeyboardMarkup(button),
+                caption=(R("audio_add_track").format(tracks) + "\n\n" +
+                         R("audio_play").format(songname, link, duration, person)),
             )
-            remove_if_exists(image)
+            remove_if_exists(images)
         else:
             try:
+                await suhu.edit(f"🔄 {R('join_group_call')}")
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
-                title = songname
+                titles = songname
                 userid = m.from_user.id
-                image = await thumb(thumbnail, title, userid, ctitle)
-                await suhu.edit(f"🔄 {R('join_group_call')}")
+                images = await thumb(thumbnail, titles, userid, ctitle)
+                person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                button = stream_markup(user_id)
                 await music_on(chat_id)
                 await add_active_chat(chat_id)
                 await calls.join_group_call(
                     chat_id,
                     AudioPiped(
-                        dl,
+                        file,
                         HighQualityAudio(),
                     ),
                     stream_type=StreamType().pulse_stream,
                 )
-                add_to_queue(chat_id, songname, dl, link, R("music"), 0)
+                add_to_queue(chat_id, songname, file, link, R("music"), 0)
                 await suhu.delete()
-                buttons = stream_markup(user_id)
-                requester = (
-                    f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                await m.send_photo(
+                    chat_id,
+                    photo=images,
+                    reply_markup=InlineKeyboardMarkup(button),
+                    caption=R("audio_play").format(songname, link, duration, person),
                 )
-                await m.reply_photo(
-                    photo=image,
-                    reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=R("audio_play").format(songname, link, duration, requester),
-                )
-                remove_if_exists(image)
+                remove_if_exists(images)
             except (NoActiveGroupCall, GroupCallNotFound):
                 await suhu.delete()
                 await remove_active_chat(chat_id)
@@ -175,7 +174,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
         await m.reply_text(R("play_reply_file"))
 
 
-@Client.on_message(command(["play", f"play@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["play"]) & other_filters)
 @check_blacklist()
 @require_admin(permissions=["can_manage_voice_chats", "can_delete_messages", "can_invite_users"], self=True)
 async def audio_stream(c: Client, m: Message):
@@ -192,7 +191,7 @@ async def audio_stream(c: Client, m: Message):
             try:
                 await m.reply_text(R("userbot_banned"))
                 await remove_active_chat(chat_id)
-            except BaseException:
+            except Exception:
                 pass
             invitelink = (await c.get_chat(chat_id)).invite_link
             if not invitelink:
@@ -219,11 +218,10 @@ async def audio_stream(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
-            LOGS.info(e)
             return await m.reply_text(R("userbot_failed").format(e))
     if replied:
         if replied.audio or replied.voice:
-            await play_tg_file(c, m, replied)
+            await stream_audio_file(c, m, replied)
         else:
             if len(m.command) < 2:
                 await m.reply(R("play_reply_file"))
@@ -234,34 +232,35 @@ async def audio_stream(c: Client, m: Message):
                 if search == 0:
                     await suhu.edit(f"❌ **{R('search_no')}**")
                 else:
-                    songname = search[0]
+                    songs = search[0]
                     title = search[0]
-                    url = search[1]
-                    duration = search[2]
+                    links = search[1]
+                    durations = search[2]
                     thumbnail = search[3]
                     userid = m.from_user.id
                     gcname = m.chat.title
                     ctitle = await CHAT_TITLE(gcname)
-                    image = await thumb(thumbnail, title, userid, ctitle)
-                    out, ytlink = await ytdl(url)
+                    images = await thumb(thumbnail, title, userid, ctitle)
+                    person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    button = stream_markup(user_id)
+                    out, ytlink = await ytdl(links)
                     if out == 0:
                         await suhu.edit(f"❌ {R('yt_dl_issue')}\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
                             await suhu.edit(f"🔄 {R('queue_track')}")
                             pos = add_to_queue(
-                                chat_id, songname, ytlink, url, R("music"), 0
+                                chat_id, songs, ytlink, links, R("music"), 0
                             )
                             await suhu.delete()
-                            buttons = stream_markup(user_id)
-                            requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                            await m.reply_photo(
-                                photo=image,
-                                reply_markup=InlineKeyboardMarkup(buttons),
+                            await m.send_photo(
+                                chat_id,
+                                photo=images,
+                                reply_markup=InlineKeyboardMarkup(button),
                                 caption=(R("audio_add_track").format(pos) + "\n\n" +
-                                         R("audio_play").format(songname, url, duration, requester)),
+                                         R("audio_play").format(songs, links, durations, person)),
                             )
-                            remove_if_exists(image)
+                            remove_if_exists(images)
                         else:
                             try:
                                 await suhu.edit(f"🔄 {R('join_group_call')}")
@@ -275,18 +274,15 @@ async def audio_stream(c: Client, m: Message):
                                     ),
                                     stream_type=StreamType().local_stream,
                                 )
-                                add_to_queue(chat_id, songname, ytlink, url, R("music"), 0)
+                                add_to_queue(chat_id, songs, ytlink, links, R("music"), 0)
                                 await suhu.delete()
-                                buttons = stream_markup(user_id)
-                                requester = (
-                                    f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                                await m.send_photo(
+                                    chat_id,
+                                    photo=images,
+                                    reply_markup=InlineKeyboardMarkup(button),
+                                    caption=R("audio_play").format(songs, links, durations, person),
                                 )
-                                await m.reply_photo(
-                                    photo=image,
-                                    reply_markup=InlineKeyboardMarkup(buttons),
-                                    caption=R("audio_play").format(songname, url, duration, requester),
-                                )
-                                remove_if_exists(image)
+                                remove_if_exists(images)
                             except (NoActiveGroupCall, GroupCallNotFound):
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
@@ -301,7 +297,7 @@ async def audio_stream(c: Client, m: Message):
         elif "t.me" in m.command[1]:
             for i in m.command[1:]:
                 if "t.me" in i:
-                    await play_tg_file(c, m, link=i)
+                    await stream_audio_file(c, m, link=i)
                 continue
         else:
             suhu = await c.send_message(chat_id, f"🔍 **{R('loading')}**")
@@ -310,32 +306,33 @@ async def audio_stream(c: Client, m: Message):
             if search == 0:
                 await suhu.edit(f"❌ **{R('search_no')}**")
             else:
-                songname = search[0]
+                songs = search[0]
                 title = search[0]
-                url = search[1]
-                duration = search[2]
+                links = search[1]
+                durations = search[2]
                 thumbnail = search[3]
                 userid = m.from_user.id
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
-                image = await thumb(thumbnail, title, userid, ctitle)
-                veez, ytlink = await ytdl(url)
-                if veez == 0:
+                images = await thumb(thumbnail, title, userid, ctitle)
+                person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                button = stream_markup(user_id)
+                out, ytlink = await ytdl(links)
+                if out == 0:
                     await suhu.edit(f"❌ {R('yt_dl_issue')}\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         await suhu.edit(f"🔄 {R('queue_track')}")
-                        pos = add_to_queue(chat_id, songname, ytlink, url, R("music"), 0)
+                        pos = add_to_queue(chat_id, songs, ytlink, links, R("music"), 0)
                         await suhu.delete()
-                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        buttons = stream_markup(user_id)
-                        await m.reply_photo(
-                            photo=image,
-                            reply_markup=InlineKeyboardMarkup(buttons),
+                        await m.send_photo(
+                            chat_id,
+                            photo=images,
+                            reply_markup=InlineKeyboardMarkup(button),
                             caption=(R("audio_add_track").format(pos) + "\n\n" +
-                                     R("audio_play").format(songname, url, duration, requester)),
+                                     R("audio_play").format(songs, links, durations, person)),
                         )
-                        remove_if_exists(image)
+                        remove_if_exists(images)
                     else:
                         try:
                             await suhu.edit(f"🔄 {R('join_group_call')}")
@@ -349,16 +346,15 @@ async def audio_stream(c: Client, m: Message):
                                 ),
                                 stream_type=StreamType().local_stream,
                             )
-                            add_to_queue(chat_id, songname, ytlink, url, R("music"), 0)
+                            add_to_queue(chat_id, songs, ytlink, links, R("music"), 0)
                             await suhu.delete()
-                            requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                            buttons = stream_markup(user_id)
-                            await m.reply_photo(
-                                photo=image,
-                                reply_markup=InlineKeyboardMarkup(buttons),
-                                caption=R("audio_play").format(songname, url, duration, requester),
+                            await m.send_photo(
+                                chat_id,
+                                photo=images,
+                                reply_markup=InlineKeyboardMarkup(button),
+                                caption=R("audio_play").format(songs, links, durations, person),
                             )
-                            remove_if_exists(image)
+                            remove_if_exists(images)
                         except (NoActiveGroupCall, GroupCallNotFound):
                             await suhu.delete()
                             await remove_active_chat(chat_id)
@@ -385,7 +381,7 @@ async def live_music_stream(c: Client, m: Message):
             try:
                 await m.reply_text(R("userbot_banned"))
                 await remove_active_chat(chat_id)
-            except BaseException:
+            except Exception:
                 pass
             invitelink = (await c.get_chat(chat_id)).invite_link
             if not invitelink:
@@ -412,7 +408,6 @@ async def live_music_stream(c: Client, m: Message):
         except UserAlreadyParticipant:
             pass
         except Exception as e:
-            LOGS.info(e)
             return await m.reply_text(R("userbot_failed").format(e))
     if len(m.command) < 2:
         await m.reply_text(f"» {R('stream_url')}")
@@ -432,15 +427,16 @@ async def live_music_stream(c: Client, m: Message):
             if "m3u8" in url:
                 if chat_id in QUEUE:
                     await msg.edit_text(f"🔄 {R('queue_track')}")
-                    pos = add_to_queue(chat_id, "m3u8 audio", data, url, R("music"), 0)
+                    tracks = add_to_queue(chat_id, "m3u8 audio", data, url, R("music"), 0)
+                    person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                    button = stream_markup(user_id)
                     await msg.delete()
-                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                    buttons = stream_markup(user_id)
-                    await m.reply_photo(
+                    await m.send_photo(
+                        chat_id,
                         photo=f"{IMG_1}",
-                        reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=(R("audio_add_track").format(pos) + "\n\n" +
-                                 R("stream_play").format("m3u8 audio stream", url, requester)),
+                        reply_markup=InlineKeyboardMarkup(button),
+                        caption=(R("audio_add_track").format(tracks) + "\n\n" +
+                                 R("stream_play").format("m3u8 audio stream", url, person)),
                     )
                 else:
                     try:
@@ -456,13 +452,14 @@ async def live_music_stream(c: Client, m: Message):
                             stream_type=StreamType().live_stream,
                         )
                         add_to_queue(chat_id, "m3u8 audio", data, url, R("music"), 0)
+                        person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                        button = stream_markup(user_id)
                         await msg.delete()
-                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        buttons = stream_markup(user_id)
-                        await m.reply_photo(
+                        await m.send_photo(
+                            chat_id,
                             photo=f"{IMG_2}",
-                            reply_markup=InlineKeyboardMarkup(buttons),
-                            caption=R("stream_play").format("m3u8 audio stream", url, requester),
+                            reply_markup=InlineKeyboardMarkup(button),
+                            caption=R("stream_play").format("m3u8 audio stream", url, person),
                         )
                     except (NoActiveGroupCall, GroupCallNotFound):
                         await msg.delete()
@@ -474,26 +471,27 @@ async def live_music_stream(c: Client, m: Message):
                         await m.reply_text(R("play_no_audio_source"))
             else:
                 search = ytsearch(url)
-                title = search[0]
-                songname = search[0]
+                titles = search[0]
+                songnames = search[0]
                 thumbnail = search[3]
                 userid = m.from_user.id
                 gcname = m.chat.title
                 ctitle = await CHAT_TITLE(gcname)
-                image = await thumb(thumbnail, title, userid, ctitle)
+                images = await thumb(thumbnail, titles, userid, ctitle)
+                person = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+                button = stream_markup(user_id)
                 if chat_id in QUEUE:
                     await msg.edit_text(f"🔄 {R('queue_track')}")
-                    pos = add_to_queue(chat_id, songname, data, url, R("music"), 0)
+                    pos = add_to_queue(chat_id, songnames, data, url, R("music"), 0)
                     await msg.delete()
-                    requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                    buttons = stream_markup(user_id)
-                    await m.reply_photo(
+                    await m.send_photo(
+                        chat_id,
                         photo=image,
-                        reply_markup=InlineKeyboardMarkup(buttons),
+                        reply_markup=InlineKeyboardMarkup(button),
                         caption=(R("audio_add_track").format(pos) + "\n\n" +
-                                 R("stream_play").format(songname, url, requester)),
+                                 R("stream_play").format(songnames, url, person)),
                     )
-                    remove_if_exists(image)
+                    remove_if_exists(images)
                 else:
                     try:
                         await msg.edit_text(f"🔄 {R('join_group_call')}")
@@ -507,16 +505,15 @@ async def live_music_stream(c: Client, m: Message):
                             ),
                             stream_type=StreamType().live_stream,
                         )
-                        add_to_queue(chat_id, songname, data, url, R("music"), 0)
+                        add_to_queue(chat_id, songnames, data, url, R("music"), 0)
                         await msg.delete()
-                        requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
-                        buttons = stream_markup(user_id)
-                        await m.reply_photo(
+                        await m.send_photo(
+                            chat_id,
                             photo=image,
-                            reply_markup=InlineKeyboardMarkup(buttons),
-                            caption=R("stream_play").format(songname, url, requester),
+                            reply_markup=InlineKeyboardMarkup(button),
+                            caption=R("stream_play").format(songnames, url, person),
                         )
-                        remove_if_exists(image)
+                        remove_if_exists(images)
                     except (NoActiveGroupCall, GroupCallNotFound):
                         await msg.delete()
                         await remove_active_chat(chat_id)
