@@ -43,11 +43,11 @@
             "description": "fill with your own telegram id, this is needed because there's any feature that only can be used by bot owner",
             "required": true
         },
-        "GROUP_SUPPORT": {
+        "GROUP_URL": {
             "description": "if you have a support group for your bot, Then fill the group username here without @",
             "required": true
         },
-        "UPDATES_CHANNEL": {
+        "CHANNEL_URL": {
             "description": "if you have a support channel for your bot, Then fill the channel username here without @",
             "required": true
         },
