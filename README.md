@@ -1,6 +1,6 @@
 <p align="center"><a href="https://t.me/VeezVideoBot"><img src="https://github.com/levina-lab/video-stream/raw/main/driver/veezlogo.png"></a></p>
 <p align="center">
-    <br><b>Video Stream is an Open-Source Telegram Bot project that's allow you to play Video & Music trough the Telegram Group Video Chat</b><br>
+    <br><b>Video Stream is an Open-Source Telegram Bot project that's let user to play Video & Music through the Telegram Groups video chat feature</b><br>
 </p>
 <p align="center">
     <a href="https://www.codefactor.io/repository/github/levina-lab/video-stream"> <img src="https://www.codefactor.io/repository/github/levina-lab/video-stream/badge?color=red&logo=codacy&style=flat-square" alt="CodeFactor" /></a>
@@ -73,6 +73,7 @@ root@linux~ $ python3 main.py
 </details>
 
 ## Config Vars
+
 - Checkout all [Available Vars](https://levina.gitbook.io/videostreambot/vars/available-vars)
 - Checkout the [Vars Information](https://levina.gitbook.io/videostreambot/vars/vars-information)
 - Checkout some [Configs](https://levina.gitbook.io/videostreambot/setup-config/config)
@@ -92,6 +93,6 @@ Distributed under the [GNU General Public License v3.0 License](https://github.c
 - [Levina](https://github.com/levina-lab) ``Dev``
 - [Zxce3](https://github.com/Zxce3) ``Dev``
 - [tofikdn](https://github.com/tofikdn) ``Dev``
-- [xtaodada](https://github.com/xtao-dada) ``Dev``
+- [xtaodada](https://github.com/omg-xtao) ``Dev``
 - [Laky's](https://github.com/Laky-64) for [``py-tgcalls``](https://github.com/pytgcalls/pytgcalls)
 - [Dan](https://github.com/delivrance) for [``Pyrogram``](https://github.com/pyrogram)
