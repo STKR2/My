@@ -119,8 +119,6 @@ async def alive(c: Client, message: Message):
         [
             [
                 InlineKeyboardButton("🥇 الاوامر هنا", callback_data="command_list"),
-
-                ),
             ]
         ]
     )
