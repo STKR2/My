@@ -215,8 +215,7 @@ async def change_volume(c: Client, m: Message):
     a = await c.get_chat_member(m.chat.id, me_user.id)
     if not a.can_manage_voice_chats:
         return await m.reply_text(
-            "كمشرف في المجموعة مع صلاحية @Playvideo1 لاستخدام هذه الامر ، عليك رفع حساب المساعد : بصلاحية الدردشة الصوتية
-"
+            " 👍🏻لاستخدام هذه الامر ، عليك رفع حساب المساعد : بصلاحية الدردشة الصوتية"
         )
     range = m.command[1]
     chat_id = m.chat.id
