@@ -134,13 +134,13 @@ async def alive(c: Client, message: Message):
     )
 
 
-@Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
+@Client.on_message(command(["بنك", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
 @check_blacklist()
 async def ping_pong(c: Client, message: Message):
     start = time()
     m_reply = await message.reply_text("pinging...")
     delta_ping = time() - start
-    await m_reply.edit_text("🏓 PONG !\n" f"⏱ `{delta_ping * 1000:.3f} ms`")
+    await m_reply.edit_text("🏓 البنك !\n" f"⏱ `{delta_ping * 1000:.3f} مللي ثانية`")
 
 
 @Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
@@ -150,8 +150,8 @@ async def get_uptime(c: Client, message: Message):
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
     await message.reply_text(
-        f"• Uptime: `{uptime}`\n"
-        f"• Start Time: `{START_TIME_ISO}`"
+        f"• وقت البدء: `{uptime}`\n"
+        f"• وقت التشغيل: `{START_TIME_ISO}`"
     )
 
 
@@ -183,16 +183,15 @@ async def new_chat(c: Client, m: Message):
                     return await bot.leave_chat(chat_id)
             if member.id == me_bot.id:
                 return await m.reply(
-                    "❤️ Thanks for adding me to the **Group** !\n\n"
-                    "Appoint me as administrator in the **Group**, otherwise I will not be able to work properly, and don't forget to type `/userbotjoin` for invite the assistant.\n\n"
-                    "Once done, then type `/reload`",
+                    "🎗️ وأخيرا ضفتوني ، طبعاً شكراً للي ضافني !\n\n"                 
+                    "👍🏻 اضغط على زر الاوامر حتى تشوف شلون تشغلني ",
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton("📣 Channel", url=f"https://t.me/{UPDATES_CHANNEL}"),
-                                InlineKeyboardButton("💭 Support", url=f"https://t.me/{GROUP_SUPPORT}")
+                                InlineKeyboardButton("-› قناة السورس", url=f"https://t.me/{UPDATES_CHANNEL}"),
+                                InlineKeyboardButton("-› الاوامر", callback_data="command_list")
                             ],[
-                                InlineKeyboardButton("👤 Assistant", url=f"https://t.me/{me_user.username}")
+                                InlineKeyboardButton("-› حساب المساعد", url=f"https://t.me/{me_user.username}")
                             ]
                         ]
                     )
