@@ -140,7 +140,7 @@ async def ping_pong(c: Client, message: Message):
     await m_reply.edit_text("🏓 البنك !\n" f"⏱ `{delta_ping * 1000:.3f} مللي ثانية`")
 
 
-@Client.on_message(command(["uptime", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
+@Client.on_message(command(["الوقت", f"uptime@{BOT_USERNAME}"]) & ~filters.edited)
 @check_blacklist()
 async def get_uptime(c: Client, message: Message):
     current_time = datetime.utcnow()
