@@ -138,7 +138,7 @@ async def alive(c: Client, message: Message):
 @check_blacklist()
 async def ping_pong(c: Client, message: Message):
     start = time()
-    m_reply = await message.reply_text("pinging...")
+    m_reply = await message.reply_text("جاري حساب البنك...")
     delta_ping = time() - start
     await m_reply.edit_text("🏓 البنك !\n" f"⏱ `{delta_ping * 1000:.3f} مللي ثانية`")
 
