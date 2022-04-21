@@ -89,7 +89,7 @@ async def guide_set(_, query: CallbackQuery):
 @check_blacklist()
 async def commands_set(_, query: CallbackQuery):
     user_id = query.from_user.id
-    await query.answer("commands menu")
+    await query.answer("👍🏻قائمة الاوامر")
     await query.edit_message_text(
         f"""- تابع الازرار في الاسفل ↓
 
@@ -109,7 +109,7 @@ async def commands_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("user_command"))
 @check_blacklist()
 async def user_set(_, query: CallbackQuery):
-    await query.answer("اوامر التشغيل 👍🏻")
+    await query.answer("👍🏻اوامر التشغيل")
     await query.edit_message_text(
         f"""- تابع الاوامر في الاسفل ↓
 
