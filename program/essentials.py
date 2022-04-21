@@ -140,29 +140,29 @@ async def broadcast_message_pin(c: Client, message: Message):
     )
 
 
-@Client.on_message(command(["stats", f"stats@{uname}"]) & ~filters.edited)
+@Client.on_message(command(["الاحصائيات", f"stats@{uname}"]) & ~filters.edited)
 @sudo_users_only
 async def bot_statistic(c: Client, message: Message):
     name = me_bot.first_name
     chat_id = message.chat.id
     msg = await c.send_message(
-        chat_id, "❖ Collecting Stats..."
+        chat_id, "❖ جاري جمع الاحصائيات..."
     )
     served_chats = len(await get_served_chats())
     served_users = len(await get_served_users())
     gbans_usertl = await get_gbans_count()
     tgm = f"""
-📊 Current Statistic of [{name}](https://t.me/{uname})`:`
+📊 الاحصائيات الحالية لـ -›  [{name}](https://t.me/{uname})`:`
 
-➥ **Groups Chat** : `{served_chats}`
-➥ **Users Dialog** : `{served_users}`
-➥ **Gbanned Users** : `{gbans_usertl}`
+-›  **عدد المجموعات** : `{served_chats}`
+-›  **عدد المستخدمين** : `{served_users}`
+-›  **عدد المحظورين** : `{gbans_usertl}`
 
-➛ **Python Version** : `{pyver}`
-➛ **PyTgCalls Version** : `{pytgver.__version__}`
-➛ **Pyrogram Version** : `{pyrover}`
+-›  **نسخة بايثون** : `{pyver}`
+-›  **نسخة السورس** : `{pytgver.__version__}`
+-›  **نسخة بايروجرام** : `{pyrover}`
 
-🤖 bot version: `{ver}`"""
+🎗️ نسخة التحديث: `{ver}`"""
     await msg.edit(tgm, disable_web_page_preview=True)
 
 
