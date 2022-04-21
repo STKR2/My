@@ -169,7 +169,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
                             f"⏱️ **Duration:** `{duration}`\n"
                             f"🧸 **Request by:** {requester}",
                 )
-                remove_if_exists(image)
+                remove_if_exists"https://te.legra.ph/file/90e3b3aeb77e3e598d66d.jpg"
             except (NoActiveGroupCall, GroupCallNotFound):
                 await suhu.delete()
                 await remove_active_chat(chat_id)
@@ -273,7 +273,7 @@ async def audio_stream(c: Client, m: Message):
                                 reply_markup=InlineKeyboardMarkup(buttons),
                                 caption=f"💡 **Track added to queue »** `{pos}`\n\n🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                             )
-                            remove_if_exists(image)
+                            remove_if_exists"https://te.legra.ph/file/d70bb6fa92728763c671f.jpg"
                         else:
                             try:
                                 await suhu.edit("🔄 Joining Group Call...")
@@ -294,11 +294,11 @@ async def audio_stream(c: Client, m: Message):
                                     f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 )
                                 await m.reply_photo(
-                                    photo=image,
+                                    photo="https://te.legra.ph/file/90e3b3aeb77e3e598d66d.jpg",
                                     reply_markup=InlineKeyboardMarkup(buttons),
                                     caption=f"🗂 **Name:** [{songname}]({url}) | `music`\n**⏱ Duration:** `{duration}`\n🧸 **Request by:** {requester}",
                                 )
-                                remove_if_exists(image)
+                                remove_if_exists"https://te.legra.ph/file/d70bb6fa92728763c671f.jpg"
                             except (NoActiveGroupCall, GroupCallNotFound):
                                 await suhu.delete()
                                 await remove_active_chat(chat_id)
