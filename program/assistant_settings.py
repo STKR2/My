@@ -39,7 +39,7 @@ from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdmi
 
 
 @Client.on_message(
-    command(["userbotjoin", f"userbotjoin@{BOT_USERNAME}"]) & other_filters
+    command(["انضم", f"ادخل"]) & other_filters
 )
 @check_blacklist()
 @authorized_users_only
@@ -56,13 +56,13 @@ async def join_chat(c: Client, m: Message):
             )
         await user.join_chat(invitelink)
         await remove_active_chat(chat_id)
-        return await user.send_message(chat_id, "✅ userbot joined this chat")
+        return await user.send_message(chat_id, "✅ فرحان هوايه لان دزيتولي دعوة")
     except UserAlreadyParticipant:
-        return await user.send_message(chat_id, "✅ userbot already in this chat")
+        return await user.send_message(chat_id, "✅ موجود يمعود")
 
 
 @Client.on_message(
-    command(["userbotleave", f"userbotleave@{BOT_USERNAME}"]) & other_filters
+    command(["غادر", f"userbotleave@{BOT_USERNAME}"]) & other_filters
 )
 @check_blacklist()
 @authorized_users_only
@@ -72,12 +72,12 @@ async def leave_chat(c :Client, m: Message):
         if chat_id in QUEUE:
             await remove_active_chat(chat_id)
             await user.leave_chat(chat_id)
-            return await c.send_message(chat_id, "✅ userbot has left from chat")
+            return await c.send_message(chat_id, "✅ هوه مو صوجك صوج القواد الي اجا يغنيلكم باي")
         else:
             await user.leave_chat(chat_id)
-            return await c.send_message(chat_id, "✅ userbot has left from chat")
+            return await c.send_message(chat_id, "✅ وانيهم طالع وياه باي")
     except UserNotParticipant:
-        return await c.send_message(chat_id, "❌ userbot already leave chat")
+        return await c.send_message(chat_id, "🦴 غادر منزمان لتلح")
 
 
 @Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]) & ~filters.edited)
@@ -108,12 +108,12 @@ async def leave_all(c: Client, message: Message):
     )
 
 
-@Client.on_message(command(["startvc", f"startvc@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["اصعد", f"افتح"]) & other_filters)
 @check_blacklist()
 @authorized_users_only
 async def start_group_call(c: Client, m: Message):
     chat_id = m.chat.id
-    msg = await c.send_message(chat_id, "`starting...`")
+    msg = await c.send_message(chat_id, "`❤️‍🔥يَاެݪله ࢪاެح اެفَتح مَكَالمة...`")
     try:
         peer = await user.resolve_peer(chat_id)
         await user.send(
@@ -125,37 +125,37 @@ async def start_group_call(c: Client, m: Message):
                 random_id=user.rnd_id() // 9000000000,
             )
         )
-        await msg.edit_text("✅ Group call started !")
+        await msg.edit_text("🦴 تَم فَتحت مَكَاެݪمَة صَعدۅ !")
     except ChatAdminRequired:
         await msg.edit_text(
-            "The userbot is not admin in this chat. To start the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
+            "كمشرف في المجموعة مع صلاحية @Playvideo1 لاستخدام هذه الامر ، عليك رفع حساب المساعد :\n\n-›  ❤️‍🔥 الدردشة الصوتية"
         )
 
 
-@Client.on_message(command(["stopvc", f"stopvc@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["انزل", f"سدها"]) & other_filters)
 @check_blacklist()
 @authorized_users_only
 async def stop_group_call(c: Client, m: Message):
     chat_id = m.chat.id
-    msg = await c.send_message(chat_id, "`stopping...`")
+    msg = await c.send_message(chat_id, "`🦎 يَاެݪݪهَ ࢪاެحَ اެسِدَ المَكَاެݪمَةَ...`")
     try:
         if not (
             group_call := (
                 await get_calls(m, err_msg="group call not active")
             )
         ):
-            await msg.edit_text("❌ The group call already ended")
+            await msg.edit_text("🦎 سديتها منزمان")
             return
         await user.send(
             DiscardGroupCall(
                 call=group_call
             )
         )
-        await msg.edit_text("✅ Group call has ended !")
+        await msg.edit_text("🦴 تَم اެݪانِهاء اެبشࢪ ")
     except Exception as e:
         if "GROUPCALL_FORBIDDEN" in str(e):
             await msg.edit_text(
-                "The userbot is not admin in this chat. To stop the Group call you must promote the userbot as admin first with permission:\n\n» ❌ manage_video_chats"
+                "كمشرف في المجموعة مع صلاحية @Playvideo1 لاستخدام هذه الامر ، عليك رفع حساب المساعد :\n\n-›  ❤️‍🔥 الدردشة الصوتية"
             )
 
 
