@@ -93,11 +93,11 @@ async def commands_set(_, query: CallbackQuery):
     await query.edit_message_text(
         f"""- تابع الازرار في الاسفل ↓
 
-يمديك تشوف كل اوامر البوت عن طريق زر - اوامر البوت""",
+يمديك تشوف كل اوامر البوت عن طريق زر اوامر البوت""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("-› اوامر البوت", callback_data="admin_command"),
+                    InlineKeyboardButton("-› اوامر البوت", callback_data="user_command"),
                 ],[             
                     InlineKeyboardButton("-› ࢪجَۅعَ", callback_data="home_start")
                 ],
