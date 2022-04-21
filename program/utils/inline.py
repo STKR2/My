@@ -40,7 +40,7 @@ close_mark = InlineKeyboardMarkup(
   [
     [
       InlineKeyboardButton(
-        "-›  اެغِݪاެقِ", callback_data="set_close"
+        "-› اެغِݪاެقِ", callback_data="set_close"
       )
     ]
   ]
@@ -51,7 +51,7 @@ back_mark = InlineKeyboardMarkup(
   [
     [
       InlineKeyboardButton(
-        "-›  ࢪجَۅٛعَ", callback_data="stream_menu_panel"
+        "-› ࢪجَۅٛعَ", callback_data="stream_menu_panel"
       )
     ]
   ]
