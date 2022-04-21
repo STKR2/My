@@ -109,7 +109,7 @@ async def commands_set(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("user_command"))
 @check_blacklist()
 async def user_set(_, query: CallbackQuery):
-    await query.answer("basic commands")
+    await query.answer("اوامر التشغيل 👍🏻")
     await query.edit_message_text(
         f"""- تابع الاوامر في الاسفل ↓
 
@@ -126,9 +126,9 @@ async def user_set(_, query: CallbackQuery):
 -› .بحث - لتحميل اغنية من اليوتيوب
 -› .كتم - لكتم صوت المساعد 
 -› .بنك - لإضهار بنك البوت
--› .انضم - لدعوة حساب المساعد""",
+-› .انضم - لدعوة حساب المساعد
 
-. شكراً لقرائتك الاوامر - أتمنى لك يوماً تعيساً 🦴
+. شكراً لقرائتك الاوامر - أتمنى لك يوماً تعيساً 🦴 """,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("-› ࢪجَۅعَ", callback_data="command_list")]]
         ),
@@ -146,7 +146,7 @@ async def at_set_markup_menu(_, query: CallbackQuery):
     user_id = query.message.from_user.id
     buttons = menu_markup(user_id)
     if chat_id in QUEUE:
-        await query.answer("control panel opened")
+        await query.answer("تم فتح لوحة التحكم 👍🏻")
         await query.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
     else:
         await query.answer("معݪش ، ماެفي شي مشتغݪ ياެعيني🌵.", show_alert=True)
