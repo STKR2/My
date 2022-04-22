@@ -200,7 +200,7 @@ async def play_tg_file(c: Client, m: Message, replied: Message = None, link: str
             except Exception as e:
                 LOGS.info(f"[ERROR]: {e}")
     else:
-        await m.reply_text(!
+        await m.reply_text(
             "-› الرد على مقطع فيديو او اكتب .الاوامر لمعرفة استخدام البوت ."
         )
 
