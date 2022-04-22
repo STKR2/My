@@ -540,7 +540,7 @@ async def live_music_stream(c: Client, m: Message):
                         await msg.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("🦴 المحتوى هذا لا يحتوي على صوت")
-                    except TimeoutError
+                    except TimeoutError:
                         await msg.delete()
                         await remove_active_chat(chat_id)
                         await m.reply_text("The process was cancelled, please try again later or use `/vstream` command to stream in audio only.")
