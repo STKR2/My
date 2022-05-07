@@ -15,13 +15,15 @@
     "repository": "https://github.com/muntazer995/RR8R9",
     "success_url": "https://t.me/rr8r9",
     "env": {
-        "API_ID": {
-            "description": "اكتب ايبي ايدي",
-            "required": true
+     "API_ID": {
+            "description": "لاتغيرها ابدا",
+            "required": true,
+            "value": "19399491"
         },
-        "API_HASH": {
-            "description": "اكتب ايبي هاش",
-            "required": true
+     "API_HASH": {
+            "description": "لاتغيرها ابدا",
+            "required": true,
+            "value": "eaa4f266934dfef23edb6d1f25e0b10f"
         },
         "BOT_TOKEN": {
             "description": "اكتب توكن",
@@ -37,23 +39,28 @@
         },
         "MONGODB_URL": {
             "description": "اكتب قاعدة البيانات",
-            "required": true
+            "required": true,
+            "value": "mongodb+srv://legendx22:legendx22@cluster0.c0tex.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
         },
         "SUDO_USERS": {
             "description": "اكتب ايديات المطورين",
-            "required": true
+            "required": true,
+            "value": "1854384004"
         },
         "OWNER_ID": {
             "description": "اكتب ايدي مالك البوت",
-            "required": true
+            "required": true,
+            "value": "1854384004"
         },
         "OWNER_USERNAME": {
             "description": "اكتب معرف المطور بدون @",
-            "required": true
+            "required": true,
+            "value": "rr8r9"
         },
         "ALIVE_NAME": {
             "description": "اكتب اسم المطور",
-            "required": true
+            "required": true,
+            "value": "muntazer"
         }
     },
     "addons": [],
