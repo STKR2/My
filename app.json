@@ -40,7 +40,7 @@
         "MONGODB_URL": {
             "description": "اكتب قاعدة البيانات",
             "required": true,
-            "value": "mongodb+srv://legendx22:legendx22@cluster0.c0tex.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+            "value": "mongodb+srv://vro:vro@cluster0.eyy25.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
         },
         "SUDO_USERS": {
             "description": "اكتب ايديات المطورين",
