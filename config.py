@@ -7,13 +7,13 @@ load_dotenv()
 # client vars
 API_ID = int(getenv("API_ID", "7452578"))
 API_HASH = getenv("API_HASH", "061d67ee8eed9368c5cadabb4aa21efc")
-BOT_TOKEN = getenv("BOT_TOKEN", "5607700389:AAFtwRmXrmQA-K2rtY-0EMDurit6iciO0N0")
-SESSION_NAME = getenv("SESSION_NAME", "AQAQloYnh77pJFm9Vu7yxUck0C4S5mOewqBJRM5ah67D6xIDJJ5wXALNrjVbnOpErh4BZpQJwVhijdX8CRDx9cP59pVnsm082yzG7wgb-QiDjrPiYkvGIhRIVJWeeiUrGwoW43QXjkCps2cB8BwgeqqoP_znoBHW7ndUkVEv4XEl1giMLgC6IknK5KgF7rNCbLoaCvGc5l5nP4bJq4YNEQr-qnk5BFT2uB2TXo0qF7ZL99MpjrmRNZ_2SRFKJVdCx0Occd7oorg8bb3VIGgCL6VP_6yBp5SwsbYq6Ps2k0g9Cyvv_KHoOvNOAzYVv2XRTXXlEdLUnjf6HRrZYa71qwElZ_AETgA")
+BOT_TOKEN = getenv("BOT_TOKEN", "")
+SESSION_NAME = getenv("SESSION_NAME", "")
 
 # mandatory vars
 OWNER_USERNAME = getenv("OWNER_USERNAME", "rr8r9")
 ALIVE_NAME = getenv("ALIVE_NAME", "sonng")
-BOT_USERNAME = getenv("BOT_USERNAME", "TOoST2BoT")
+BOT_USERNAME = getenv("BOT_USERNAME", "")
 UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/X02lx/RrRRR")
 UPSTREAM_BRANCH = getenv("UPSTREM_BRANCH", "main")
 DURATION_LIMIT = int(getenv("DURATION_LIMIT", "60"))
