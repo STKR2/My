@@ -32,13 +32,13 @@ from driver.database.dbpunish import add_gban_user, is_gbanned_user, remove_gban
 from config import OWNER_ID, SUDO_USERS, BOT_USERNAME as bn
 
 
-@Client.on_message(command(["gban", f"gban@{bn}"]) & other_filters)
+@Client.on_message(command(["gban","حظر" f"gban@{bn}"]) & other_filters)
 @bot_creator
 async def global_banned(c: Client, message: Message):
     BOT_NAME = me_bot.first_name
     if not message.reply_to_message:
         if len(message.command) < 2:
-            await message.reply_text("**usage:**\n\n/gban [username | user_id]")
+            await message.reply_text("**الاستخدام:**\n\n/حظر [username | user_id]")
             return
         user = message.text.split(None, 2)[1]
         if "@" in user:
@@ -47,13 +47,13 @@ async def global_banned(c: Client, message: Message):
         from_user = message.from_user
         BOT_ID = me_bot.id
         if user.id == from_user.id:
-            await message.reply_text("You can't gban yourself !")
+            await message.reply_text("عقلك شبي متكدر تحظر نفسك !")
         elif user.id == BOT_ID:
-            await message.reply_text("I can't gban myself !")
+            await message.reply_text("لا استطيع حظر نفسي !")
         elif user.id in SUDO_USERS:
-            await message.reply_text("You can't gban sudo user !")
+            await message.reply_text("دروح منا ولتعديها متكدر تحظر !")
         elif user.id in OWNER_ID:
-            await message.reply_text("You can't gban my creator !")
+            await message.reply_text("لا يمكنني حظر مطوري انا اسف !")
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -61,7 +61,7 @@ async def global_banned(c: Client, message: Message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"🚷 **Globally banning {user.mention}**\n⏱ Expected time: `{len(served_chats)}`"
+                f"🚷 **سلملي نحظرت {user.mention}**\n⏱ الوقت المتوقع: `{len(served_chats)}`"
             )
             number_of_chats = 0
             for num in served_chats:
@@ -74,13 +74,13 @@ async def global_banned(c: Client, message: Message):
                 except Exception:
                     pass
             ban_text = f"""
-🚷 **New Global ban on [{BOT_NAME}](https://t.me/{bn})
+🚷 **لقد تم حظر [{BOT_NAME}](https://t.me/{bn})
 
-**Origin:** {message.chat.title} [`{message.chat.id}`]
-**Sudo User:** {from_user.mention}
-**Banned User:** {user.mention}
-**Banned User ID:** `{user.id}`
-**Chats:** `{number_of_chats}`"""
+**المجموعة:** {message.chat.title} [`{message.chat.id}`]
+**اسم المستخدم:** {from_user.mention}
+**المستخدم المحظور:** {user.mention}
+**ايدي المحظور:** `{user.id}`
+**الشات:** `{number_of_chats}`"""
             try:
                 await m.delete()
             except Exception:
@@ -95,26 +95,25 @@ async def global_banned(c: Client, message: Message):
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     BOT_ID = me_bot.id
-    if user_id == from_user_id:
-        await message.reply_text("You can't gban yourself !")
-    elif user_id == BOT_ID:
-        await message.reply_text("I can't gban myself !")
-    elif user_id in SUDO_USERS:
-        await message.reply_text("You can't gban sudo user !")
-    elif user_id in OWNER_ID:
-        await message.reply_text("You can't gban my creator !")
-    else:
-        is_gbanned = await is_gbanned_user(user_id)
+    if user.id == from_user.id:
+        await message.reply_text("عقلك شبي متكدر تحظر نفسك !")
+    elif user.id == BOT_ID:
+        await message.reply_text("لا استطيع حظر نفسي !")
+    elif user.id in SUDO_USERS:
+        await message.reply_text("دروح منا ولتعديها متكدر تحظر !")
+    elif user.id in OWNER_ID:
+        await message.reply_text("لا يمكنني حظر مطوري انا اسف !")
+        else:
+            is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
             await message.reply_text("This user already gbanned !")
-        else:
             await add_gban_user(user_id)
             served_chats = []
             chats = await get_served_chats()
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"🚷 **Globally banning {mention}**\n⏱ Expected time: `{len(served_chats)}`"
+                f"🚷 **سلملي نحظرت {user.mention}**\n⏱ الوقت المتوقع: `{len(served_chats)}`"
             )
             number_of_chats = 0
             for num in served_chats:
@@ -127,13 +126,13 @@ async def global_banned(c: Client, message: Message):
                 except Exception:
                     pass
             ban_text = f"""
-🚷 **New Global ban on [{BOT_NAME}](https://t.me/{bn})
+🚷 **لقد تم حظر [{BOT_NAME}](https://t.me/{bn})
 
-**Origin:** {message.chat.title} [`{message.chat.id}`]
-**Sudo User:** {from_user_mention}
-**Banned User:** {mention}
-**Banned User ID:** `{user_id}`
-**Chats:** `{number_of_chats}`"""
+**المجموعة:** {message.chat.title} [`{message.chat.id}`]
+**اسم المستخدم:** {from_user.mention}
+**المستخدم المحظور:** {user.mention}
+**ايدي المحظور:** `{user.id}`
+**الشات:** `{number_of_chats}`"""
             try:
                 await m.delete()
             except Exception:
@@ -145,7 +144,7 @@ async def global_banned(c: Client, message: Message):
             return
 
 
-@Client.on_message(command(["ungban", f"ungban@{bn}"]) & other_filters)
+@Client.on_message(command(["ungban","الغاء حظر", f"ungban@{bn}"]) & other_filters)
 @bot_creator
 async def ungban_global(c: Client, message: Message):
     chat_id = message.chat.id
@@ -162,19 +161,19 @@ async def ungban_global(c: Client, message: Message):
         from_user = message.from_user
         BOT_ID = me_bot.id
         if user.id == from_user.id:
-            await message.reply_text("You can't ungban yourself because you can't be gbanned !")
+            await message.reply_text("تورطت بيك يعني بعقلك شلون تريد تفك حظر عن نفسك وانت متكدر تحظر نفسك !")
         elif user.id == BOT_ID:
-            await message.reply_text("I can't ungban myself because i can't be gbanned !")
+            await message.reply_text("انت مطي ماكدر الغي حظر نفسي لان اصلا ماكر احظر نفسي !")
         elif user.id in SUDO_USERS:
-            await message.reply_text("Sudo users can't be gbanned/ungbanned !")
+            await message.reply_text("لا يمكن الغا حظر مستخدمين /ungbanned !")
         elif user.id in OWNER_ID:
-            await message.reply_text("Bot creator can't be gbanned/ungbanned !")
+            await message.reply_text("لك هاذة تاج راسي ماكر احظرة اصلا لان هاذة مطور /ungbanned !")
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("This user is not gbanned !")
+                await message.reply_text("هاذة الوردة غير محظور !")
             else:
-                msg = await message.reply_text("» ungbanning user...")
+                msg = await message.reply_text("» جاري الغا الحظر...")
                 await remove_gban_user(user.id)
                 served_chats = []
                 chats = await get_served_chats()
@@ -190,20 +189,20 @@ async def ungban_global(c: Client, message: Message):
                         await asyncio.sleep(int(e.x))
                     except BaseException:
                         pass
-                await msg.edit_text("✅ This user has ungbanned")
+                await msg.edit_text("✅ هاذة الوردة ممحظور")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     BOT_ID = me_bot.id
     if user_id == from_user_id:
-        await message.reply_text("You can't ungban yourself because you can't be gbanned !")
+        await message.reply_text("تورطت بيك يعني بعقلك شلون تريد تفك حظر عن نفسك وانت متكدر تحظر نفسك !")
     elif user_id == BOT_ID:
-        await message.reply_text("I can't ungban myself because i can't be gbanned !")
+        await message.reply_text("انت مطي ماكدر الغي حظر نفسي لان اصلا ماكر احظر نفسي !")
     elif user_id in SUDO_USERS:
-        await message.reply_text("Sudo users can't be gbanned/ungbanned !")
+        await message.reply_text("لا يمكن الغا حظر مستخدمين /ungbanned !")
     elif user_id in OWNER_ID:
-        await message.reply_text("Bot creator can't be gbanned/ungbanned !")
+        await message.reply_text("لك هاذة تاج راسي ماكر احظرة اصلا لان هاذة مطور /ungbanned !")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
