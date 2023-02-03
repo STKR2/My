@@ -32,16 +32,16 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 
-@Client.on_message(command(["speedtest", f"speedtest@{bname}"]) & ~filters.edited)
+@Client.on_message(command(["speedtest","اختبار السرعة", f"speedtest@{bname}"]) & ~filters.edited)
 @sudo_users_only
 async def run_speedtest(_, message: Message):
-    m = await message.reply_text("⚡️ running server speedtest")
+    m = await message.reply_text("⚡️ تحميل سرعة السيرفر")
     try:
         test = speedtest.Speedtest()
         test.get_best_server()
-        m = await m.edit("⚡️ running download speedtest..")
+        m = await m.edit("⚡️ تحميل السرعة..")
         test.download()
-        m = await m.edit("⚡️ running upload speedtest...")
+        m = await m.edit("⚡️ اختبار سرعة التحميل...")
         test.upload()
         test.results.share()
     except speedtest.ShareResultsConnectFailure:
@@ -50,7 +50,7 @@ async def run_speedtest(_, message: Message):
         await m.edit(e)
         return
     result = test.results.dict()
-    m = await m.edit("🔄 sharing speedtest results")
+    m = await m.edit("🔄 مشاركة نتائج الاختبار")
     if result["share"]:
         path = wget.download(result["share"])
         try:
@@ -60,19 +60,19 @@ async def run_speedtest(_, message: Message):
         except BaseException:
             pass
 
-    output = f"""💡 **SpeedTest Results**
+    output = f"""💡 **النتائج**
     
-<u>**Client:**</u>
-**ISP:** {result['client']['isp']}
-**Country:** {result['client']['country']}
+<u>**العميل:**</u>
+**مزود خدمة الأنترنيت :** {result['client']['isp']}
+**الدولة :** {result['client']['country']}
   
-<u>**Server:**</u>
-**Name:** {result['server']['name']}
-**Country:** {result['server']['country']}, {result['server']['cc']}
-**Sponsor:** {result['server']['sponsor']}
-**Latency:** {result['server']['latency']}
+<u>**السيرفر :**</u>
+**الاسم :** {result['server']['name']}
+**الدولة :** {result['server']['country']}, {result['server']['cc']}
+**الراعي :** {result['server']['sponsor']}
+**وقت الاستجابة :** {result['server']['latency']}
 
-⚡️ **Ping:** {result['ping']}"""
+⚡️ **البنك :** {result['ping']}"""
     if result["share"]:
         msg = await app.send_photo(
             chat_id=message.chat.id, photo=path, caption=output
