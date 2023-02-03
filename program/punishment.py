@@ -206,9 +206,9 @@ async def ungban_global(c: Client, message: Message):
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("This user is not gbanned !")
+            await message.reply_text("هاذة الوردة غير محظور !")
         else:
-            msg = await message.reply_text("» ungbanning user...")
+            msg = await message.reply_text("» جاري فك حظر...")
             await remove_gban_user(user_id)
             served_chats = []
             chats = await get_served_chats()
@@ -224,4 +224,4 @@ async def ungban_global(c: Client, message: Message):
                     await asyncio.sleep(int(e.x))
                 except BaseException:
                     pass
-                await msg.edit_text("✅ This user has ungbanned")
+                await msg.edit_text("✅ غير محظور")
