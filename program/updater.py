@@ -87,15 +87,14 @@ async def update_bot(_, message: Message):
     await msg.edit(f"❖ bot is **up-to-date** with [main]({UPSTREAM_REPO}/tree/main) ❖", disable_web_page_preview=True)
 
 
-@Client.on_message(command(["restart","ريستارت" f"restart@{BOT_USERNAME}"]) & ~filters.edited)
-                            f"restart@{BOT_USERNAME}"]) & ~filters.edited)
+@Client.on_message(command(["restart", f"restart@{BOT_USERNAME}"]) & ~filters.edited)
 @bot_creator
 async def restart_bot(_, message: Message):
     try:
-        msg = await message.reply_text("❖ جار...")
-        LOGS.info("[INFO]: تم اعادة تشغيل !!")
+        msg = await message.reply_text("❖ Restarting bot...")
+        LOGS.info("[INFO]: BOT SERVER RESTARTED !!")
     except BaseException as err:
         LOGS.info(f"[ERROR]: {err}")
         return
-    await msg.edit_text("✅ سوف يتم اعادة تشغيل !\n\n» انتظر من 5-10 دقائق لكي يتم")
+    await msg.edit_text("✅ Bot has restarted !\n\n» back active again in 5-10 seconds.")
     os.system(f"kill -9 {os.getpid()} && python3 main.py")
