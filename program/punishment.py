@@ -103,8 +103,8 @@ async def global_banned(c: Client, message: Message):
         await message.reply_text("دروح منا ولتعديها متكدر تحظر !")
     elif user.id in OWNER_ID:
         await message.reply_text("لا يمكنني حظر مطوري انا اسف !")
-        else:
-            is_gbanned = await is_gbanned_user(user_id)
+    else:
+        is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
             await message.reply_text("This user already gbanned !")
             await add_gban_user(user_id)
@@ -224,4 +224,4 @@ async def ungban_global(c: Client, message: Message):
                     await asyncio.sleep(int(e.x))
                 except BaseException:
                     pass
-                await msg.edit_text("✅ غير محظور")
+                await msg.edit_text("✅ غير محظور"
