@@ -13,7 +13,7 @@ requests
 lyricsgenius
 speedtest-cli
 
-yt-dlp
+git+https://github.com/ytdl-patched/yt-dlp
 dnspython
 gitpython
 ffmpeg-python
