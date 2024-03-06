@@ -1,135 +1,62 @@
-# Copyright (C) 2021 By Veez Music-Project
-
-from __future__ import unicode_literals
-
-import asyncio
-import math
 import os
-import time
-from random import randint
-from urllib.parse import urlparse
-
-import aiofiles
-import aiohttp
-import requests
-import wget
 import yt_dlp
-from pyrogram import Client, filters
-from pyrogram.errors import FloodWait, MessageNotModified
-from pyrogram.types import Message
-from youtube_search import YoutubeSearch
-from yt_dlp import YoutubeDL
+import datetime
+from pyrogram import filters
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import BOT_USERNAME as bn
-from driver.decorators import humanbytes
-from driver.filters import command, other_filters
+from ... import app
+from strings.filters import command
+from youtubesearchpython import VideosSearch
 
-
-ydl_opts = {
-    'format': 'best',
-    'keepvideo': True,
-    'prefer_ffmpeg': False,
-    'geo_bypass': True,
-    'outtmpl': '%(title)s.%(ext)s',
-    'quite': True
-}
-
-
-@Client.on_message(command(["بحث", f"ب"]) & ~filters.edited)
-def song(_, message):
-    query = " ".join(message.command[1:])
-    m = message.reply("❤️‍🔥 جَاެࢪي اެݪبَحثَ...")
-    ydl_ops = {"format": "bestaudio[ext=m4a]"}
+@app.on_message(command(["بحث", f"يوت"]))
+async def song(client: app, message: Message):
+    aux = await message.reply_text("‹ جاري البحث  ›")
+    
+    if len(message.command) < 2:
+        return await aux.edit("‹ ارسل يوت واسم الملف الصوتي  ›")
+    
     try:
-        results = YoutubeSearch(query, max_results=1).to_dict()
-        link = f"https://youtube.com{results[0]['url_suffix']}"
-        title = results[0]["title"][:40]
-        thumbnail = results[0]["thumbnails"][0]
-        thumb_name = f"{title}.jpg"
-        thumb = requests.get(thumbnail, allow_redirects=True)
-        open(thumb_name, "wb").write(thumb.content)
-        duration = results[0]["duration"]
+        song_name = message.text.split(None, 1)[1]
+        vid = VideosSearch(song_name, limit=1)
+        song_title = vid.result()["result"][0]["title"]
+        song_link = vid.result()["result"][0]["link"]
+        
+        ydl_opts = {
+            "format": "mp3/bestaudio/best",
+            "verbose": True,
+            "geo-bypass": True,
+            "nocheckcertificate": True,
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3"
+                }
+            ],
+            "outtmpl": f"downloads/{song_title}.%(ext)s",
+            "format": "worstaudio/worst",  # تحديد أدنى جودة ممكنة
+        }
+        
+        await aux.edit("‹ يتم الرفع  ›")
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(song_link, download=True)
+            audio_path = ydl.prepare_filename(info_dict)
+            duration = str(datetime.timedelta(seconds=info_dict['duration']))
 
-    except Exception as e:
-        m.edit("❤️‍🔥 لم اجد شيئا.\n\nاعطني اسم المغني كامل.")
-        print(str(e))
-        return
-    m.edit("❤️‍🔥 تَحمَيݪ اެݪمݪف...")
-    try:
-        with yt_dlp.YoutubeDL(ydl_ops) as ydl:
-            info_dict = ydl.extract_info(link, download=False)
-            audio_file = ydl.prepare_filename(info_dict)
-            ydl.process_info(info_dict)
-        rep = f"**🎧 تم التحميل بواسطة @RR8R9**"
-        secmul, dur, dur_arr = 1, 0, duration.split(":")
-        for i in range(len(dur_arr) - 1, -1, -1):
-            dur += int(float(dur_arr[i])) * secmul
-            secmul *= 60
-        m.edit("❤️‍🔥 ࢪفَع اݪمَݪف...")
-        message.reply_audio(
-            audio_file,
-            caption=rep,
-            thumb=thumb_name,
-            parse_mode="md",
-            title=title,
-            duration=dur,
-        )
-        m.delete()
-    except Exception as e:
-        m.edit("ℹ️ البوت لايعمل من فضلك إبلغ المطور بشأني @rr8r9")
-        print(e)
+        await aux.edit("‹ تم التحميل  ›")
+        
+        # Display message below the audio file and provide a transparent button with the specified link
+        reply_text = f"هذا الملف الصوتي '{song_title}' تم تنزيله\nالمدة: {duration}\nطلب بواسطة: {message.from_user.first_name}"
+        inline_button = InlineKeyboardButton("اونلاين", url="https://t.me/Xl444")
+        markup = InlineKeyboardMarkup([[inline_button]])
 
-    try:
-        os.remove(audio_file)
-        os.remove(thumb_name)
-    except Exception as e:
-        print(e)
+        await message.reply_audio(audio_path, caption=reply_text, reply_markup=markup)
 
-
-@Client.on_message(
-    command(["ابحثلي", f"vsong@{bn}", "video", f"video@{bn}"]) & ~filters.edited
-)
-async def vsong(client, message):
-    ydl_opts = {
-        "format": "best",
-        "keepvideo": True,
-        "prefer_ffmpeg": False,
-        "geo_bypass": True,
-        "outtmpl": "%(title)s.%(ext)s",
-        "quite": True,
-    }
-    query = " ".join(message.command[1:])
-    try:
-        results = YoutubeSearch(query, max_results=1).to_dict()
-        link = f"https://youtube.com{results[0]['url_suffix']}"
-        title = results[0]["title"][:40]
-        thumbnail = results[0]["thumbnails"][0]
-        thumb_name = f"{title}.jpg"
-        thumb = requests.get(thumbnail, allow_redirects=True)
-        open(thumb_name, "wb").write(thumb.content)
-        results[0]["duration"]
-        results[0]["url_suffix"]
-        results[0]["views"]
-        message.from_user.mention
+        try:
+            os.remove(audio_path)
+        except:
+            pass
+        
+        await aux.delete()
     except Exception as e:
-        print(e)
-    try:
-        msg = await message.reply("❤️‍🔥 جَاެࢪي اެݪبَحثَ...")
-        with YoutubeDL(ydl_opts) as ytdl:
-            ytdl_data = ytdl.extract_info(link, download=True)
-            file_name = ytdl.prepare_filename(ytdl_data)
-    except Exception as e:
-        return await msg.edit(f"🚫 **error:** {e}")
-    preview = wget.download(thumbnail)
-    await msg.edit("❤️‍🔥 تَحَمَيَݪ اެݪمَݪفَ...")
-    await message.reply_video(
-        file_name,
-        duration=int(ytdl_data["duration"]),
-        thumb=preview,
-        caption=ytdl_data["title"],
-    )
-    try:
-        os.remove(file_name)
-        await msg.delete()
-    except Exception as e:
-        print(e)
+        await aux.edit(f"**Error:** {e}")
