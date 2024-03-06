@@ -46,7 +46,7 @@ async def song(client: app, message: Message):
         await aux.edit("‹ تم التحميل  ›")
         
         # Display message below the audio file and provide a transparent button with the specified link
-        reply_text = f"هذا الملف الصوتي '{song_title}' تم تنزيله\nالمدة: {duration}\nطلب بواسطة: {message.from_user.first_name}"
+        reply_text = f"هذا الملف الصوتي '{song_title}' تم تنزيله\nالمدة: {duration}"
         inline_button = InlineKeyboardButton("اونلاين", url="https://t.me/Xl444")
         markup = InlineKeyboardMarkup([[inline_button]])
 
